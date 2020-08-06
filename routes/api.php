@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::apiResource('/stafftu','API\StaffTataUsahaController');
 Route::apiResource('/user','API\UserController');
 Route::apiResource('/dosen','API\DosenController');
+Route::apiResource('/matakuliah','API\MatakuliahController');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
