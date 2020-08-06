@@ -37,6 +37,16 @@ class User extends Model
         return $this->hasOne('App\StaffTataUsaha', 'id_user');
     }
 
+    /**
+     * Menandai bahwa tabel user memiliki
+     * relation one to one 
+     * terhadap tabel staff dosen
+     */
+    public function dosen()
+    {
+        return $this->hasOne('App\Dosen', 'id_user');
+    }
+
     public $timestamps = false;
 
 }
