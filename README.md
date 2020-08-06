@@ -10,7 +10,7 @@ Sistem ini dibuat dalam rangka untuk penyelesaian Tugas Akhir.
 
 ## BePresensi Mobile
 
-BePresensi mobile ditujukan untuk Mahasiswa, Dosen Pengajar, Wali Dosen. Fitur yang dapat diakses pada aplikasi ini dibagi sesuai dengan role sebagai berikut.
+BePresensi mobile dibangun pada platform Android. Aplikasi ini ditujukan untuk Mahasiswa, Dosen Pengajar, Wali Dosen. Fitur yang dapat diakses pada aplikasi ini dibagi sesuai dengan role sebagai berikut.
 
 Mahasiswa:
 - Melakukan presensi
@@ -31,7 +31,7 @@ Wali Dosen:
 
 ## BePresensi Web
 
-BePresensi Web ditujukan untuk Staf Tata Usaha. Fitur yang dapat diakses pada aplikasi ini adalah :
+BePresensi Web dibangun menggunakan Vue JS. Aplikasi ini ditujukan untuk Staf Tata Usaha. Fitur yang dapat diakses pada aplikasi ini adalah :
 - Mengolah data mahasiswa
 - Mengolah data dosen
 - Mengolah data kelas
