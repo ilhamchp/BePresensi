@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Kelas extends Model
+class Mahasiswa extends Model
 {
     /**
      * Menandakan nama tabel yang
@@ -12,7 +12,7 @@ class Kelas extends Model
      * 
      * @var string
      */
-    protected $table = 'kelas';
+    protected $table = 'mahasiswa';
     
     /**
      * Menandakan kolom apa yang
@@ -20,7 +20,7 @@ class Kelas extends Model
      * 
      * @var string 
      */
-    protected $primaryKey = 'kd_kelas';
+    protected $primaryKey = 'nim';
 
     /**
      * Menandakan apakah kolom
@@ -46,26 +46,26 @@ class Kelas extends Model
      * @var array
      */
     protected $fillable = [
+        'nim',
+        'nama_mahasiswa',
         'kd_kelas',
-        'tingkat_kelas',
-        'prodi',
-        'angkatan',
-        'kd_wali_dosen'
+        'id_user',
+        'foto_mahasiswa'
     ];
 
     /**
-     * Get the dosen that is walidosen.
+     * Get the user that is mahasiswa.
      */
-    public function waliDosen()
+    public function user()
     {
-        return $this->belongsTo('App\Dosen');
+        return $this->belongsTo('App\User','id_user');
     }
 
     /**
-     * Get the mahasiswa that registered in kelas.
+     * Get the mahasiswa that is registered in kelas.
      */
-    public function mahasiswa()
+    public function kelas()
     {
-        return $this->hasMany('App\Mahasiswa');
+        return $this->belongsTo('App\Kelas', 'kd_kelas');
     }
 }

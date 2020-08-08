@@ -28,6 +28,14 @@ class User extends Model
     ];
 
     /**
+     * Menandakan apakah tabel
+     * memiliki kolom timestamps
+     * 
+     * @var boolean
+     */
+    public $timestamps = false;
+
+    /**
      * Menandai bahwa tabel user memiliki
      * relation one to one 
      * terhadap tabel staff tata usaha
@@ -47,6 +55,13 @@ class User extends Model
         return $this->hasOne('App\Dosen', 'id_user');
     }
 
-    public $timestamps = false;
-
+    /**
+     * Menandai bahwa tabel user memiliki
+     * relation one to one 
+     * terhadap tabel dosen
+     */
+    public function mahasiswa()
+    {
+        return $this->hasOne('App\Mahasiswa', 'id_user');
+    }
 }
