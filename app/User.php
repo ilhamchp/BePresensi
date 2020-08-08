@@ -40,7 +40,7 @@ class User extends Model
     /**
      * Menandai bahwa tabel user memiliki
      * relation one to one 
-     * terhadap tabel staff dosen
+     * terhadap tabel dosen
      */
     public function dosen()
     {
