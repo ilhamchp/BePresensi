@@ -58,7 +58,7 @@ class Kelas extends Model
      */
     public function waliDosen()
     {
-        return $this->belongsTo('App\Dosen', 'kd_dosen');
+        return $this->belongsTo('App\Dosen', 'kd_wali_dosen');
     }
 
     /**

@@ -39,7 +39,8 @@ class StaffTataUsahaSeeder extends Seeder
         $staff->kd_staff = $data['kd_staff'];
         $staff->nama_staff = $data['nama_staff'];
         $staff->foto_staff = $data['foto_staff'];
-        $user->staffTataUsaha()->save($staff);
+        $staff->user()->associate($user);
+        $staff->save();
     }
     
 }

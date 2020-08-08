@@ -173,6 +173,7 @@ class DosenSeeder extends Seeder
         $dosen->kd_dosen = $data['kd_dosen'];
         $dosen->nama_dosen = $data['nama_dosen'];
         $dosen->foto_dosen = 'photo.jpg';
-        $user->dosen()->save($dosen);
+        $dosen->user()->associate($user);
+        $dosen->save();
     }
 }

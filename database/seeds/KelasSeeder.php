@@ -117,6 +117,7 @@ class KelasSeeder extends Seeder
         $kelas->tingkat_kelas = $data['tingkat_kelas'];
         $kelas->prodi = $data['prodi'];
         $kelas->angkatan = $data['angkatan'];
-        $dosen->kelas()->save($kelas);
+        $kelas->waliDosen()->associate($dosen);
+        $kelas->save();
     }
 }
