@@ -20,6 +20,7 @@ Route::apiResource('/matakuliah','API\MatakuliahController');
 Route::apiResource('/hari','API\HariController');
 Route::apiResource('/statussurat','API\StatusSuratController');
 Route::apiResource('/statuspresensi','API\StatusPresensiController');
+Route::apiResource('/sesi','API\SesiController');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
