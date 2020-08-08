@@ -58,7 +58,7 @@ class Kelas extends Model
      */
     public function waliDosen()
     {
-        return $this->belongsTo('App\Dosen');
+        return $this->belongsTo('App\Dosen', 'kd_dosen');
     }
 
     /**
@@ -66,6 +66,6 @@ class Kelas extends Model
      */
     public function mahasiswa()
     {
-        return $this->hasMany('App\Mahasiswa');
+        return $this->hasMany('App\Mahasiswa', 'nim');
     }
 }
