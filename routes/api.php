@@ -17,6 +17,7 @@ Route::apiResource('/stafftu','API\StaffTataUsahaController');
 Route::apiResource('/user','API\UserController');
 Route::apiResource('/dosen','API\DosenController');
 Route::apiResource('/matakuliah','API\MatakuliahController');
+Route::apiResource('/hari','API\HariController');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
