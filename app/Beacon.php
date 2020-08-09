@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StatusPresensi extends Model
+class Beacon extends Model
 {
     /**
      * Menandakan nama tabel yang
@@ -12,7 +12,7 @@ class StatusPresensi extends Model
      * 
      * @var string
      */
-    protected $table = 'status_presensi';
+    protected $table = 'beacon';
     
     /**
      * Menandakan kolom apa yang
@@ -20,7 +20,7 @@ class StatusPresensi extends Model
      * 
      * @var string 
      */
-    protected $primaryKey = 'kd_status_presensi';
+    protected $primaryKey = 'kd_beacon';
 
     /**
      * Menandakan apakah kolom
@@ -46,7 +46,9 @@ class StatusPresensi extends Model
      * @var array
      */
     protected $fillable = [
-        'kd_status_presensi',
-        'keterangan_presensi'
+        'kd_beacon',
+        'mac_address',
+        'major',
+        'minor'
     ];
 }

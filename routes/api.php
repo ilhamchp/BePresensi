@@ -23,6 +23,7 @@ Route::apiResource('/statuspresensi','API\StatusPresensiController');
 Route::apiResource('/sesi','API\SesiController');
 Route::apiResource('/kelas','API\KelasController');
 Route::apiResource('/mahasiswa','API\MahasiswaController');
+Route::apiResource('/beacon','API\BeaconController');
 
 
 
