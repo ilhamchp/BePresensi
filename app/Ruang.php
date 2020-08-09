@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Beacon extends Model
+class Ruang extends Model
 {
     /**
      * Menandakan nama tabel yang
@@ -12,7 +12,7 @@ class Beacon extends Model
      * 
      * @var string
      */
-    protected $table = 'beacon';
+    protected $table = 'ruang';
     
     /**
      * Menandakan kolom apa yang
@@ -20,7 +20,7 @@ class Beacon extends Model
      * 
      * @var string 
      */
-    protected $primaryKey = 'kd_beacon';
+    protected $primaryKey = 'kd_ruang';
 
     /**
      * Menandakan apakah kolom
@@ -46,19 +46,18 @@ class Beacon extends Model
      * @var array
      */
     protected $fillable = [
-        'kd_beacon',
-        'mac_address',
-        'major',
-        'minor'
+        'kd_ruang',
+        'nama_ruang',
+        'kd_beacon'
     ];
 
     /**
-     * Menandai bahwa tabel beacon memiliki
-     * relation one to one 
-     * terhadap tabel ruang
+     * Menandai bahwa tabel ruang memiliki
+     * foreign key relation one to one 
+     * terhadap tabel beacon
      */
-    public function ruang()
+    public function beacon()
     {
-        return $this->hasOne('App\Ruang','kd_beacon');
+        return $this->belongsTo('App\Beacon', 'kd_beacon');
     }
 }
