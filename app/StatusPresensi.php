@@ -49,4 +49,15 @@ class StatusPresensi extends Model
         'kd_status_presensi',
         'keterangan_presensi'
     ];
+
+
+    /**
+     * Menandai bahwa tabel status presensi memiliki
+     * foreign key relation one to many 
+     * terhadap tabel surat izin
+     */
+    public function suratIzin()
+    {
+        return $this->hasMany('App\SuratIzin','kd_surat_izin');
+    }
 }

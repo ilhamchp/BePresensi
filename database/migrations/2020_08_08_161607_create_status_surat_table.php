@@ -14,9 +14,8 @@ class CreateStatusSuratTable extends Migration
     public function up()
     {
         Schema::create('status_surat', function (Blueprint $table) {
-            $table->String('kd_status_surat');
-            $table->Primary('kd_status_surat');
-            $table->String('keterangan_surat');
+            $table->id('kd_status_surat');
+            $table->string('keterangan_surat');
         });
     }
 

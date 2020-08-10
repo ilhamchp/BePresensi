@@ -31,6 +31,11 @@ class StatusPresensiSeeder extends Seeder
             'kd_status_presensi' => 'A',
             'keterangan_presensi' => 'Alfa'
         ]);
+
+        StatusPresensi::create([
+            'kd_status_presensi' => 'D',
+            'keterangan_presensi' => 'Dispensasi'
+        ]);
         
     }
 }

@@ -23,15 +23,6 @@ class StatusSurat extends Model
     protected $primaryKey = 'kd_status_surat';
 
     /**
-     * Menandakan apakah kolom
-     * primary key bersifat incremental
-     * atau tidak
-     * 
-     * @var boolean
-     */
-    public $incrementing = false;
-
-    /**
      * Menandakan apakah tabel
      * memiliki kolom timestamps
      * 
@@ -49,5 +40,16 @@ class StatusSurat extends Model
         'kd_status_surat',
         'keterangan_surat'
     ];
+
+
+    /**
+     * Menandai bahwa tabel status surat memiliki
+     * foreign key relation one to many 
+     * terhadap tabel surat izin 
+     */
+    public function suratIzin()
+    {
+        return $this->hasMany('App\SuratIzin','kd_surat_izin');
+    }
 
 }
