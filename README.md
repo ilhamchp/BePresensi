@@ -41,6 +41,16 @@ BePresensi Web dibangun menggunakan Vue JS. Aplikasi ini ditujukan untuk Staf Ta
 - Mengolah data presensi
 - Mengolah data akses login aplikasi BePresensi Mobile
 
+## Tutorial Install BePresensi Web
+
+1. Clone project ini
+2. Buka folder project ini
+3. Rename file `.env.example` menjadi `.env`
+4. Buat database dengan nama `kota205_bepresensi`
+5. Buka command prompt / terminal dan arahkan ke folder project ini
+6. Jalankan perintah `composer install` dan tunggu hingga berhasil
+7. Jalankan perintah `php artisan migrate:refresh --seed` dan tunggu hingga berhasil
+
 ### Credit
 
 Aplikasi ini dibuat oleh:
