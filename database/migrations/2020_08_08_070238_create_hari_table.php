@@ -14,7 +14,7 @@ class CreateHariTable extends Migration
     public function up()
     {
         Schema::create('hari', function (Blueprint $table) {
-            $table->String('kd_hari');
+            $table->Integer('kd_hari');
             $table->Primary('kd_hari');
             $table->String('nama_hari');
         });

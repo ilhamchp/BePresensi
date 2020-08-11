@@ -61,7 +61,7 @@ class SuratIzin extends Model
 
     /**
      * Menandai bahwa tabel surat izin memiliki
-     * foreign key relation many to one 
+     * foreign key relation one to one 
      * terhadap tabel mahasiswa 
      */
     public function mahasiswa()
@@ -71,7 +71,7 @@ class SuratIzin extends Model
 
     /**
      * Menandai bahwa tabel surat izin memiliki
-     * foreign key relation many to one 
+     * foreign key relation one to one 
      * terhadap tabel mahasiswa 
      */
     public function jenisIzin()
@@ -81,7 +81,7 @@ class SuratIzin extends Model
 
     /**
      * Menandai bahwa tabel surat izin memiliki
-     * foreign key relation many to one 
+     * foreign key relation one to one 
      * terhadap tabel status surat 
      */
     public function statusSurat()

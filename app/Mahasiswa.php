@@ -55,7 +55,9 @@ class Mahasiswa extends Model
     ];
 
     /**
-     * Get the user that is mahasiswa.
+     * Menandai bahwa tabel mahasiswa memiliki
+     * foreign key relation one to one 
+     * terhadap tabel user
      */
     public function user()
     {
@@ -63,7 +65,9 @@ class Mahasiswa extends Model
     }
 
     /**
-     * Get the mahasiswa that is registered in kelas.
+     * Menandai bahwa tabel mahasiswa memiliki
+     * foreign key relation one to one 
+     * terhadap tabel kelas
      */
     public function kelas()
     {

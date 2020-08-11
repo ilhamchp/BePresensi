@@ -54,7 +54,9 @@ class Kelas extends Model
     ];
 
     /**
-     * Get the dosen that is walidosen.
+     * Menandai bahwa tabel kelas memiliki
+     * foreign key relation one to one 
+     * terhadap tabel dosen
      */
     public function waliDosen()
     {
@@ -62,10 +64,22 @@ class Kelas extends Model
     }
 
     /**
-     * Get the mahasiswa that registered in kelas.
+     * Menandai bahwa tabel kelas memiliki
+     * relation one to many 
+     * terhadap tabel mahasiswa
      */
     public function mahasiswa()
     {
         return $this->hasMany('App\Mahasiswa', 'nim');
+    }
+
+    /**
+     * Menandai bahwa tabel kelas memiliki
+     * relation one to many 
+     * terhadap tabel jadwal
+     */
+    public function jadwal()
+    {
+        return $this->hasMany('App\Jadwal','kd_jadwal');
     }
 }

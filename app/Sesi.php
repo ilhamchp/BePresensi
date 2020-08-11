@@ -49,4 +49,15 @@ class Sesi extends Model
         'kd_sesi',
         'jam_mulai',
         'jam_berakhir'
-    ];}
+    ];
+
+    /**
+     * Menandai bahwa tabel sesi memiliki
+     * relation one to many 
+     * terhadap tabel jadwal
+     */
+    public function jadwal()
+    {
+        return $this->hasMany('App\Jadwal','kd_jadwal');
+    }
+}

@@ -49,4 +49,14 @@ class Hari extends Model
         'kd_hari',
         'nama_hari'
     ];
+    
+    /**
+     * Menandai bahwa tabel hari memiliki
+     * relation one to many 
+     * terhadap tabel jadwal
+     */
+    public function jadwal()
+    {
+        return $this->hasMany('App\Jadwal','kd_jadwal');
+    }
 }

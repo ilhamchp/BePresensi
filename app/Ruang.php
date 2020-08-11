@@ -60,4 +60,14 @@ class Ruang extends Model
     {
         return $this->belongsTo('App\Beacon', 'kd_beacon');
     }
+
+    /**
+     * Menandai bahwa tabel ruang memiliki
+     * relation one to many 
+     * terhadap tabel jadwal
+     */
+    public function jadwal()
+    {
+        return $this->hasMany('App\Jadwal','kd_jadwal');
+    }
 }

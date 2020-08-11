@@ -52,7 +52,9 @@ class StaffTataUsaha extends Model
     ];
 
     /**
-     * Get the user that is staff.
+     * Menandai bahwa tabel staff tata usaha memiliki
+     * foreign key relation one to one 
+     * terhadap tabel user
      */
     public function user()
     {

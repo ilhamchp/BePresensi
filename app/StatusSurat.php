@@ -44,7 +44,7 @@ class StatusSurat extends Model
 
     /**
      * Menandai bahwa tabel status surat memiliki
-     * foreign key relation one to many 
+     * relation one to many 
      * terhadap tabel surat izin 
      */
     public function suratIzin()

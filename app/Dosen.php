@@ -52,7 +52,9 @@ class Dosen extends Model
     ];
 
     /**
-     * Get the user that is dosen.
+     * Menandai bahwa tabel dosen memiliki
+     * foreign key relation one to one 
+     * terhadap tabel user
      */
     public function user()
     {
@@ -68,5 +70,15 @@ class Dosen extends Model
     public function kelas()
     {
         return $this->hasOne('App\Kelas', 'kd_wali_dosen');
+    }
+
+    /**
+     * Menandai bahwa tabel dosen memiliki
+     * relation one to many 
+     * terhadap tabel jadwal
+     */
+    public function jadwal()
+    {
+        return $this->hasMany('App\Jadwal','kd_jadwal');
     }
 }

@@ -49,4 +49,14 @@ class Matakuliah extends Model
         'kd_matakuliah',
         'nama_matakuliah'
     ];
+
+    /**
+     * Menandai bahwa tabel matakuliah memiliki
+     * relation one to many 
+     * terhadap tabel jadwal
+     */
+    public function jadwal()
+    {
+        return $this->hasMany('App\Jadwal','kd_jadwal');
+    }
 }
