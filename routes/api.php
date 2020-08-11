@@ -28,6 +28,7 @@ Route::apiResource('/ruang','API\RuangController');
 Route::apiResource('/suratizin','API\SuratIzinController');
 Route::apiResource('/jadwal','API\JadwalController');
 Route::apiResource('/beritaacara','API\BeritaAcaraController');
+Route::apiResource('/kehadiran','API\KehadiranController');
 
 
 

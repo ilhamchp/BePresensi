@@ -60,4 +60,14 @@ class StatusPresensi extends Model
     {
         return $this->hasMany('App\SuratIzin','kd_surat_izin');
     }
+
+    /**
+     * Menandai bahwa tabel status presensi memiliki
+     * relation one to many 
+     * terhadap tabel kehadiran
+     */
+    public function kehadiran()
+    {
+        return $this->hasMany('App\Kehadiran','kd_kehadiran');
+    }
 }

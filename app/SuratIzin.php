@@ -88,4 +88,14 @@ class SuratIzin extends Model
     {
         return $this->belongsTo('App\StatusSurat','kd_status_surat');
     }
+
+    /**
+     * Menandai bahwa tabel jadwal memiliki
+     * relation one to many 
+     * terhadap tabel kehadiran
+     */
+    public function kehadiran()
+    {
+        return $this->hasMany('App\Kehadiran','kd_kehadiran');
+    }
 }

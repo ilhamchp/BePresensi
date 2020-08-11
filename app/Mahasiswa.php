@@ -83,4 +83,14 @@ class Mahasiswa extends Model
     {
         return $this->hasMany('App\SuratIzin','kd_surat');
     }
+
+    /**
+     * Menandai bahwa tabel mahasiswa memiliki
+     * relation one to many 
+     * terhadap tabel kehadiran
+     */
+    public function kehadiran()
+    {
+        return $this->hasMany('App\Kehadiran','kd_kehadiran');
+    }
 }

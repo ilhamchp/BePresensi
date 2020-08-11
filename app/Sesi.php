@@ -60,4 +60,14 @@ class Sesi extends Model
     {
         return $this->hasMany('App\Jadwal','kd_jadwal');
     }
+
+    /**
+     * Menandai bahwa tabel sesi memiliki
+     * relation one to many 
+     * terhadap tabel kehadiran
+     */
+    public function kehadiran()
+    {
+        return $this->hasMany('App\Kehadiran','kd_kehadiran');
+    }
 }

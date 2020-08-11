@@ -133,4 +133,14 @@ class Jadwal extends Model
     {
         return $this->hasMany('App\BeritaAcara','kd_berita_acara');
     }
+
+    /**
+     * Menandai bahwa tabel jadwal memiliki
+     * relation one to many 
+     * terhadap tabel kehadiran
+     */
+    public function kehadiran()
+    {
+        return $this->hasMany('App\Kehadiran','kd_kehadiran');
+    }
 }
