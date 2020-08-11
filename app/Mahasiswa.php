@@ -50,7 +50,8 @@ class Mahasiswa extends Model
         'nama_mahasiswa',
         'kd_kelas',
         'id_user',
-        'foto_mahasiswa'
+        'foto_mahasiswa',
+        'device_imei'
     ];
 
     /**

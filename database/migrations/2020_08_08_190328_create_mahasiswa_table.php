@@ -20,6 +20,7 @@ class CreateMahasiswaTable extends Migration
             $table->string('foto_mahasiswa');
             $table->string('kd_kelas');
             $table->bigInteger('id_user')->unsigned();
+            $table->string('device_imei')->nullable();
         });
 
         Schema::table('mahasiswa', function (Blueprint $table) {
