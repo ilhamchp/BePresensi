@@ -159,9 +159,90 @@ class DosenSeeder extends Seeder
         ] );
         
         $this->storeDosen( [
-        'kd_dosen'=>'KO062K',
+        'kd_dosen'=>'KO062N',
         'nama_dosen'=>'Rahil Jumiyani'
         ] );
+
+        $this->storeDosen( [
+        'kd_dosen'=>'KO063N',
+        'nama_dosen'=>'Maisevli Harika'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO064N',
+        'nama_dosen'=>'Akhmad Bakhrun'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO065N',
+        'nama_dosen'=>'Aprianti Nanda Sari'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO066N',
+        'nama_dosen'=>'Ardhian Ekawijana'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO067N',
+        'nama_dosen'=>'Asri Maspupah'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO068N',
+        'nama_dosen'=>'Beri Noviansyah'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO069N',
+        'nama_dosen'=>'Cholid Fauzi'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO070N',
+        'nama_dosen'=>'Djoko Cahyo Utomo Lieharyani'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO071N',
+        'nama_dosen'=>'Hashri Hayati'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO072N',
+        'nama_dosen'=>'Lukmannul Hakim Firdaus'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO073N',
+        'nama_dosen'=>'Muhammad Riza Alifi'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO074N',
+        'nama_dosen'=>'Muhamman Rizki Sholahuddin'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO075N',
+        'nama_dosen'=>'Siti Dwi Setiarini'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO076N',
+        'nama_dosen'=>'Sri Ratna Wulan'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO077N',
+        'nama_dosen'=>'Sofy Fitriani'
+        ] );
+        
+        $this->storeDosen( [
+        'kd_dosen'=>'KO078N',
+        'nama_dosen'=>'Trisna Gelar Abdillah'
+        ] );
+        
     }
     public function storeDosen($data){
         $user = new User;
