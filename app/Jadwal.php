@@ -123,4 +123,14 @@ class Jadwal extends Model
     {
         return $this->belongsTo('App\Dosen','kd_dosen_pengajar');
     }
+
+    /**
+     * Menandai bahwa tabel jadwal memiliki
+     * relation one to many
+     * terhadap tabel berita acara
+     */
+    public function beritaAcara()
+    {
+        return $this->hasMany('App\BeritaAcara','kd_berita_acara');
+    }
 }

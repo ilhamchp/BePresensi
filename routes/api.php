@@ -27,6 +27,8 @@ Route::apiResource('/beacon','API\BeaconController');
 Route::apiResource('/ruang','API\RuangController');
 Route::apiResource('/suratizin','API\SuratIzinController');
 Route::apiResource('/jadwal','API\JadwalController');
+Route::apiResource('/beritaacara','API\BeritaAcaraController');
+
 
 
 
