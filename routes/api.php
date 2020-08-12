@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::apiResource('/stafftu','API\StaffTataUsahaController');
-Route::apiResource('/user','API\UserController');
 Route::apiResource('/dosen','API\DosenController');
 Route::apiResource('/matakuliah','API\MatakuliahController');
 Route::apiResource('/hari','API\HariController');
@@ -30,10 +29,8 @@ Route::apiResource('/jadwal','API\JadwalController');
 Route::apiResource('/beritaacara','API\BeritaAcaraController');
 Route::apiResource('/kehadiran','API\KehadiranController');
 
-
-
-
-
+Route::post('register', 'AuthController@register');
+Route::post('login', 'AuthController@login');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

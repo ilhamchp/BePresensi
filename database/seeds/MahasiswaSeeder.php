@@ -1914,7 +1914,7 @@ class MahasiswaSeeder extends Seeder
     public function storeMahasiswa($data){
         $user = new User;
         $user->email = $data['nim'] . '@yopmail.com';
-        $user->password = md5($data['nim']);
+        $user->password = bcrypt($data['nim']);
         $user->save();
 
         $kelas = Kelas::find($data['kd_kelas']);

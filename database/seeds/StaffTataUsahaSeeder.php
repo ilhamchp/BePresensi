@@ -32,7 +32,7 @@ class StaffTataUsahaSeeder extends Seeder
     public function storeStaff($data){
         $user = new User;
         $user->email = $data['kd_staff'] .'@yopmail.com';
-        $user->password = md5($data['password']);
+        $user->password = bcrypt($data['password']);
         $user->save();
 
         $staff = new StaffTataUsaha;

@@ -247,7 +247,7 @@ class DosenSeeder extends Seeder
     public function storeDosen($data){
         $user = new User;
         $user->email = $data['kd_dosen'] .'@yopmail.com';
-        $user->password = md5('password');
+        $user->password = bcrypt('password');
         $user->save();
 
         $dosen = new Dosen;

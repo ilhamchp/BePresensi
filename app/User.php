@@ -4,8 +4,10 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Model
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
@@ -24,7 +26,7 @@ class User extends Model
      * @var array
      */
     protected $hidden = [
-        'password'
+        'password', 'remember_token'
     ];
 
     /**
@@ -34,6 +36,22 @@ class User extends Model
      * @var boolean
      */
     public $timestamps = false;
+
+    /**
+     * Melakukan generate JWT Token
+     */
+    public function getJWTIdentifier()
+    {
+      return $this->getKey();
+    }
+
+    /**
+     * Melakukan Generate JWT Token secara Custom
+     */
+    public function getJWTCustomClaims()
+    {
+      return [];
+    }
 
     /**
      * Menandai bahwa tabel user memiliki
