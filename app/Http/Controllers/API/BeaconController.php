@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Beacon;
+use App\Http\Controllers\API\BaseController as BaseController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Resources\BeaconCollection;
+use Validator;
+use Illuminate\Support\Arr;
 
-class BeaconController extends Controller
+class BeaconController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +19,7 @@ class BeaconController extends Controller
      */
     public function index()
     {
-        //
+        return new BeaconCollection(Beacon::all());
     }
 
     /**
@@ -26,7 +30,32 @@ class BeaconController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+        ];
+        $validator = Validator::make($request->all(), [
+            'kd_beacon' => 'required',
+            'mac_address' => 'required',
+            'major' => 'required',
+            'minor' => 'required'
+        ],$messages);
+   
+        if($validator->fails()){
+            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        }
+
+        $isDataExist = Beacon::find($request->kd_beacon);
+        if($isDataExist){
+            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_beacon .' sudah tersimpan !');
+        }
+
+        $beacon = Beacon::create([
+            'kd_beacon' => $request->kd_beacon,
+            'mac_address'=> $request->mac_address,
+            'major' => $request->major,
+            'minor' => $request->minor
+        ]);
+        return new BeaconCollection(Beacon::find($beacon));
     }
 
     /**
@@ -37,7 +66,10 @@ class BeaconController extends Controller
      */
     public function show(Beacon $beacon)
     {
-        //
+        $detail = Beacon::find($beacon);
+        if($detail){
+            return new BeaconCollection($detail);
+        }else return $this->sendError('Data tidak ditemukan!');
     }
 
     /**
@@ -49,7 +81,26 @@ class BeaconController extends Controller
      */
     public function update(Request $request, Beacon $beacon)
     {
-        //
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+        ];
+        $validator = Validator::make($request->all(), [
+            'kd_beacon' => 'required',
+            'mac_address' => 'required',
+            'major' => 'required',
+            'minor' => 'required'
+        ],$messages);
+   
+        if($validator->fails()){
+            return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        }
+
+        $beacon = Beacon::find($request->kd_beacon);
+        if(!$beacon){
+            return $this->sendError('Data tidak ditemukan!');
+        }
+        $beacon->update($request->only(['mac_address', 'major','minor']));
+        return new BeaconCollection(Beacon::find($beacon));
     }
 
     /**
@@ -60,6 +111,7 @@ class BeaconController extends Controller
      */
     public function destroy(Beacon $beacon)
     {
-        //
+        $beacon->delete();
+        return $this->sendResponse(null,'Berhasil hapus data!');
     }
 }
