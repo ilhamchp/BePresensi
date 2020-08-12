@@ -5,8 +5,13 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Matakuliah;
 use Illuminate\Http\Request;
+use App\Http\Resources\MatakuliahCollection;
+use App\Http\Controllers\API\BaseController as BaseController;
+use Validator;
+use Illuminate\Support\Arr;
 
-class MatakuliahController extends Controller
+
+class MatakuliahController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +20,7 @@ class MatakuliahController extends Controller
      */
     public function index()
     {
-        //
+        return new MatakuliahCollection(Matakuliah::all());
     }
 
     /**
@@ -26,7 +31,30 @@ class MatakuliahController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+        ];
+        $validator = Validator::make($request->all(), [
+            'kd_matakuliah' => 'required',
+            'nama_matakuliah' => 'required'
+        ],$messages);
+   
+        if($validator->fails()){
+            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        }
+
+        $isDataExist = Matakuliah::find($request->kd_matakuliah);
+        if($isDataExist){
+            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_matakuliah .' sudah tersimpan !');
+        }
+
+        $matakuliah = Matakuliah::create([
+            'kd_matakuliah' => $request->kd_matakuliah,
+            'nama_matakuliah' => $request->nama_matakuliah
+        ]);
+        return $this->sendResponse([
+            'matakuliah' => [$matakuliah]
+        ], 'Berhasil menyimpan data!');
     }
 
     /**
@@ -37,7 +65,10 @@ class MatakuliahController extends Controller
      */
     public function show(Matakuliah $matakuliah)
     {
-        //
+        $matakuliah = Matakuliah::find($matakuliah);
+        if($matakuliah){
+            return new MatakuliahCollection($matakuliah);
+        }else return $this->sendError('Data tidak ditemukan!');
     }
 
     /**
@@ -49,7 +80,26 @@ class MatakuliahController extends Controller
      */
     public function update(Request $request, Matakuliah $matakuliah)
     {
-        //
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+        ];
+        $validator = Validator::make($request->all(), [
+            'kd_matakuliah' => 'required',
+            'nama_matakuliah' => 'required'
+        ],$messages);
+   
+        if($validator->fails()){
+            return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        }
+
+        $matakuliah = Matakuliah::find($request->kd_matakuliah);
+        if(!$matakuliah){
+            return $this->sendError('Data tidak ditemukan!');
+        }
+        $matakuliah->update($request->only(['nama_matakuliah']));
+        return $this->sendResponse([
+            'matakuliah' => [$matakuliah]
+        ], 'Berhasil memperbaharui data!');
     }
 
     /**
@@ -60,6 +110,7 @@ class MatakuliahController extends Controller
      */
     public function destroy(Matakuliah $matakuliah)
     {
-        //
+        $matakuliah->delete();
+        return $this->sendResponse(null, 'Berhasil menghapus data!');
     }
 }

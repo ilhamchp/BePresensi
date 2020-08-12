@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class BeaconCollection extends ResourceCollection
+class MatakuliahCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,8 +15,8 @@ class BeaconCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'beacon' => $this->collection
-        ];    
+            'matakuliah' => $this->collection
+        ]; 
     }
 
     /**

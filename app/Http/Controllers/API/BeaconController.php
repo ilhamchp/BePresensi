@@ -55,7 +55,9 @@ class BeaconController extends BaseController
             'major' => $request->major,
             'minor' => $request->minor
         ]);
-        return new BeaconCollection(Beacon::find($beacon));
+        return $this->sendResponse([
+            'beacon' => [$beacon]
+        ], 'Berhasil menyimpan data !');
     }
 
     /**
@@ -100,7 +102,9 @@ class BeaconController extends BaseController
             return $this->sendError('Data tidak ditemukan!');
         }
         $beacon->update($request->only(['mac_address', 'major','minor']));
-        return new BeaconCollection(Beacon::find($beacon));
+        return $this->sendResponse([
+            'beacon' => [$beacon]
+        ], 'Berhasil memperbaharui data !');
     }
 
     /**
