@@ -16,7 +16,7 @@ class CreateStatusPresensiTable extends Migration
         Schema::create('status_presensi', function (Blueprint $table) {
             $table->char('kd_status_presensi');
             $table->primary('kd_status_presensi');
-            $table->string('keterangan_presensi');
+            $table->string('keterangan_presensi')->unique();
         });
     }
 

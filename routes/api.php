@@ -13,20 +13,20 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResource('/stafftu','API\StaffTataUsahaController');
+Route::apiResource('/staff-tu','API\StaffTataUsahaController');
 Route::apiResource('/dosen','API\DosenController');
 Route::apiResource('/matakuliah','API\MatakuliahController');
 Route::apiResource('/hari','API\HariController');
-Route::apiResource('/statussurat','API\StatusSuratController');
-Route::apiResource('/statuspresensi','API\StatusPresensiController');
+Route::apiResource('/status-surat','API\StatusSuratController');
+Route::apiResource('/status-presensi','API\StatusPresensiController');
 Route::apiResource('/sesi','API\SesiController');
 Route::apiResource('/kelas','API\KelasController');
 Route::apiResource('/mahasiswa','API\MahasiswaController');
 Route::apiResource('/beacon','API\BeaconController');
 Route::apiResource('/ruang','API\RuangController');
-Route::apiResource('/suratizin','API\SuratIzinController');
+Route::apiResource('/surat-izin','API\SuratIzinController');
 Route::apiResource('/jadwal','API\JadwalController');
-Route::apiResource('/beritaacara','API\BeritaAcaraController');
+Route::apiResource('/berita-acara','API\BeritaAcaraController');
 Route::apiResource('/kehadiran','API\KehadiranController');
 
 Route::post('register', 'AuthController@register');

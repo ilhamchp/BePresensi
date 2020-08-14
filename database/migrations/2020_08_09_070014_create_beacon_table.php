@@ -16,7 +16,7 @@ class CreateBeaconTable extends Migration
         Schema::create('beacon', function (Blueprint $table) {
             $table->string('kd_beacon');
             $table->primary('kd_beacon');
-            $table->string('mac_address');
+            $table->string('mac_address')->unique();
             $table->string('major');
             $table->string('minor');
         });

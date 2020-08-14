@@ -15,7 +15,7 @@ class CreateStatusSuratTable extends Migration
     {
         Schema::create('status_surat', function (Blueprint $table) {
             $table->id('kd_status_surat');
-            $table->string('keterangan_surat');
+            $table->string('keterangan_surat')->unique();
         });
     }
 

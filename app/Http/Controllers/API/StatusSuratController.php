@@ -5,8 +5,11 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\StatusSurat;
 use Illuminate\Http\Request;
-
-class StatusSuratController extends Controller
+use App\Http\Resources\StatusSuratCollection;
+use App\Http\Controllers\API\BaseController as BaseController;
+use Validator;
+use Illuminate\Support\Arr;
+class StatusSuratController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +18,7 @@ class StatusSuratController extends Controller
      */
     public function index()
     {
-        //
+        return new StatusSuratCollection(StatusSurat::all());
     }
 
     /**
@@ -26,7 +29,29 @@ class StatusSuratController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+        ];
+        $validator = Validator::make($request->all(), [
+            'keterangan_surat' => 'required'
+        ],$messages);
+   
+        if($validator->fails()){
+            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        }
+
+        $isDataExist = StatusSurat::where('keterangan_surat', '=', $request->keterangan_surat)->first();
+
+        if($isDataExist){
+            return $this->sendError('Gagal menyimpan karena data \''. $isDataExist->keterangan_surat .'\' sudah tersimpan !');
+        }
+
+        $statusSurat = StatusSurat::create([
+            'keterangan_surat' => $request->keterangan_surat
+        ]);
+        return $this->sendResponse([
+            'status_surat' => [$statusSurat]
+        ], 'Berhasil menyimpan data!');
     }
 
     /**
@@ -37,7 +62,9 @@ class StatusSuratController extends Controller
      */
     public function show(StatusSurat $statusSurat)
     {
-        //
+        $status = StatusSurat::find($statusSurat);
+        if($status) return new StatusSuratCollection($status);
+        return $this->sendError('Data tidak ditemukan!');
     }
 
     /**
@@ -49,7 +76,27 @@ class StatusSuratController extends Controller
      */
     public function update(Request $request, StatusSurat $statusSurat)
     {
-        //
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+        ];
+        $validator = Validator::make($request->all(), [
+            'kd_status_surat' => 'required',
+            'keterangan_surat' => 'required'
+        ],$messages);
+   
+        if($validator->fails()){
+            return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        }
+
+        $statusSurat = StatusSurat::find($request->kd_status_surat);
+        if(!$statusSurat){
+            return $this->sendError('Data tidak ditemukan!');
+        }
+
+        $statusSurat->update($request->only(['keterangan_surat']));
+        return $this->sendResponse([
+            'status_surat' => [$statusSurat]
+        ], 'Berhasil memperbaharui data!');
     }
 
     /**
@@ -60,6 +107,7 @@ class StatusSuratController extends Controller
      */
     public function destroy(StatusSurat $statusSurat)
     {
-        //
+        $statusSurat->delete();
+        return $this->sendResponse(null, 'Berhasil menghapus data!');
     }
 }
