@@ -5,8 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\StatusPresensi;
 use Illuminate\Http\Request;
+use App\Http\Resources\StatusPresensiCollection;
+use App\Http\Controllers\API\BaseController as BaseController;
+use Validator;
+use Illuminate\Support\Arr;
 
-class StatusPresensiController extends Controller
+class StatusPresensiController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +19,7 @@ class StatusPresensiController extends Controller
      */
     public function index()
     {
-        //
+        return new StatusPresensiCollection(StatusPresensi::all());
     }
 
     /**
@@ -26,7 +30,31 @@ class StatusPresensiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+        ];
+        $validator = Validator::make($request->all(), [
+            'kd_status_presensi' => 'required',
+            'keterangan_presensi' => 'required'
+        ],$messages);
+   
+        if($validator->fails()){
+            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        }
+
+        $isDataExist = StatusPresensi::find($request->kd_status_presensi);
+
+        if($isDataExist){
+            return $this->sendError('Gagal menyimpan karena data \''. $isDataExist->kd_status_presensi .'\' sudah tersimpan !');
+        }
+
+        $statusPresensi = StatusPresensi::create([
+            'kd_status_presensi' => $request->kd_status_presensi,
+            'keterangan_presensi' => $request->keterangan_presensi
+        ]);
+        return $this->sendResponse([
+            'status_presensi' => [$statusPresensi]
+        ], 'Berhasil menyimpan data!');
     }
 
     /**
@@ -37,7 +65,9 @@ class StatusPresensiController extends Controller
      */
     public function show(StatusPresensi $statusPresensi)
     {
-        //
+        $status = StatusPresensi::find($statusPresensi);
+        if($status) return new StatusPresensiCollection($status);
+        return $this->sendError('Data tidak ditemukan!');
     }
 
     /**
@@ -49,7 +79,27 @@ class StatusPresensiController extends Controller
      */
     public function update(Request $request, StatusPresensi $statusPresensi)
     {
-        //
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+        ];
+        $validator = Validator::make($request->all(), [
+            'kd_status_presensi' => 'required',
+            'keterangan_presensi' => 'required'
+        ],$messages);
+   
+        if($validator->fails()){
+            return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        }
+
+        $statusPresensi = StatusPresensi::find($request->kd_status_presensi);
+        if(!$statusPresensi){
+            return $this->sendError('Data tidak ditemukan!');
+        }
+
+        $statusPresensi->update($request->only(['keterangan_presensi']));
+        return $this->sendResponse([
+            'status_presensi' => [$statusPresensi]
+        ], 'Berhasil memperbaharui data!');
     }
 
     /**
@@ -60,6 +110,7 @@ class StatusPresensiController extends Controller
      */
     public function destroy(StatusPresensi $statusPresensi)
     {
-        //
+        $statusPresensi->delete();
+        return $this->sendResponse(null, 'Berhasil menghapus data!');
     }
 }
