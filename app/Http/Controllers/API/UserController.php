@@ -5,8 +5,12 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserCollection;
+use App\Http\Controllers\API\BaseController as BaseController;
+use Validator;
+use Illuminate\Support\Arr;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return new UserCollection(User::all());
     }
 
     /**
@@ -26,7 +30,32 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+            'email' => 'Atribut :attribute tidak valid.',
+            'min' => 'Atribut :attribute minimal 6 karakter!'
+        ];
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:6'
+        ],$messages);
+   
+        if($validator->fails()){
+            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        }
+
+        $isDataExist = User::where('email','=',$request->email)->first();
+        if($isDataExist){
+            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->email .' sudah tersimpan !');
+        }
+
+        $user = User::create([
+            'email' => $request->email,
+            'password' => bcrypt($request->password)
+        ]);
+        return $this->sendResponse([
+            'user' => [$user]
+        ], 'Berhasil menyimpan data!');
     }
 
     /**
@@ -37,7 +66,9 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        $user = User::find($user);
+        if($user) return new UserCollection($user);
+        return $this->sendError('Data tidak ditemukan!');
     }
 
     /**
@@ -49,7 +80,38 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+            'email' => 'Atribut :attribute tidak valid.',
+            'min' => 'Atribut :attribute minimal 6 karakter!'
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+            'new_password' => 'required|min:6'
+        ],$messages);
+   
+        if($validator->fails()){
+            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        }
+        $user = User::where('email','=', $request->email)->first();
+        if(!$user){
+            return $this->sendError('Data tidak ditemukan!');
+        }
+
+        $credentials = $request->only(['email', 'password']);
+        if (!$token = auth()->attempt($credentials)) {
+            return $this->sendError('Password tidak valid!');
+        }
+
+        $user->update([
+            'email' => $request->email,
+            'password' => bcrypt($request->new_password)
+        ]);
+        return $this->sendResponse([
+            'user' => [$user]
+        ], 'Berhasil memperbaharui data!');
     }
 
     /**
@@ -60,6 +122,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return $this->sendResponse(null, 'Berhasil menghapus data!');
     }
 }

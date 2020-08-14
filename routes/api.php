@@ -28,10 +28,10 @@ Route::apiResource('/surat-izin','API\SuratIzinController');
 Route::apiResource('/jadwal','API\JadwalController');
 Route::apiResource('/berita-acara','API\BeritaAcaraController');
 Route::apiResource('/kehadiran','API\KehadiranController');
+Route::apiResource('/user','API\UserController');
 
 Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:api')->group(function(){
 });
