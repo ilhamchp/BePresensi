@@ -22,6 +22,8 @@ class Kelas extends Model
      */
     protected $primaryKey = 'kd_kelas';
 
+    protected $keyType = 'string';
+
     /**
      * Menandakan apakah kolom
      * primary key bersifat incremental

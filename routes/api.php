@@ -20,7 +20,9 @@ Route::apiResource('/hari','API\HariController');
 Route::apiResource('/status-surat','API\StatusSuratController');
 Route::apiResource('/status-presensi','API\StatusPresensiController');
 Route::apiResource('/sesi','API\SesiController');
-Route::apiResource('/kelas','API\KelasController');
+Route::apiResource('/kelas', 'API\KelasController', ['parameters' => [
+    'kelas' => 'kelas'
+]]);
 Route::apiResource('/mahasiswa','API\MahasiswaController');
 Route::apiResource('/beacon','API\BeaconController');
 Route::apiResource('/ruang','API\RuangController');
