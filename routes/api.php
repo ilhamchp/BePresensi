@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::apiResource('/staff-tu','API\StaffTataUsahaController');
+Route::apiResource('/staff-tu', 'API\StaffTataUsahaController', ['parameters' => [
+    'staff-tu' => 'staffTataUsaha'
+]]);
 Route::apiResource('/dosen','API\DosenController');
 Route::apiResource('/matakuliah','API\MatakuliahController');
 Route::apiResource('/hari','API\HariController');
