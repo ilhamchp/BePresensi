@@ -5,8 +5,13 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Ruang;
 use Illuminate\Http\Request;
+use App\Http\Resources\RuangCollection;
+use App\Http\Controllers\API\BaseController as BaseController;
+use Validator;
+use Illuminate\Support\Arr;
+use App\Beacon;
 
-class RuangController extends Controller
+class RuangController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +20,7 @@ class RuangController extends Controller
      */
     public function index()
     {
-        //
+        return new RuangCollection(Ruang::all());
     }
 
     /**
@@ -26,7 +31,37 @@ class RuangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+            'unique' => 'Atribut :attribute harus bersifat unik.',
+            'exists' => 'Atribut :attribute tidak terdapat di database.'
+        ];
+        $validator = Validator::make($request->all(), [
+            'kd_ruang' => 'required|unique:App\Ruang,kd_ruang',
+            'nama_ruang' => 'required',
+            'kd_beacon' => 'required|unique:App\Ruang,kd_beacon|exists:App\Beacon,kd_beacon'
+        ],$messages);
+   
+        if($validator->fails()){
+            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        }
+
+        $isDataExist = Ruang::find($request->kd_ruang);
+        if($isDataExist){
+            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_ruang .' sudah tersimpan !');
+        }
+        $beacon = Beacon::find($request->kd_beacon);
+        if(!$beacon){
+            return $this->sendError('Data beacon tidak ditemukan!');
+        }
+        $ruang = new Ruang;
+        $ruang->kd_ruang = $request->kd_ruang;
+        $ruang->nama_ruang = $request->nama_ruang;
+        $ruang->beacon()->associate($beacon);
+        $ruang->save();
+        return $this->sendResponse([
+            'ruang' => [$ruang]
+        ], 'Berhasil menyimpan data!');
     }
 
     /**
@@ -37,7 +72,9 @@ class RuangController extends Controller
      */
     public function show(Ruang $ruang)
     {
-        //
+        $ruang = Ruang::find($ruang);
+        if($ruang) return new RuangCollection($ruang);
+        return $this->sendError($ruang);
     }
 
     /**
@@ -49,7 +86,31 @@ class RuangController extends Controller
      */
     public function update(Request $request, Ruang $ruang)
     {
-        //
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+            'unique' => 'Atribut :attribute harus bersifat unik.',
+            'exists' => 'Atribut :attribute tidak terdapat di database.'
+        ];
+        $validator = Validator::make($request->all(), [
+            'kd_ruang' => 'required',
+            'nama_ruang' => 'required',
+            'kd_beacon' => 'required|exists:App\Beacon,kd_beacon'
+        ],$messages);
+   
+        if($validator->fails()) return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));
+
+        $isDataExist = Ruang::find($request->kd_ruang);
+        if(!$isDataExist) return $this->sendError('Data tidak ditemukan!');
+        
+        $beacon = Beacon::find($request->kd_beacon);
+        if(!$beacon) return $this->sendError('Data beacon tidak ditemukan!');
+        
+        $ruang->nama_ruang = $request->nama_ruang;
+        $ruang->beacon()->associate($beacon);
+        $ruang->save();
+        return $this->sendResponse([
+            'ruang' => [$ruang]
+        ], 'Berhasil memperbaharui data!');
     }
 
     /**
@@ -60,6 +121,7 @@ class RuangController extends Controller
      */
     public function destroy(Ruang $ruang)
     {
-        //
+        $ruang->delete();
+        return $this->sendResponse(null,'Berhasil menghapus data!');
     }
 }
