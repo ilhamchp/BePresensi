@@ -34,7 +34,7 @@ class SesiController extends BaseController
         $messages = [
             'required' => 'Atribut :attribute tidak boleh kosong.',
             'unique' => 'Atribut :attribute harus bersifat unik.',
-            'date_format' => 'Format atribut :attribute tidak sesuai.',
+            'date_format' => 'Atribut :attribute harus dalam format :format.',
             'after' => 'Atribut :attribute tidak valid.'
         ];
         $validator = Validator::make($request->all(), [
@@ -87,7 +87,7 @@ class SesiController extends BaseController
     {
         $messages = [
             'required' => 'Atribut :attribute tidak boleh kosong.',
-            'date_format' => 'Format atribut :attribute tidak sesuai.',
+            'date_format' => 'Atribut :attribute harus dalam format :format.',
             'after' => 'Atribut :attribute tidak valid.',
             'exists' => 'Atribut :attribute tidak terdapat di database.'
         ];

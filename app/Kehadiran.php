@@ -15,6 +15,14 @@ class Kehadiran extends Model
     protected $table = 'kehadiran';
 
     /**
+     * Menandakan kolom apa yang
+     * dijadikan primary key
+     * 
+     * @var string 
+     */
+    protected $primaryKey = 'kd_kehadiran';
+
+    /**
      * Menandakan apakah kolom
      * primary key bersifat incremental
      * atau tidak

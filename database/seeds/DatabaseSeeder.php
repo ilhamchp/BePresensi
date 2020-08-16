@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             RuangSeeder::class,
             SuratIzinSeeder::class,
             JadwalSeeder::class,
-            BeritaAcaraSeeder::class
+            BeritaAcaraSeeder::class,
+            KehadiranSeeder::class
         ]);
     }
 }
