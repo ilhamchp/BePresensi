@@ -41,7 +41,10 @@ class Jadwal extends JsonResource
             ],
             'kd_ruang' => new RuangCollection(Ruang::find($this->ruang)),
             'kd_matakuliah' => new MatakuliahCollection(Matakuliah::find($this->matakuliah)),
-            'kd_dosen_pengajar' => new DosenCollection(Dosen::find($this->dosen)),
+            // 'kd_dosen_pengajar' => new DosenCollection(Dosen::find($this->dosen)),
+            'kd_dosen_pengajar' => [
+                'dosen' => $this->dosen
+            ],
             'jenis_perkuliahan' => $this->jenis_perkuliahan,
             'sesi_presensi_dibuka' => (boolean) $this->sesi_presensi_dibuka,
             'toleransi_keterlambatan' => (integer) $this->toleransi_keterlambatan
