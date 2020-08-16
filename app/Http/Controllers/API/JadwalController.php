@@ -106,7 +106,7 @@ class JadwalController extends BaseController
         $jadwal->dosen()->associate($dosen);
         $jadwal->save();
         return $this->sendResponse([
-            'jadwal' => [$jadwal]
+            'jadwal' => [new JadwalResource($jadwal)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -197,7 +197,7 @@ class JadwalController extends BaseController
         $jadwal->dosen()->associate($dosen);
         $jadwal->update();
         return $this->sendResponse([
-            'jadwal' => [$jadwal]
+            'jadwal' => [new JadwalResource($jadwal)]
         ], 'Berhasil menyimpan data!');
     }
 

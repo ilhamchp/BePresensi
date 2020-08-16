@@ -43,15 +43,11 @@ class SesiController extends BaseController
             'jam_berakhir' => 'required|date_format:H:i:s|after:jam_mulai'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
-
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        
         $isDataExist = Sesi::find($request->kd_sesi);
-        if($isDataExist){
-            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_sesi .' sudah tersimpan !');
-        }
-
+        if($isDataExist) return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_sesi .' sudah tersimpan !');
+        
         $sesi = Sesi::create([
             'kd_sesi' => $request->kd_sesi,
             'jam_mulai' => $request->jam_mulai,
@@ -97,14 +93,11 @@ class SesiController extends BaseController
             'jam_berakhir' => 'required|date_format:H:i:s|after:jam_mulai'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
-
+        if($validator->fails()) return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        
         $sesi = Sesi::find($request->kd_sesi);
-        if(!$sesi){
-            return $this->sendError('Data tidak ditemukan!');
-        }
+        if(!$sesi) return $this->sendError('Data tidak ditemukan!');
+        
         $sesi->update([
             'jam_mulai' => $request->jam_mulai,
             'jam_berakhir' => $request->jam_berakhir

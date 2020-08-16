@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Kelas;
 use Illuminate\Http\Request;
 use App\Http\Resources\KelasCollection;
+use App\Http\Resources\Kelas as KelasResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Illuminate\Support\Arr;
@@ -45,18 +46,13 @@ class KelasController extends BaseController
             'kd_wali_dosen' => 'required|unique:App\Kelas,kd_wali_dosen|exists:App\Dosen,kd_dosen'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
 
         $isDataExist = Kelas::find($request->kd_kelas);
-        if($isDataExist){
-            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_kelas .' sudah tersimpan !');
-        }
+        if($isDataExist) return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_kelas .' sudah tersimpan !');
         $dosen = Dosen::find($request->kd_wali_dosen);
-        if(!$dosen){
-            return $this->sendError('Data dosen tidak ditemukan!');
-        }
+        if(!$dosen) return $this->sendError('Data dosen tidak ditemukan!');
+        
         $kelas = new Kelas;
         $kelas->kd_kelas = $request->kd_kelas;
         $kelas->tingkat_kelas = $request->tingkat_kelas;
@@ -65,7 +61,7 @@ class KelasController extends BaseController
         $kelas->waliDosen()->associate($dosen);
         $kelas->save();
         return $this->sendResponse([
-            'kelas' => [$kelas]
+            'kelas' => [new KelasResource($kelas)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -77,8 +73,9 @@ class KelasController extends BaseController
      */
     public function show(Kelas $kelas)
     {
-        $kelas = Kelas::find($kelas);
-        if($kelas) return new KelasCollection($kelas);
+        if($kelas) return $this->sendResponse([
+            'kelas' => [new KelasResource($kelas)]
+        ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }
 
@@ -105,10 +102,8 @@ class KelasController extends BaseController
             'kd_wali_dosen' => 'required|exists:App\Dosen,kd_dosen'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
-
+        if($validator->fails()) return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        
         $dosen = Dosen::find($request->kd_wali_dosen);
         if(!$dosen) return $this->sendError('Data tidak ditemukan!');
 
@@ -119,7 +114,7 @@ class KelasController extends BaseController
         $kelas->update();
 
         return $this->sendResponse([
-            'kelas' => [$kelas]
+            'kelas' => [new KelasResource($kelas)]
         ], 'Berhasil memperbaharui data!');
     }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Ruang;
 use Illuminate\Http\Request;
 use App\Http\Resources\RuangCollection;
+use App\Http\Resources\Ruang as RuangResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Illuminate\Support\Arr;
@@ -42,25 +43,21 @@ class RuangController extends BaseController
             'kd_beacon' => 'required|unique:App\Ruang,kd_beacon|exists:App\Beacon,kd_beacon'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
-
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        
         $isDataExist = Ruang::find($request->kd_ruang);
-        if($isDataExist){
-            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_ruang .' sudah tersimpan !');
-        }
+        if($isDataExist) return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_ruang .' sudah tersimpan !');
+        
         $beacon = Beacon::find($request->kd_beacon);
-        if(!$beacon){
-            return $this->sendError('Data beacon tidak ditemukan!');
-        }
+        if(!$beacon) return $this->sendError('Data beacon tidak ditemukan!');
+        
         $ruang = new Ruang;
         $ruang->kd_ruang = $request->kd_ruang;
         $ruang->nama_ruang = $request->nama_ruang;
         $ruang->beacon()->associate($beacon);
         $ruang->save();
         return $this->sendResponse([
-            'ruang' => [$ruang]
+            'ruang' => [new RuangResource($ruang)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -72,8 +69,9 @@ class RuangController extends BaseController
      */
     public function show(Ruang $ruang)
     {
-        $ruang = Ruang::find($ruang);
-        if($ruang) return new RuangCollection($ruang);
+        if($ruang) return $this->sendResponse([
+            'ruang' => [new RuangResource($ruang)]
+        ], 'success');
         return $this->sendError($ruang);
     }
 
@@ -109,7 +107,7 @@ class RuangController extends BaseController
         $ruang->beacon()->associate($beacon);
         $ruang->save();
         return $this->sendResponse([
-            'ruang' => [$ruang]
+            'ruang' => [new RuangResource($ruang)]
         ], 'Berhasil memperbaharui data!');
     }
 

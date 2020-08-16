@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\SuratIzin;
 use Illuminate\Http\Request;
 use App\Http\Resources\SuratIzinCollection;
+use App\Http\Resources\SuratIzin as SuratIzinResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Illuminate\Support\Arr;
@@ -69,10 +70,8 @@ class SuratIzinController extends BaseController
 
         $temp_surat = SuratIzin::all()->last();
         $kd_surat_izin = 'SuratIzin0001';
-        if($temp_surat){
-            $kd_surat_izin = ++$temp_surat->kd_surat_izin; 
-        }
-
+        if($temp_surat) $kd_surat_izin = ++$temp_surat->kd_surat_izin; 
+        
         $suratIzin = new SuratIzin;
         $suratIzin->kd_surat_izin = $kd_surat_izin;
         $suratIzin->tgl_mulai = $request->tgl_mulai;
@@ -87,7 +86,7 @@ class SuratIzinController extends BaseController
         $suratIzin->statusSurat()->associate($status_surat);
         $suratIzin->save();
         return $this->sendResponse([
-            'surat_izin' => [$suratIzin]
+            'surat_izin' => [new SuratIzinResource($suratIzin)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -99,8 +98,9 @@ class SuratIzinController extends BaseController
      */
     public function show(SuratIzin $suratIzin)
     {
-        $suratIzin = SuratIzin::find($suratIzin);
-        if($suratIzin) return new SuratIzinCollection($suratIzin);
+        if($suratIzin) return $this->sendResponse([
+            'surat_izin' => [new SuratIzinResource($suratIzin)]
+        ], 'success');
         return $this->sendError('Data surat izin tidak ditemukan!');
     }
 
@@ -156,7 +156,7 @@ class SuratIzinController extends BaseController
         $suratIzin->statusSurat()->associate($status_surat);
         $suratIzin->update();
         return $this->sendResponse([
-            'surat_izin' => [$suratIzin]
+            'surat_izin' => [new SuratIzinResource($suratIzin)]
         ], 'Berhasil memperbaharui data!');
     }
 

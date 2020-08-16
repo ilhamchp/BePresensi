@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\StatusPresensi;
 use Illuminate\Http\Request;
 use App\Http\Resources\StatusPresensiCollection;
+use App\Http\Resources\StatusPresensi as StatusPresensiResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Illuminate\Support\Arr;
@@ -38,22 +39,20 @@ class StatusPresensiController extends BaseController
             'keterangan_presensi' => 'required'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        
 
         $isDataExist = StatusPresensi::find($request->kd_status_presensi);
 
-        if($isDataExist){
-            return $this->sendError('Gagal menyimpan karena data \''. $isDataExist->kd_status_presensi .'\' sudah tersimpan !');
-        }
+        if($isDataExist) return $this->sendError('Gagal menyimpan karena data \''. $isDataExist->kd_status_presensi .'\' sudah tersimpan !');
+        
 
         $statusPresensi = StatusPresensi::create([
             'kd_status_presensi' => $request->kd_status_presensi,
             'keterangan_presensi' => $request->keterangan_presensi
         ]);
         return $this->sendResponse([
-            'status_presensi' => [$statusPresensi]
+            'status_presensi' => [new StatusPresensiResource($statusPresensi)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -65,8 +64,9 @@ class StatusPresensiController extends BaseController
      */
     public function show(StatusPresensi $statusPresensi)
     {
-        $status = StatusPresensi::find($statusPresensi);
-        if($status) return new StatusPresensiCollection($status);
+        if($statusPresensi) return $this->sendResponse([
+            'status_presensi' => [new StatusPresensiResource($statusPresensi)]
+        ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }
 
@@ -98,7 +98,7 @@ class StatusPresensiController extends BaseController
 
         $statusPresensi->update($request->only(['keterangan_presensi']));
         return $this->sendResponse([
-            'status_presensi' => [$statusPresensi]
+            'status_presensi' => [new StatusPresensiResource($statusPresensi)]
         ], 'Berhasil memperbaharui data!');
     }
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Matakuliah;
 use Illuminate\Http\Request;
 use App\Http\Resources\MatakuliahCollection;
+use App\Http\Resources\Matakuliah as MatakuliahResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Illuminate\Support\Arr;
@@ -39,21 +40,17 @@ class MatakuliahController extends BaseController
             'nama_matakuliah' => 'required'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
-
+        if($validator->fails())return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        
         $isDataExist = Matakuliah::find($request->kd_matakuliah);
-        if($isDataExist){
-            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_matakuliah .' sudah tersimpan !');
-        }
-
+        if($isDataExist)return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_matakuliah .' sudah tersimpan !');
+        
         $matakuliah = Matakuliah::create([
             'kd_matakuliah' => $request->kd_matakuliah,
             'nama_matakuliah' => $request->nama_matakuliah
         ]);
         return $this->sendResponse([
-            'matakuliah' => [$matakuliah]
+            'matakuliah' => [new MatakuliahResource($matakuliah)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -65,10 +62,10 @@ class MatakuliahController extends BaseController
      */
     public function show(Matakuliah $matakuliah)
     {
-        $matakuliah = Matakuliah::find($matakuliah);
-        if($matakuliah){
-            return new MatakuliahCollection($matakuliah);
-        }else return $this->sendError('Data tidak ditemukan!');
+        if($matakuliah) return $this->sendResponse([
+            'matakuliah' => [new MatakuliahResource($matakuliah)]
+        ], 'success');
+        return $this->sendError('Data tidak ditemukan!');
     }
 
     /**
@@ -88,17 +85,14 @@ class MatakuliahController extends BaseController
             'nama_matakuliah' => 'required'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
-
+        if($validator->fails()) return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        
         $matakuliah = Matakuliah::find($request->kd_matakuliah);
-        if(!$matakuliah){
-            return $this->sendError('Data tidak ditemukan!');
-        }
+        if(!$matakuliah) return $this->sendError('Data tidak ditemukan!');
+        
         $matakuliah->update($request->only(['nama_matakuliah']));
         return $this->sendResponse([
-            'matakuliah' => [$matakuliah]
+            'matakuliah' => [new MatakuliahResource($matakuliah)]
         ], 'Berhasil memperbaharui data!');
     }
 

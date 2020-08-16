@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserCollection;
+use App\Http\Resources\User as UserResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Illuminate\Support\Arr;
@@ -40,21 +41,17 @@ class UserController extends BaseController
             'password' => 'required|min:6'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
-
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        
         $isDataExist = User::where('email','=',$request->email)->first();
-        if($isDataExist){
-            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->email .' sudah tersimpan !');
-        }
-
+        if($isDataExist) return $this->sendError('Gagal menyimpan karena data '. $isDataExist->email .' sudah tersimpan !');
+        
         $user = User::create([
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
         return $this->sendResponse([
-            'user' => [$user]
+            'user' => [new UserResource($user)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -66,8 +63,9 @@ class UserController extends BaseController
      */
     public function show(User $user)
     {
-        $user = User::find($user);
-        if($user) return new UserCollection($user);
+        if($user) return $this->sendResponse([
+            'user' => [new UserResource($user)]
+        ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }
 
@@ -92,25 +90,20 @@ class UserController extends BaseController
             'new_password' => 'required|min:6'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
-        $user = User::where('email','=', $request->email)->first();
-        if(!$user){
-            return $this->sendError('Data tidak ditemukan!');
-        }
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
 
+        $user = User::where('email','=', $request->email)->first();
+        if(!$user) return $this->sendError('Data tidak ditemukan!');
+        
         $credentials = $request->only(['email', 'password']);
-        if (!$token = auth()->attempt($credentials)) {
-            return $this->sendError('Password tidak valid!');
-        }
+        if (!$token = auth()->attempt($credentials)) return $this->sendError('Password salah!');
 
         $user->update([
             'email' => $request->email,
             'password' => bcrypt($request->new_password)
         ]);
         return $this->sendResponse([
-            'user' => [$user]
+            'user' => [new UserResource($user)]
         ], 'Berhasil memperbaharui data!');
     }
 

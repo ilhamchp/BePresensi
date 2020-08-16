@@ -6,6 +6,7 @@ use App\Hari;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\HariCollection;
+use App\Http\Resources\Hari as HariResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Illuminate\Support\Arr;
@@ -37,21 +38,17 @@ class HariController extends BaseController
             'nama_hari' => 'required'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
 
         $isDataExist = Hari::find($request->kd_hari);
-        if($isDataExist){
-            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_hari .' sudah tersimpan !');
-        }
+        if($isDataExist) return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_hari .' sudah tersimpan !');
 
         $hari = Hari::create([
             'kd_hari' => $request->kd_hari,
             'nama_hari' => $request->nama_hari
         ]);
         return $this->sendResponse([
-            'hari' => [$hari]
+            'hari' => [new HariResource($hari)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -63,10 +60,10 @@ class HariController extends BaseController
      */
     public function show(Hari $hari)
     {
-        $hari = Hari::find($hari);
-        if($hari){
-            return new HariCollection($hari);
-        }else return $this->sendError('Data tidak ditemukan!');
+        if($hari) return $this->sendResponse([
+            'hari' => [new HariResource($hari)]
+        ], 'Berhasil memperbaharui data!');
+        else return $this->sendError('Data tidak ditemukan!');
     }
 
     /**
@@ -86,17 +83,14 @@ class HariController extends BaseController
             'nama_hari' => 'required'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
-
+        if($validator->fails()) return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        
         $hari = Hari::find($request->kd_hari);
-        if(!$hari){
-            return $this->sendError('Data tidak ditemukan!');
-        }
+        if(!$hari) return $this->sendError('Data tidak ditemukan!');
+        
         $hari->update($request->only(['nama_hari']));
         return $this->sendResponse([
-            'hari' => [$hari]
+            'hari' => [new HariResource($hari)]
         ], 'Berhasil memperbaharui data!');
     }
 

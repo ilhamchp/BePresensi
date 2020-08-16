@@ -7,6 +7,7 @@ use App\Http\Controllers\API\BaseController as BaseController;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\BeaconCollection;
+use App\Http\Resources\Beacon as BeaconResource;
 use Validator;
 use Illuminate\Support\Arr;
 
@@ -40,14 +41,10 @@ class BeaconController extends BaseController
             'minor' => 'required'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
 
         $isDataExist = Beacon::find($request->kd_beacon);
-        if($isDataExist){
-            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_beacon .' sudah tersimpan !');
-        }
+        if($isDataExist) return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_beacon .' sudah tersimpan !');
 
         $beacon = Beacon::create([
             'kd_beacon' => $request->kd_beacon,
@@ -56,7 +53,7 @@ class BeaconController extends BaseController
             'minor' => $request->minor
         ]);
         return $this->sendResponse([
-            'beacon' => [$beacon]
+            'beacon' => [new BeaconResource($beacon)]
         ], 'Berhasil menyimpan data !');
     }
 
@@ -68,10 +65,10 @@ class BeaconController extends BaseController
      */
     public function show(Beacon $beacon)
     {
-        $detail = Beacon::find($beacon);
-        if($detail){
-            return new BeaconCollection($detail);
-        }else return $this->sendError('Data tidak ditemukan!');
+        if($beacon) return $this->sendResponse([
+            'beacon' => [new BeaconResource($beacon)]
+        ], 'Berhasil memperbaharui data !');
+        return $this->sendError('Data tidak ditemukan!');
     }
 
     /**
@@ -93,17 +90,14 @@ class BeaconController extends BaseController
             'minor' => 'required'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
+        if($validator->fails()) return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
 
         $beacon = Beacon::find($request->kd_beacon);
-        if(!$beacon){
-            return $this->sendError('Data tidak ditemukan!');
-        }
+        if(!$beacon) return $this->sendError('Data tidak ditemukan!');
+        
         $beacon->update($request->only(['mac_address', 'major','minor']));
         return $this->sendResponse([
-            'beacon' => [$beacon]
+            'beacon' => [new BeaconResource($beacon)]
         ], 'Berhasil memperbaharui data !');
     }
 

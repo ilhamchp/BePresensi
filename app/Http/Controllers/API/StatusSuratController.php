@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\StatusSurat;
 use Illuminate\Http\Request;
 use App\Http\Resources\StatusSuratCollection;
+use App\Http\Resources\StatusSurat as StatusSuratResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Illuminate\Support\Arr;
@@ -36,21 +37,17 @@ class StatusSuratController extends BaseController
             'keterangan_surat' => 'required'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
-
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        
         $isDataExist = StatusSurat::where('keterangan_surat', '=', $request->keterangan_surat)->first();
 
-        if($isDataExist){
-            return $this->sendError('Gagal menyimpan karena data \''. $isDataExist->keterangan_surat .'\' sudah tersimpan !');
-        }
-
+        if($isDataExist) return $this->sendError('Gagal menyimpan karena data \''. $isDataExist->keterangan_surat .'\' sudah tersimpan !');
+        
         $statusSurat = StatusSurat::create([
             'keterangan_surat' => $request->keterangan_surat
         ]);
         return $this->sendResponse([
-            'status_surat' => [$statusSurat]
+            'status_surat' => [new StatusSuratResource($statusSurat)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -62,8 +59,9 @@ class StatusSuratController extends BaseController
      */
     public function show(StatusSurat $statusSurat)
     {
-        $status = StatusSurat::find($statusSurat);
-        if($status) return new StatusSuratCollection($status);
+        if($statusSurat) return $this->sendResponse([
+            'status_surat' => [new StatusSuratResource($statusSurat)]
+        ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }
 
@@ -95,7 +93,7 @@ class StatusSuratController extends BaseController
 
         $statusSurat->update($request->only(['keterangan_surat']));
         return $this->sendResponse([
-            'status_surat' => [$statusSurat]
+            'status_surat' => [new StatusSuratResource($statusSurat)]
         ], 'Berhasil memperbaharui data!');
     }
 

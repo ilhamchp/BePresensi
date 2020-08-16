@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mahasiswa;
 use Illuminate\Http\Request;
 use App\Http\Resources\MahasiswaCollection;
+use App\Http\Resources\Mahasiswa as MahasiswaResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Illuminate\Support\Arr;
@@ -67,7 +68,7 @@ class MahasiswaController extends BaseController
         $mahasiswa->kelas()->associate($kelas);
         $mahasiswa->save();
         return $this->sendResponse([
-            'mahasiswa' => [$mahasiswa]
+            'mahasiswa' => [new MahasiswaResource($mahasiswa)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -79,8 +80,9 @@ class MahasiswaController extends BaseController
      */
     public function show(Mahasiswa $mahasiswa)
     {
-        $mahasiswa = Mahasiswa::find($mahasiswa);
-        if($mahasiswa) return new MahasiswaCollection($mahasiswa);
+        if($mahasiswa) return $this->sendResponse([
+            'mahasiswa' => [new MahasiswaResource($mahasiswa)]
+        ], 'Berhasil memperbaharui data!');
         return $this->sendError('Data tidak ditemukan!');
     }
 
@@ -124,7 +126,7 @@ class MahasiswaController extends BaseController
         $mahasiswa->update();
 
         return $this->sendResponse([
-            'mahasiswa' => [$mahasiswa]
+            'mahasiswa' => [new MahasiswaResource($mahasiswa)]
         ], 'Berhasil memperbaharui data!');
     }
 

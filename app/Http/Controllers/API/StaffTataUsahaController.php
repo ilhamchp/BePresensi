@@ -7,6 +7,7 @@ use App\StaffTataUsaha;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\StaffTataUsahaCollection;
+use App\Http\Resources\StaffTataUsaha as StaffTataUsahaResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Illuminate\Support\Arr;
@@ -44,18 +45,14 @@ class StaffTataUsahaController extends BaseController
             'foto_staff' => 'required'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
-
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        
         $isDataExist = StaffTataUsaha::find($request->kd_staff);
-        if($isDataExist){
-            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_staff .' sudah tersimpan !');
-        }
+        if($isDataExist) return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_staff .' sudah tersimpan !');
+        
         $user = User::find($request->id_user);
-        if(!$user){
-            return $this->sendError('Data user tidak ditemukan!');
-        }
+        if(!$user) return $this->sendError('Data user tidak ditemukan!');
+        
         $staff = new StaffTataUsaha;
         $staff->kd_staff = $request->kd_staff;
         $staff->nama_staff = $request->nama_staff;
@@ -63,7 +60,7 @@ class StaffTataUsahaController extends BaseController
         $staff->user()->associate($user);
         $staff->save();
         return $this->sendResponse([
-            'staff' => [$staff]
+            'staff' => [new StaffTataUsahaResource($staff)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -75,8 +72,9 @@ class StaffTataUsahaController extends BaseController
      */
     public function show(StaffTataUsaha $staffTataUsaha)
     {
-        $staffTataUsaha = StaffTataUsaha::find($staffTataUsaha);
-        if($staffTataUsaha) return new StaffTataUsahaCollection($staffTataUsaha);
+        if($staffTataUsaha) return $this->sendResponse([
+            'staff' => [new StaffTataUsahaResource($staff)]
+        ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }
 
@@ -101,21 +99,18 @@ class StaffTataUsahaController extends BaseController
             'foto_staff' => 'required'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
+        if($validator->fails()) return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
 
         $staff = StaffTataUsaha::find($request->kd_staff);
-        if(!$staff){
-            return $this->sendError('Data tidak ditemukan!');
-        }
+        if(!$staff) return $this->sendError('Data tidak ditemukan!');
+        
         $staff->update([
             'nama_staff' => $request->nama_staff,
             'id_user' => $request->id_user,
             'foto_staff' => $request->foto_staff
         ]);
         return $this->sendResponse([
-            'staff' => [$staff]
+            'staff' => [new StaffTataUsahaResource($staff)]
         ], 'Berhasil memperbaharui data!');
     }
 

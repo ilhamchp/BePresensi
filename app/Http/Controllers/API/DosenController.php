@@ -6,6 +6,7 @@ use App\Dosen;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\DosenCollection;
+use App\Http\Resources\Dosen as DosenResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Illuminate\Support\Arr;
@@ -44,18 +45,14 @@ class DosenController extends BaseController
             'foto_dosen' => 'required'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
 
         $isDataExist = Dosen::find($request->kd_dosen);
-        if($isDataExist){
-            return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_dosen .' sudah tersimpan !');
-        }
+        if($isDataExist) return $this->sendError('Gagal menyimpan karena data '. $isDataExist->kd_dosen .' sudah tersimpan !');
+        
         $user = User::find($request->id_user);
-        if(!$user){
-            return $this->sendError('Data user tidak ditemukan!');
-        }
+        if(!$user) return $this->sendError('Data user tidak ditemukan!');
+        
         $dosen = new Dosen;
         $dosen->kd_dosen = $request->kd_dosen;
         $dosen->nama_dosen = $request->nama_dosen;
@@ -63,7 +60,7 @@ class DosenController extends BaseController
         $dosen->user()->associate($user);
         $dosen->save();
         return $this->sendResponse([
-            'dosen' => [$dosen]
+            'dosen' => [new DosenResource($dosen)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -75,8 +72,9 @@ class DosenController extends BaseController
      */
     public function show(Dosen $dosen)
     {
-        $dosen = Dosen::find($dosen);
-        if($dosen) return new DosenCollection($dosen);
+        if($dosen) return $this->sendResponse([
+            'dosen' => [new DosenResource($dosen)]
+        ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }
 
@@ -101,21 +99,18 @@ class DosenController extends BaseController
             'foto_dosen' => 'required'
         ],$messages);
    
-        if($validator->fails()){
-            return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
-        }
+        if($validator->fails()) return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
 
         $dosen = Dosen::find($request->kd_dosen);
-        if(!$dosen){
-            return $this->sendError('Data tidak ditemukan!');
-        }
+        if(!$dosen) return $this->sendError('Data tidak ditemukan!');
+        
         $dosen->update([
             'nama_dosen' => $request->nama_dosen,
             'id_user' => $request->id_user,
             'foto_dosen' => $request->foto_dosen
         ]);
         return $this->sendResponse([
-            'dosen' => [$dosen]
+            'dosen' => [new DosenResource($dosen)]
         ], 'Berhasil memperbaharui data!');
     }
 
