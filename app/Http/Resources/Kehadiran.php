@@ -26,11 +26,19 @@ class Kehadiran extends JsonResource
     {
         return [
             'kd_kehadiran' => $this->kd_kehadiran,
-            'nim'=> $this->mahasiswa,
-            'kd_jadwal'=> $this->jadwal,
-            'kd_sesi'=> $this->sesi,
+            'nim'=> [
+                'mahasiswa' => $this->mahasiswa
+            ],
+            'kd_jadwal'=> [
+                'jadwal' => $this->jadwal
+            ],
+            'kd_sesi'=> [
+                'sesi' => $this->sesi
+            ],
             'kd_status_presensi'=> new StatusPresensiCollection(StatusPresensi::find($this->statusPresensi)),
-            'kd_surat_izin'=> $this->suratIzin,
+            'kd_surat_izin'=> [
+                'surat_izin' => $this->suratIzin
+            ],
             'tgl_presensi'=> $this->tgl_presensi,
             'jam_presensi'=> $this->jam_presensi
         ];

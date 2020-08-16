@@ -22,7 +22,10 @@ class Mahasiswa extends JsonResource
             'nim' => $this->nim,
             'nama_mahasiswa' => $this->nama_mahasiswa,
             'id_user' => new UserCollection(User::find($this->user)),
-            'kd_kelas' => new KelasCollection(Kelas::find($this->kelas)),
+            // 'kd_kelas' => new KelasCollection(Kelas::find($this->kelas)),
+            'kd_kelas' => [
+                'kelas' => $this->kelas
+            ],
             'foto_mahasiswa' => $this->foto_mahasiswa,
             'device_imei' => $this->device_imei
         ];
