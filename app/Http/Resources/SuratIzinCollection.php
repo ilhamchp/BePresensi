@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class RuangCollection extends ResourceCollection
+class SuratIzinCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,7 +15,7 @@ class RuangCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'ruang' => $this->collection
+            'surat_izin' => $this->collection
         ];
     }
 

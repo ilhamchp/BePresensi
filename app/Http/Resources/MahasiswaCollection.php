@@ -14,7 +14,9 @@ class MahasiswaCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return $this->collection;
+        return [
+            'mahasiswa' => $this->collection
+        ];
     }
 
     /**
