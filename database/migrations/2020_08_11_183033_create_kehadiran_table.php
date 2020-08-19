@@ -20,7 +20,7 @@ class CreateKehadiranTable extends Migration
             $table->integer('kd_sesi');
             $table->char('kd_status_presensi');
             $table->string('kd_surat_izin')->nullable();
-            $table->date('tgl_presensi')->nullable();
+            $table->date('tgl_presensi');
             $table->time('jam_presensi')->nullable();
         });
 
