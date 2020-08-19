@@ -49,7 +49,7 @@ class StatusSurat extends Model
      */
     public function suratIzin()
     {
-        return $this->hasMany('App\SuratIzin','kd_surat_izin');
+        return $this->hasMany('App\SuratIzin','kd_status_surat');
     }
 
 }

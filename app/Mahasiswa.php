@@ -81,7 +81,7 @@ class Mahasiswa extends Model
      */
     public function suratIzin()
     {
-        return $this->hasMany('App\SuratIzin','kd_surat');
+        return $this->hasMany('App\SuratIzin','nim');
     }
 
     /**
@@ -91,6 +91,6 @@ class Mahasiswa extends Model
      */
     public function kehadiran()
     {
-        return $this->hasMany('App\Kehadiran','kd_kehadiran');
+        return $this->hasMany('App\Kehadiran','nim');
     }
 }

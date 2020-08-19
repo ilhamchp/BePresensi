@@ -131,7 +131,7 @@ class Jadwal extends Model
      */
     public function beritaAcara()
     {
-        return $this->hasMany('App\BeritaAcara','kd_berita_acara');
+        return $this->hasMany('App\BeritaAcara','kd_jadwal');
     }
 
     /**
@@ -141,6 +141,6 @@ class Jadwal extends Model
      */
     public function kehadiran()
     {
-        return $this->hasMany('App\Kehadiran','kd_kehadiran');
+        return $this->hasMany('App\Kehadiran','kd_jadwal');
     }
 }

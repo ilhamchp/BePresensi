@@ -58,7 +58,7 @@ class StatusPresensi extends Model
      */
     public function suratIzin()
     {
-        return $this->hasMany('App\SuratIzin','kd_surat_izin');
+        return $this->hasMany('App\SuratIzin','kd_jenis_izin');
     }
 
     /**
@@ -68,6 +68,6 @@ class StatusPresensi extends Model
      */
     public function kehadiran()
     {
-        return $this->hasMany('App\Kehadiran','kd_kehadiran');
+        return $this->hasMany('App\Kehadiran','kd_status_presensi');
     }
 }

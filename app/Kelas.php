@@ -72,7 +72,7 @@ class Kelas extends Model
      */
     public function mahasiswa()
     {
-        return $this->hasMany('App\Mahasiswa', 'nim');
+        return $this->hasMany('App\Mahasiswa', 'kd_kelas');
     }
 
     /**
@@ -82,6 +82,6 @@ class Kelas extends Model
      */
     public function jadwal()
     {
-        return $this->hasMany('App\Jadwal','kd_jadwal');
+        return $this->hasMany('App\Jadwal','kd_kelas');
     }
 }

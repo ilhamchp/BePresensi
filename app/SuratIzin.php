@@ -96,6 +96,6 @@ class SuratIzin extends Model
      */
     public function kehadiran()
     {
-        return $this->hasMany('App\Kehadiran','kd_kehadiran');
+        return $this->hasMany('App\Kehadiran','kd_surat_izin');
     }
 }

@@ -79,6 +79,6 @@ class Dosen extends Model
      */
     public function jadwal()
     {
-        return $this->hasMany('App\Jadwal','kd_jadwal');
+        return $this->hasMany('App\Jadwal','kd_dosen_pengajar');
     }
 }

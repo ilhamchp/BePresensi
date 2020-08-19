@@ -58,7 +58,7 @@ class Sesi extends Model
      */
     public function jadwal()
     {
-        return $this->hasMany('App\Jadwal','kd_jadwal');
+        return $this->hasMany('App\Jadwal','kd_sesi_mulai','kd_sesi');
     }
 
     /**
@@ -68,6 +68,6 @@ class Sesi extends Model
      */
     public function kehadiran()
     {
-        return $this->hasMany('App\Kehadiran','kd_kehadiran');
+        return $this->hasMany('App\Kehadiran','kd_sesi');
     }
 }
