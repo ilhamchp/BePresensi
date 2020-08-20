@@ -50,7 +50,7 @@ class KehadiranController extends BaseController
             'kd_sesi' => 'required|numeric|exists:App\Sesi,kd_sesi',
             'kd_status_presensi' => 'required|alpha|exists:App\StatusPresensi,kd_status_presensi',
             'kd_surat_izin' => 'exists:App\SuratIzin,kd_surat_izin',
-            'tgl_presensi' => 'required_if:kd_status_presensi,H|date_format:Y-n-j',
+            'tgl_presensi' => 'required|date_format:Y-n-j',
             'jam_presensi' => 'required_if:kd_status_presensi,H|date_format:H:i:s'
         ],$messages);
    
