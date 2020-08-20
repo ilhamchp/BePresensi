@@ -31,8 +31,8 @@ class KehadiranSeeder extends Seeder
             $kehadiran->jadwal()->associate($jadwal[0]);
             $kehadiran->sesi()->associate($sesi[0]);
             $kehadiran->statusPresensi()->associate($status[0]);
+            $kehadiran->tgl_presensi = $faker->dateTimeThisYear($max='now')->format('Y-m-d');
             if($status[0]->kd_status_presensi!='H'){
-                $kehadiran->tgl_presensi = $faker->dateTimeThisYear($max='now')->format('Y-m-d');
                 $kehadiran->suratIzin()->associate($surat[0]);
                 $kehadiran->save();
             }else{
