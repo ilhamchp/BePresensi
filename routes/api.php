@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+// API Untuk Aplikasi Mobile
+
+Route::group(['prefix' => 'mobile'], function () {
+    Route::post('/jadwal-mahasiswa', 'API\JadwalController@jadwal_mahasiswa');
+    Route::post('/jadwal-dosen', 'API\JadwalController@jadwal_dosen');
+});
+
+// API Untuk Aplikasi Web
 Route::apiResource('/staff-tu', 'API\StaffTataUsahaController', ['parameters' => [
     'staff-tu' => 'staffTataUsaha'
 ]]);

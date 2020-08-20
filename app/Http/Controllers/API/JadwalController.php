@@ -3,20 +3,24 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use App\Jadwal;
 use Illuminate\Http\Request;
 use App\Http\Resources\JadwalCollection;
+use App\Http\Resources\Mobile\ListJadwalMahasiswaCollection;
 use App\Http\Resources\Jadwal as JadwalResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Arr;
+use App\Kehadiran;
 use App\Kelas;
 use App\Ruang;
 use App\Dosen;
 use App\Matakuliah;
 use App\Sesi;
 use App\Hari;
+use App\Mahasiswa;
 
 class JadwalController extends BaseController
 {
@@ -28,6 +32,39 @@ class JadwalController extends BaseController
     public function index()
     {
         return new JadwalCollection(Jadwal::all());
+    }
+
+    /**
+     * Menampilkan jadwal perkuliahan mahasiswa hari ini.
+     * Digunakan untuk aplikasi mobile.
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function jadwal_mahasiswa(Request $request)
+    {
+        $messages = [
+            'nim' => 'Atribut :attribute tidak boleh kosong.',
+            'exists' => 'Atribut :attribute tidak terdapat di database.'
+        ];
+        $validator = Validator::make($request->all(), [
+            'nim' => 'required|exists:App\Mahasiswa,nim',
+        ],$messages);   
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
+        
+        $date = Carbon::now()->timezone('Asia/Jakarta');
+        $kd_hari = $date->dayOfWeek;
+        $tanggal = $date->format('Y-m-d');
+        $nim = $request->nim;
+        $mahasiswa = Mahasiswa::find($nim);
+        $jadwal = Jadwal::where('kd_kelas','=',$mahasiswa->kd_kelas)
+        ->where('kd_hari','=',$kd_hari)
+        ->with([
+            'kehadiran' => function($query) use ($nim,$tanggal){
+                $query->where('nim',$nim)->where('tgl_presensi',$tanggal);
+            }
+        ])->get();
+        if(!$jadwal) return $this->sendError('Tidak ada matakuliah hari ini!');
+        return new ListJadwalMahasiswaCollection($jadwal);
     }
 
     /**
