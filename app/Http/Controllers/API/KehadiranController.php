@@ -77,6 +77,7 @@ class KehadiranController extends BaseController
         $kehadiran = new Kehadiran;
         $kehadiran->tgl_presensi = $request->tgl_presensi;
         $kehadiran->jam_presensi = $request->jam_presensi;
+        $kehadiran->jam_presensi_dibuka = $request->jam_presensi_dibuka;
         $kehadiran->mahasiswa()->associate($mahasiswa);
         $kehadiran->jadwal()->associate($jadwal);
         $kehadiran->sesi()->associate($sesi);
@@ -152,6 +153,7 @@ class KehadiranController extends BaseController
 
         $kehadiran->tgl_presensi = $request->tgl_presensi;
         $kehadiran->jam_presensi = $request->jam_presensi;
+        $kehadiran->jam_presensi_dibuka = $request->jam_presensi_dibuka;
         $kehadiran->mahasiswa()->associate($mahasiswa);
         $kehadiran->jadwal()->associate($jadwal);
         $kehadiran->sesi()->associate($sesi);

@@ -65,6 +65,7 @@ class BeritaAcaraController extends BaseController
         $beritaAcara->tgl_pertemuan = $request->tgl_pertemuan;
         $beritaAcara->mhs_hadir = $request->mhs_hadir;
         $beritaAcara->mhs_tidak_hadir = $request->mhs_tidak_hadir;
+        $beritaAcara->jam_presensi_dibuka = $request->jam_presensi_dibuka;
         $beritaAcara->jadwal()->associate($jadwal);
         $beritaAcara->save();
         
@@ -124,6 +125,7 @@ class BeritaAcaraController extends BaseController
         $beritaAcara->tgl_pertemuan = $request->tgl_pertemuan;
         $beritaAcara->mhs_hadir = $request->mhs_hadir;
         $beritaAcara->mhs_tidak_hadir = $request->mhs_tidak_hadir;
+        $beritaAcara->jam_presensi_dibuka = $request->jam_presensi_dibuka;
         $beritaAcara->jadwal()->associate($jadwal);
         $beritaAcara->update();
         
