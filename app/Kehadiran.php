@@ -52,7 +52,8 @@ class Kehadiran extends Model
         'kd_status_presensi',
         'kd_surat_izin',
         'tgl_presensi',
-        'jam_presensi'
+        'jam_presensi',
+        'jam_presensi_dibuka'
     ];
 
     /**

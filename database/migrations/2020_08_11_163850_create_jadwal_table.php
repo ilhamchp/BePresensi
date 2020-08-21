@@ -26,6 +26,7 @@ class CreateJadwalTable extends Migration
             $table->string('jenis_perkuliahan');
             $table->boolean('sesi_presensi_dibuka')->default(false);
             $table->integer('toleransi_keterlambatan')->default('10');
+            $table->time('jam_presensi_dibuka')->nullable();
         });
 
         Schema::table('jadwal', function (Blueprint $table) {
