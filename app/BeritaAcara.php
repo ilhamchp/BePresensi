@@ -53,7 +53,8 @@ class BeritaAcara extends Model
         'tgl_pertemuan',
         'mhs_hadir',
         'mhs_tidak_hadir',
-        'jam_presensi_dibuka'
+        'jam_presensi_dibuka',
+        'jam_presensi_ditutup'
     ];
 
     /**

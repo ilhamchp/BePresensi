@@ -47,7 +47,8 @@ class Jadwal extends JsonResource
             ],
             'jenis_perkuliahan' => $this->jenis_perkuliahan,
             'sesi_presensi_dibuka' => (boolean) $this->sesi_presensi_dibuka,
-            'toleransi_keterlambatan' => (integer) $this->toleransi_keterlambatan
+            'toleransi_keterlambatan' => (integer) $this->toleransi_keterlambatan,
+            'jam_presensi_dibuka' => (string) $this->jam_presensi_dibuka
         ];
     }
 }

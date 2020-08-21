@@ -23,7 +23,9 @@ class BeritaAcara extends JsonResource
             'desk_penugasan' => $this->desk_penugasan,
             'tgl_pertemuan' => $this->tgl_pertemuan,
             'mhs_hadir' => $this->mhs_hadir,
-            'mhs_tidak_hadir' => $this->mhs_tidak_hadir
+            'mhs_tidak_hadir' => $this->mhs_tidak_hadir,
+            'jam_presensi_dibuka' => $this->jam_presensi_dibuka,
+            'jam_presensi_ditutup' => $this->jam_presensi_ditutup
         ];
     }
 }

@@ -40,7 +40,8 @@ class Kehadiran extends JsonResource
                 'surat_izin' => $this->suratIzin
             ],
             'tgl_presensi'=> $this->tgl_presensi,
-            'jam_presensi'=> $this->jam_presensi
+            'jam_presensi'=> $this->jam_presensi,
+            'jam_presensi_dibuka' => $this->jam_presensi_dibuka
         ];
     }
 }

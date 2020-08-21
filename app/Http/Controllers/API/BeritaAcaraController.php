@@ -40,13 +40,15 @@ class BeritaAcaraController extends BaseController
                 'numeric' => 'Atribut :attribute harus memiliki nilai sama dengan atau lebih besar dari :value.',
             ],
             'date_format' => 'Atribut :attribute harus dalam format :format.',
+            'after_or_equal' => 'Attribut :attribute tidak boleh lebih kecil dari :date',
         ];
         $validator = Validator::make($request->all(), [
             'kd_jadwal' => 'required|exists:App\Jadwal,kd_jadwal',
             'tgl_pertemuan' => 'required|date_format:Y-n-j',
             'mhs_hadir' => 'required|numeric|gte:0',
             'mhs_tidak_hadir' => 'required|numeric|gte:0',
-            'jam_presensi_dibuka' => 'required|date_format:H:i:s'
+            'jam_presensi_dibuka' => 'required|date_format:H:i:s',
+            'jam_presensi_ditutup' => 'required|date_format:H:i:s|after_or_equal:jam_presensi_dibuka'
         ],$messages);
    
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
@@ -66,6 +68,7 @@ class BeritaAcaraController extends BaseController
         $beritaAcara->mhs_hadir = $request->mhs_hadir;
         $beritaAcara->mhs_tidak_hadir = $request->mhs_tidak_hadir;
         $beritaAcara->jam_presensi_dibuka = $request->jam_presensi_dibuka;
+        $beritaAcara->jam_presensi_ditutup = $request->jam_presensi_ditutup;
         $beritaAcara->jadwal()->associate($jadwal);
         $beritaAcara->save();
         
@@ -105,6 +108,7 @@ class BeritaAcaraController extends BaseController
                 'numeric' => 'Atribut :attribute harus memiliki nilai sama dengan atau lebih besar dari :value.',
             ],
             'date_format' => 'Atribut :attribute harus dalam format :format.',
+            'after_or_equal' => 'Attribut :attribute tidak boleh lebih kecil dari :date',
         ];
         $validator = Validator::make($request->all(), [
             'kd_berita_acara' => 'required|exists:App\BeritaAcara,kd_berita_acara',
@@ -112,7 +116,8 @@ class BeritaAcaraController extends BaseController
             'tgl_pertemuan' => 'required|date_format:Y-n-j',
             'mhs_hadir' => 'required|numeric|gte:0',
             'mhs_tidak_hadir' => 'required|numeric|gte:0',
-            'jam_presensi_dibuka' => 'required|date_format:H:i:s'
+            'jam_presensi_dibuka' => 'required|date_format:H:i:s',
+            'jam_presensi_ditutup' => 'required|date_format:H:i:s|after_or_equal:jam_presensi_dibuka'
         ],$messages);
    
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
@@ -126,6 +131,7 @@ class BeritaAcaraController extends BaseController
         $beritaAcara->mhs_hadir = $request->mhs_hadir;
         $beritaAcara->mhs_tidak_hadir = $request->mhs_tidak_hadir;
         $beritaAcara->jam_presensi_dibuka = $request->jam_presensi_dibuka;
+        $beritaAcara->jam_presensi_ditutup = $request->jam_presensi_ditutup;
         $beritaAcara->jadwal()->associate($jadwal);
         $beritaAcara->update();
         

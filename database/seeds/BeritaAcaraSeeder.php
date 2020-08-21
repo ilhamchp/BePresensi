@@ -26,7 +26,8 @@ class BeritaAcaraSeeder extends Seeder
             $tgl_pertemuan = $faker->dateTimeThisYear($max='now')->format('Y-m-d');
             $mhs_hadir = $faker->numberBetween($min = 25, $max=32);
             $mhs_tidak_hadir = $faker->numberBetween($min = 0, $max=7);
-            $jam_presensi_dibuka = $faker->time($format = 'H:i:s',$max='now');
+            $jam_presensi_ditutup = $faker->time($format = 'H:i:s',$max='18:00:00');
+            $jam_presensi_dibuka = $faker->time($format = 'H:i:s',$max=$jam_presensi_ditutup);
 
             
             // ASSIGN DATA
@@ -39,6 +40,7 @@ class BeritaAcaraSeeder extends Seeder
             $beritaAcara->mhs_hadir = $mhs_hadir;
             $beritaAcara->mhs_tidak_hadir = $mhs_tidak_hadir;
             $beritaAcara->jam_presensi_dibuka = $jam_presensi_dibuka;
+            $beritaAcara->jam_presensi_ditutup = $jam_presensi_ditutup;
             $beritaAcara->save();
         }
     }
