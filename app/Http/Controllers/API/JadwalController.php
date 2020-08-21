@@ -8,6 +8,7 @@ use App\Jadwal;
 use Illuminate\Http\Request;
 use App\Http\Resources\JadwalCollection;
 use App\Http\Resources\Mobile\ListJadwalMahasiswaCollection;
+use App\Http\Resources\Mobile\ListJadwalDosenCollection;
 use App\Http\Resources\Jadwal as JadwalResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
@@ -43,7 +44,7 @@ class JadwalController extends BaseController
     public function jadwal_mahasiswa(Request $request)
     {
         $messages = [
-            'nim' => 'Atribut :attribute tidak boleh kosong.',
+            'required' => 'Atribut :attribute tidak boleh kosong.',
             'exists' => 'Atribut :attribute tidak terdapat di database.'
         ];
         $validator = Validator::make($request->all(), [
@@ -68,6 +69,38 @@ class JadwalController extends BaseController
     }
 
     /**
+     * Menampilkan jadwal perkuliahan mahasiswa hari ini.
+     * Digunakan untuk aplikasi mobile.
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function jadwal_dosen(Request $request)
+    {
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+            'exists' => 'Atribut :attribute tidak terdapat di database.'
+        ];
+        $validator = Validator::make($request->all(), [
+            'kd_dosen' => 'required|exists:App\Dosen,kd_dosen',
+        ],$messages);   
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
+        
+        $date = Carbon::now()->timezone('Asia/Jakarta');
+        $kd_hari = $date->dayOfWeek;
+        $tanggal = $date->format('Y-m-d');
+        $kd_dosen = $request->kd_dosen;
+        $jadwal = Jadwal::where('kd_dosen_pengajar','=',$kd_dosen)
+        ->where('kd_hari','=',$kd_hari)
+        ->with([
+            'beritaAcara' => function($query) use ($tanggal){
+                $query->where('tgl_pertemuan',$tanggal);
+            }
+        ])->get();
+        if(!$jadwal) return $this->sendError('Tidak ada matakuliah hari ini!');
+        return new ListJadwalDosenCollection($jadwal);
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -84,7 +117,8 @@ class JadwalController extends BaseController
             'gte' => [
                 'numeric' => 'Atribut :attribute harus memiliki nilai sama dengan atau lebih besar dari :value.',
             ],
-            'in' => 'Attribut :attribute harus berupa Teori / Praktek.'
+            'in' => 'Attribut :attribute harus berupa Teori / Praktek.',
+            'date_format' => 'Atribut :attribute harus dalam format :format.',
         ];
         $validator = Validator::make($request->all(), [
             'kd_kelas' => 'required|exists:App\Kelas,kd_kelas',
@@ -99,7 +133,8 @@ class JadwalController extends BaseController
                 Rule::in(['Teori', 'Praktek']),
             ],
             'sesi_presensi_dibuka' => 'boolean',
-            'toleransi_keterlambatan' => 'numeric|gte:10'
+            'toleransi_keterlambatan' => 'numeric|gte:10',
+            'jam_presensi_dibuka' => 'date_format:H:i:s'
         ],$messages);
    
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
@@ -180,7 +215,8 @@ class JadwalController extends BaseController
                 'numeric' => 'Atribut :attribute harus memiliki nilai sama dengan atau lebih besar dari :value.',
             ],
             'in' => 'Attribut :attribute harus berupa Teori / Praktek.',
-            'boolean' => 'Atribut \':attribute\' hanya boleh bernilai true / false'
+            'boolean' => 'Atribut \':attribute\' hanya boleh bernilai true / false',
+            'date_format' => 'Atribut :attribute harus dalam format :format.',
         ];
         $validator = Validator::make($request->all(), [
             'kd_jadwal' => 'required|exists:App\Jadwal,kd_jadwal',
@@ -196,7 +232,8 @@ class JadwalController extends BaseController
                 Rule::in(['Teori', 'Praktek']),
             ],
             'sesi_presensi_dibuka' => 'boolean',
-            'toleransi_keterlambatan' => 'numeric|gte:10'
+            'toleransi_keterlambatan' => 'numeric|gte:10',
+            'jam_presensi_dibuka' => 'date_format:H:i:s'
         ],$messages);
    
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       

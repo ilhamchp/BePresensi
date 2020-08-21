@@ -51,7 +51,8 @@ class KehadiranController extends BaseController
             'kd_status_presensi' => 'required|alpha|exists:App\StatusPresensi,kd_status_presensi',
             'kd_surat_izin' => 'exists:App\SuratIzin,kd_surat_izin',
             'tgl_presensi' => 'required|date_format:Y-n-j',
-            'jam_presensi' => 'required_if:kd_status_presensi,H|date_format:H:i:s'
+            'jam_presensi' => 'required_if:kd_status_presensi,H|date_format:H:i:s',
+            'jam_presensi_dibuka' => 'required|date_format:H:i:s'
         ],$messages);
    
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
@@ -126,7 +127,8 @@ class KehadiranController extends BaseController
             'kd_status_presensi' => 'required|alpha|exists:App\StatusPresensi,kd_status_presensi',
             'kd_surat_izin' => 'exists:App\SuratIzin,kd_surat_izin',
             'tgl_presensi' => 'required_if:kd_status_presensi,H|date_format:Y-n-j',
-            'jam_presensi' => 'required_if:kd_status_presensi,H|date_format:H:i:s'
+            'jam_presensi' => 'required_if:kd_status_presensi,H|date_format:H:i:s',
+            'jam_presensi_dibuka' => 'required|date_format:H:i:s'
         ],$messages);
    
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       

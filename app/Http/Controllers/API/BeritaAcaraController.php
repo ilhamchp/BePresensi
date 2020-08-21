@@ -46,6 +46,7 @@ class BeritaAcaraController extends BaseController
             'tgl_pertemuan' => 'required|date_format:Y-n-j',
             'mhs_hadir' => 'required|numeric|gte:0',
             'mhs_tidak_hadir' => 'required|numeric|gte:0',
+            'jam_presensi_dibuka' => 'required|date_format:H:i:s'
         ],$messages);
    
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
@@ -110,6 +111,7 @@ class BeritaAcaraController extends BaseController
             'tgl_pertemuan' => 'required|date_format:Y-n-j',
             'mhs_hadir' => 'required|numeric|gte:0',
             'mhs_tidak_hadir' => 'required|numeric|gte:0',
+            'jam_presensi_dibuka' => 'required|date_format:H:i:s'
         ],$messages);
    
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
