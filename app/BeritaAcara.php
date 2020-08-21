@@ -52,7 +52,8 @@ class BeritaAcara extends Model
         'desk_penugasan',
         'tgl_pertemuan',
         'mhs_hadir',
-        'mhs_tidak_hadir'
+        'mhs_tidak_hadir',
+        'jam_presensi_dibuka'
     ];
 
     /**

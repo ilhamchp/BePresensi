@@ -22,6 +22,7 @@ class CreateBeritaAcaraTable extends Migration
             $table->date('tgl_pertemuan');
             $table->integer('mhs_hadir');
             $table->integer('mhs_tidak_hadir');
+            $table->time('jam_presensi_dibuka');
         });
 
         Schema::table('berita_acara', function (Blueprint $table) {
