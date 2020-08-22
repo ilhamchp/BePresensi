@@ -29,6 +29,7 @@ Route::apiResource('/matakuliah','API\MatakuliahController');
 Route::apiResource('/hari','API\HariController');
 Route::apiResource('/status-surat','API\StatusSuratController');
 Route::apiResource('/status-presensi','API\StatusPresensiController');
+Route::apiResource('/status-rekapitulasi','API\StatusRekapitulasiController');
 Route::apiResource('/sesi','API\SesiController');
 Route::apiResource('/kelas', 'API\KelasController', ['parameters' => [
     'kelas' => 'kelas'
@@ -41,7 +42,10 @@ Route::apiResource('/jadwal','API\JadwalController');
 Route::apiResource('/berita-acara','API\BeritaAcaraController');
 Route::apiResource('/kehadiran','API\KehadiranController');
 Route::apiResource('/user','API\UserController');
+Route::apiResource('/rekapitulasi','API\RekapitulasiController');
 
+Route::get('/rekapitulasi-reload','API\RekapitulasiController@reloadDataRekapitulasi');
+Route::get('/rekapitulasi-refresh','API\RekapitulasiController@refreshDataRekapitulasi');
 Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 

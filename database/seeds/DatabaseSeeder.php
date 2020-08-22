@@ -26,7 +26,9 @@ class DatabaseSeeder extends Seeder
             SuratIzinSeeder::class,
             JadwalSeeder::class,
             BeritaAcaraSeeder::class,
-            KehadiranSeeder::class
+            KehadiranSeeder::class,
+            StatusRekapitulasiSeeder::class,
+            RekapitulasiSeeder::class
         ]);
     }
 }

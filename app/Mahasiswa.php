@@ -93,4 +93,14 @@ class Mahasiswa extends Model
     {
         return $this->hasMany('App\Kehadiran','nim');
     }
+
+    /**
+     * Menandai bahwa tabel mahasiswa memiliki
+     * relation one to one 
+     * terhadap tabel rekapitulasi
+     */
+    public function rekapitulasi()
+    {
+        return $this->hasOne('App\Kehadiran','nim');
+    }
 }
