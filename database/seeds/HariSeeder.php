@@ -13,6 +13,10 @@ class HariSeeder extends Seeder
     public function run()
     {
         Hari::create([
+            'kd_hari' => '0',
+            'nama_hari' => 'Minggu'
+        ]);
+        Hari::create([
             'kd_hari' => '1',
             'nama_hari' => 'Senin'
         ]);
@@ -31,6 +35,10 @@ class HariSeeder extends Seeder
         Hari::create([
             'kd_hari' => '5',
             'nama_hari' => 'Jumat'
+        ]);
+        Hari::create([
+            'kd_hari' => '6',
+            'nama_hari' => 'Sabtu'
         ]);
     }
 }
