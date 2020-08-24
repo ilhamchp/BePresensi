@@ -1,4 +1,4 @@
-## BePresensi
+# BePresensi
 
 BePresensi adalah sistem presensi online pada Jurusan Teknik Komputer dan Informatika Politenik Negeri Bandung. Sistem ini memungkinkan untuk melakukan seluruh proses presensi hingga perekapan secara daring dan terotomatisasi. Pengguna dari sistem ini adalah Mahasiswa, Dosen Pengajar, Wali Dosen, dan Staf Tata Usaha JTK POLBAN. Fitur aplikasi ini diantaranya adalah:
 - Melakukan proses presensi secara online
