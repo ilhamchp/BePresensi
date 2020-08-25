@@ -63,24 +63,17 @@ class JadwalController extends BaseController
     /**
      * Menampilkan jadwal perkuliahan mahasiswa hari ini.
      * Digunakan untuk aplikasi mobile.
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Dosen  $dosen
      * @return \Illuminate\Http\Response
      */
-    public function jadwal_dosen(Request $request)
+    public function jadwalDosen(Dosen $dosen)
     {
-        $messages = [
-            'required' => 'Atribut :attribute tidak boleh kosong.',
-            'exists' => 'Atribut :attribute tidak terdapat di database.'
-        ];
-        $validator = Validator::make($request->all(), [
-            'kd_dosen' => 'required|exists:App\Dosen,kd_dosen',
-        ],$messages);   
-        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
-        
+        if(!$dosen) return $this->sendError('Data tidak ditemukan!');
+
         $date = Carbon::now()->timezone('Asia/Jakarta');
         $kd_hari = $date->dayOfWeek;
         $tanggal = $date->format('Y-m-d');
-        $kd_dosen = $request->kd_dosen;
+        $kd_dosen = $dosen->kd_dosen;
         $jadwal = Jadwal::where('kd_dosen_pengajar','=',$kd_dosen)
         ->where('kd_hari','=',$kd_hari)
         ->with([
