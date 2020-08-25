@@ -186,25 +186,18 @@ class KehadiranController extends BaseController
     /**
      * Menampilkan riwayat kehadiran perkuliahan mahasiswa minggu ini.
      * Digunakan untuk aplikasi mobile.
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Mahasiswa  $mahasiswa
      * @return \Illuminate\Http\Response
      */
-    public function riwayatKehadiran(Request $request)
+    public function riwayatKehadiran(Mahasiswa $mahasiswa)
     {
-        $messages = [
-            'required' => 'Atribut :attribute tidak boleh kosong.',
-            'exists' => 'Atribut :attribute tidak terdapat di database.'
-        ];
-        $validator = Validator::make($request->all(), [
-            'nim' => 'required|exists:App\Mahasiswa,nim',
-        ],$messages);   
-        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
-        
+        if(!$mahasiswa) return $this->sendError('Data tidak ditemukan!');
+
         $date = Carbon::now()->timezone('Asia/Jakarta');
         $kd_hari = $date->dayOfWeek;
         if($kd_hari==0) $kd_hari = 7;
         $tanggal = $date->format('Y-m-d');
-        $nim = $request->nim;
+        $nim = $mahasiswa->nim;
         $mahasiswa = Mahasiswa::find($nim);
         $startOfWeek = $date->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
         $awalMinggu = Carbon::parse($startOfWeek);
