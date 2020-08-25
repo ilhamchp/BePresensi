@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\KehadiranCollection;
 use App\Http\Resources\Kehadiran as KehadiranResource;
 use App\Http\Resources\Mobile\ListRiwayatKehadiranCollection;
+use App\Http\Resources\Mobile\DetailRiwayatKehadiran;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -228,5 +229,20 @@ class KehadiranController extends BaseController
             $awalMinggu = $awalMinggu->addDay();
         }
         return new ListRiwayatKehadiranCollection($collection);
+    }
+
+    /**
+     * Menampilkan detail kehadiran sebuah sesi perkuliahan.
+     * Digunakan untuk aplikasi mobile.
+     * 
+     * @param  \App\Kehadiran  $kehadiran
+     * @return \Illuminate\Http\Response
+     */
+    public function detailRiwayatKehadiran(Kehadiran $kehadiran)
+    {
+        if($kehadiran) return $this->sendResponse([
+            'kehadiran' => new DetailRiwayatKehadiran($kehadiran)
+        ],'success');
+        return $this->sendError('Data tidak ditemukan!');
     }
 }
