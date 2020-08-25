@@ -19,7 +19,12 @@ class Ruang extends JsonResource
         return [
             'kd_ruang' => $this->kd_ruang,
             'nama_ruang' => $this->nama_ruang,
-            'kd_beacon' => new BeaconCollection(Beacon::find($this->beacon))
+            'kd_beacon' => $this->kd_beacon,
+            $this->mergeWhen($this->beacon()->exists() && $this->beacon->count()!=0, function() {
+                return [
+                    'beacon' => $this->beacon
+                ];
+            })
         ];
     }
 }
