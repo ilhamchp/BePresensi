@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'mobile'], function () {
     Route::post('/jadwal-mahasiswa', 'API\JadwalController@jadwal_mahasiswa');
     Route::post('/jadwal-dosen', 'API\JadwalController@jadwal_dosen');
+    Route::post('/riwayat-kehadiran', 'API\KehadiranController@riwayatKehadiran');
 });
 
 // API Untuk Aplikasi Web

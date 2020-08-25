@@ -4,10 +4,14 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Kehadiran;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Resources\KehadiranCollection;
 use App\Http\Resources\Kehadiran as KehadiranResource;
+use App\Http\Resources\Mobile\ListRiwayatKehadiranCollection;
 use App\Http\Controllers\API\BaseController as BaseController;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Validator;
 use Illuminate\Support\Arr;
 use App\Mahasiswa;
@@ -176,5 +180,53 @@ class KehadiranController extends BaseController
     {
         $kehadiran->delete();
         return $this->sendResponse(null, 'Berhasil menghapus kehadiran!');
+    }
+
+    /**
+     * Menampilkan riwayat kehadiran perkuliahan mahasiswa minggu ini.
+     * Digunakan untuk aplikasi mobile.
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function riwayatKehadiran(Request $request)
+    {
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+            'exists' => 'Atribut :attribute tidak terdapat di database.'
+        ];
+        $validator = Validator::make($request->all(), [
+            'nim' => 'required|exists:App\Mahasiswa,nim',
+        ],$messages);   
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
+        
+        $date = Carbon::now()->timezone('Asia/Jakarta');
+        $kd_hari = $date->dayOfWeek;
+        if($kd_hari==0) $kd_hari = 7;
+        $tanggal = $date->format('Y-m-d');
+        $nim = $request->nim;
+        $mahasiswa = Mahasiswa::find($nim);
+        $startOfWeek = $date->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
+        $awalMinggu = Carbon::parse($startOfWeek);
+        $collection = new Collection();
+        for($i=1;$i<=$kd_hari;$i++){
+            $jadwal = Jadwal::where('kd_kelas','=',$mahasiswa->kd_kelas)
+            ->where('kd_hari','=',$i)
+            ->with([
+                'kehadiran' => function($query) use ($nim,$awalMinggu){
+                    $query->where('nim',$nim)->where('tgl_presensi',$awalMinggu->format('Y-m-d'));
+                }
+            ])
+            ->get();
+            if($jadwal->count()!=0){
+                $collection->push(
+                    (object)[
+                        'tanggal' => $awalMinggu->format('Y-m-d'),
+                        'jadwal' => $jadwal
+                    ]
+                );
+            }
+            $awalMinggu = $awalMinggu->addDay();
+        }
+        return new ListRiwayatKehadiranCollection($collection);
     }
 }
