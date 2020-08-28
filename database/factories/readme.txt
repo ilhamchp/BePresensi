@@ -1,0 +1,1 @@
+Dilarang menghapus file ini!
