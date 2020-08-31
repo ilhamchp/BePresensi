@@ -4,8 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Mahasiswa;
+use App\Dosen;
+use App\StaffTataUsaha;
+use App\Http\Controllers\API\BaseController as BaseController;
+use Validator;
+use Illuminate\Support\Arr;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     public function register(Request $request)
     {
@@ -20,9 +26,54 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+            'email' => 'Atribut :attribute harus berupa email valid.',
+            'exists' => 'Atribut :attribute tidak terdapat di database.'
+        ];
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:App\User,email',
+            'password' => 'required'
+
+        ],$messages);
+   
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
+        $user = User::where('email',$request->email)->first();
+        $mahasiswa = Mahasiswa::where('id_user',$user->id)->first();
+        if($mahasiswa==null){
+            $dosen = Dosen::where('id_user',$user->id)->first();
+            if($dosen==null){
+                $staffTU = StaffTataUsaha::where('id_user',$user->id)->first();
+                if($staffTU == null){
+                    $this->sendError('Email tidak terdaftar sebagai role apapun!');
+                } else {
+                    $claims = [
+                        'role' => 'Staff Tata Usaha',
+                        'id_user' => $staffTU->id_user, 
+                        'nama_staff' => $staffTU->nama_staff,
+                        'kd_staff' => $staffTU->kd_staff
+                    ];
+                }
+            } else {
+                $claims = [
+                    'role' => 'Dosen',
+                    'id_user' => $dosen->id_user, 
+                    'nama_dosen' => $dosen->nama_dosen,
+                    'kd_dosen' => $dosen->kd_dosen                
+                ];
+            }
+        } else {
+            $claims = [
+                'role' => 'Mahasiswa',
+                'id_user' => $mahasiswa->id_user, 
+                'nama_mahasiswa' => $mahasiswa->nama_mahasiswa,
+                'nim' => $mahasiswa->nim            
+            ];
+        }
+
         $credentials = $request->only(['email', 'password']);
 
-        if (!$token = auth()->attempt($credentials)) {
+        if (!$token = auth()->claims($claims)->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
