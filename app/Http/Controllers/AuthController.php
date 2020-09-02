@@ -51,7 +51,8 @@ class AuthController extends BaseController
                         'role' => 'Staff Tata Usaha',
                         'id_user' => $staffTU->id_user, 
                         'nama_staff' => $staffTU->nama_staff,
-                        'kd_staff' => $staffTU->kd_staff
+                        'kd_staff' => $staffTU->kd_staff,
+                        'email' => $user->email
                     ];
                 }
             } else {
@@ -59,7 +60,8 @@ class AuthController extends BaseController
                     'role' => 'Dosen',
                     'id_user' => $dosen->id_user, 
                     'nama_dosen' => $dosen->nama_dosen,
-                    'kd_dosen' => $dosen->kd_dosen                
+                    'kd_dosen' => $dosen->kd_dosen,
+                    'email' => $user->email                
                 ];
             }
         } else {
@@ -67,7 +69,8 @@ class AuthController extends BaseController
                 'role' => 'Mahasiswa',
                 'id_user' => $mahasiswa->id_user, 
                 'nama_mahasiswa' => $mahasiswa->nama_mahasiswa,
-                'nim' => $mahasiswa->nim            
+                'nim' => $mahasiswa->nim,
+                'email' => $user->email            
             ];
         }
 
@@ -78,6 +81,28 @@ class AuthController extends BaseController
         }
 
         return $this->respondWithToken($token);
+    }
+
+    /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout()
+    {
+        auth()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        return $this->respondWithToken(auth()->refresh());
     }
 
     protected function respondWithToken($token)
