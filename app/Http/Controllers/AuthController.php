@@ -8,6 +8,7 @@ use App\Mahasiswa;
 use App\Dosen;
 use App\StaffTataUsaha;
 use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Resources\Auth as AuthResource;
 use Validator;
 use Illuminate\Support\Arr;
 
@@ -21,7 +22,9 @@ class AuthController extends BaseController
         ]);
         $token = auth()->login($user);
 
-        return $this->respondWithToken($token);
+        return $this->sendResponse([
+            'auth' => [new AuthResource($token)]
+        ], 'success');
     }
 
     public function login(Request $request)
@@ -37,7 +40,7 @@ class AuthController extends BaseController
 
         ],$messages);
    
-        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
+        if($validator->fails()) return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
         $user = User::where('email',$request->email)->first();
         $mahasiswa = Mahasiswa::where('id_user',$user->id)->first();
         if($mahasiswa==null){
@@ -45,7 +48,7 @@ class AuthController extends BaseController
             if($dosen==null){
                 $staffTU = StaffTataUsaha::where('id_user',$user->id)->first();
                 if($staffTU == null){
-                    $this->sendError('Email tidak terdaftar sebagai role apapun!');
+                    return $this->sendError('Email tidak terdaftar!');
                 } else {
                     $claims = [
                         'role' => 'Staff Tata Usaha',
@@ -77,10 +80,12 @@ class AuthController extends BaseController
         $credentials = $request->only(['email', 'password']);
 
         if (!$token = auth()->claims($claims)->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return $this->sendError('Unauthorized','',401);
         }
 
-        return $this->respondWithToken($token);
+        return $this->sendResponse([
+            'auth' => [new AuthResource($token)]
+        ], 'success');
     }
 
     /**
@@ -92,7 +97,7 @@ class AuthController extends BaseController
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return $this->sendResponse(null,'Successfully logged out');
     }
 
     /**
@@ -102,15 +107,8 @@ class AuthController extends BaseController
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->refresh());
-    }
-
-    protected function respondWithToken($token)
-    {
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60 * 24 * 5
-        ]);
+        return $this->sendResponse([
+            'auth' => [new AuthResource(auth()->refresh())]
+        ], 'success');
     }
 }
