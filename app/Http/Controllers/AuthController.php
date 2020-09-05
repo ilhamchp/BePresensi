@@ -40,7 +40,7 @@ class AuthController extends BaseController
 
         ],$messages);
    
-        if($validator->fails()) return $this->sendError('Validasi data gagal. ', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        if($validator->fails()) return $this->sendError('', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
         $user = User::where('email',$request->email)->first();
         $mahasiswa = Mahasiswa::where('id_user',$user->id)->first();
         if($mahasiswa==null){
@@ -80,7 +80,7 @@ class AuthController extends BaseController
         $credentials = $request->only(['email', 'password']);
 
         if (!$token = auth()->claims($claims)->attempt($credentials)) {
-            return $this->sendError('Unauthorized','',401);
+            return $this->sendError('Email atau password salah!','',401);
         }
 
         return $this->sendResponse([
