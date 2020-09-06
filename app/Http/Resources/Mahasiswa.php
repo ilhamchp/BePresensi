@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Kelas as KelasResource;
-use App\Http\Resources\UserCollection;
+use App\Http\Resources\User as UserResource;
 use App\User;
 use App\Kelas;
 
