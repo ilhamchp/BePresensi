@@ -21,7 +21,6 @@ class Kelas extends JsonResource
             'prodi' => $this->prodi,
             'angkatan' => $this->angkatan,
             'kd_wali_dosen' => $this->kd_wali_dosen,
-            'nama_wali_dosen' => $this->waliDosen->nama_dosen,
             $this->mergeWhen($this->waliDosen()->exists() && $this->waliDosen->count()!=0, function() {
                 return [
                     'wali_dosen' => new DosenResource($this->waliDosen)
