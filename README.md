@@ -49,7 +49,9 @@ BePresensi Web dibangun menggunakan Vue JS. Aplikasi ini ditujukan untuk Staf Ta
 4. Buat database dengan nama `kota205_bepresensi`
 5. Buka command prompt / terminal dan arahkan ke folder project ini
 6. Jalankan perintah `composer install` dan tunggu hingga berhasil
-7. Jalankan perintah `php artisan migrate:refresh --seed` dan tunggu hingga berhasil
+7. Jalankan perintah `npm install` dan tunggu hingga berhasil
+8. Jalankan perintah `npm run watch` dan tunggu hingga berhasil
+9. Jalankan perintah `php artisan migrate:refresh --seed` dan tunggu hingga berhasil
 
 ### Credit
 
