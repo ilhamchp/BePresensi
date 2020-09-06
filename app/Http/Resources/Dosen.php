@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\UserCollection;
+use App\Http\Resources\User as UserResource;
 use App\User;
 
 class Dosen extends JsonResource
@@ -19,8 +19,13 @@ class Dosen extends JsonResource
         return [
             'kd_dosen' => $this->kd_dosen,
             'nama_dosen' => $this->nama_dosen,
-            'id_user' => new UserCollection(User::find($this->user)),
-            'foto_dosen' => $this->foto_dosen
+            'id_user' => $this->id_user,
+            'foto_dosen' => $this->foto_dosen,
+            $this->mergeWhen($this->user()->exists() && $this->user->count()!=0, function() {
+                return [
+                    'user' => new UserResource($this->user)
+                ];
+            })
         ];
     }
 }
