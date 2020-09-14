@@ -73,7 +73,7 @@ class BeritaAcaraController extends BaseController
         $beritaAcara->save();
         
         return $this->sendResponse([
-            'jadwal' => [new BeritaAcaraResource($beritaAcara)]
+            'berita_acara' => [new BeritaAcaraResource($beritaAcara)]
         ], 'Berhasil menyimpan data!');
     }
 
@@ -136,7 +136,7 @@ class BeritaAcaraController extends BaseController
         $beritaAcara->update();
         
         return $this->sendResponse([
-            'jadwal' => [new BeritaAcaraResource($beritaAcara)]
+            'berita_acara' => [new BeritaAcaraResource($beritaAcara)]
         ], 'Berhasil memperbaharui data!');
     }
 
