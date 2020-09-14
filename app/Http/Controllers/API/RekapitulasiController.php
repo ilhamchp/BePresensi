@@ -7,6 +7,7 @@ use App\Rekapitulasi;
 use Illuminate\Http\Request;
 use App\Http\Resources\RekapitulasiCollection;
 use App\Http\Resources\Rekapitulasi as RekapitulasiResource;
+use App\Http\Resources\Mobile\RekapitulasiKehadiran;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
 use App\Mahasiswa;
@@ -46,6 +47,20 @@ class RekapitulasiController extends BaseController
     {
         if($rekapitulasi) return $this->sendResponse([
             'rekapitulasi' => [new RekapitulasiResource($rekapitulasi)]
+        ], 'success');
+        return $this->sendError('Data tidak ditemukan!');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Rekapitulasi  $rekapitulasi
+     * @return \Illuminate\Http\Response
+     */
+    public function detailRekapKehadiran(Rekapitulasi $rekapitulasi)
+    {
+        if($rekapitulasi) return $this->sendResponse([
+            'rekapitulasi' => new RekapitulasiKehadiran($rekapitulasi)
         ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }
