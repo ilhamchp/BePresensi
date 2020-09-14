@@ -28,27 +28,42 @@ class Jadwal extends JsonResource
     {
         return [
             'kd_jadwal' => $this->kd_jadwal,
-            // 'kd_kelas' => new KelasCollection(Kelas::find($this->kelas)),
-            'kd_kelas' => [
-                'kelas' => $this->kelas
-            ],
-            'kd_hari' => new HariCollection(Hari::find($this->hari)),
-            'kd_sesi_mulai' => [
-                'sesi' => [new SesiResource($this->sesiMulai)]
-            ],
-            'kd_sesi_berakhir' => [
-                'sesi' => [new SesiResource($this->sesiBerakhir)]
-            ],
-            'kd_ruang' => new RuangCollection(Ruang::find($this->ruang)),
-            'kd_matakuliah' => new MatakuliahCollection(Matakuliah::find($this->matakuliah)),
-            // 'kd_dosen_pengajar' => new DosenCollection(Dosen::find($this->dosen)),
-            'kd_dosen_pengajar' => [
-                'dosen' => $this->dosen
-            ],
+            'kd_kelas' => $this->kd_kelas,
+            'kd_hari' => $this->kd_hari,
+            'sesi_mulai' => $this->sesiMulai,
+            'sesi_berakhir' => $this->sesiBerakhir,
+            'kd_ruang' => $this->kd_ruang,
+            'kd_matakuliah' => $this->kd_matakuliah,
+            'kd_dosen_pengajar' => $this->kd_dosen_pengajar,
             'jenis_perkuliahan' => $this->jenis_perkuliahan,
             'sesi_presensi_dibuka' => (boolean) $this->sesi_presensi_dibuka,
             'toleransi_keterlambatan' => (integer) $this->toleransi_keterlambatan,
-            'jam_presensi_dibuka' => (string) $this->jam_presensi_dibuka
+            'jam_presensi_dibuka' => (string) $this->jam_presensi_dibuka,
+            $this->mergeWhen($this->kelas()->exists() && $this->kelas->count()!=0, function() {
+                return [
+                    'kelas' => $this->kelas
+                ];
+            }),
+            $this->mergeWhen($this->hari()->exists() && $this->hari->count()!=0, function() {
+                return [
+                    'hari' => $this->hari
+                ];
+            }),
+            $this->mergeWhen($this->ruang()->exists() && $this->ruang->count()!=0, function() {
+                return [
+                    'ruang' => $this->ruang
+                ];
+            }),
+            $this->mergeWhen($this->matakuliah()->exists() && $this->matakuliah->count()!=0, function() {
+                return [
+                    'matakuliah' => $this->matakuliah
+                ];
+            }),
+            $this->mergeWhen($this->dosen()->exists() && $this->dosen->count()!=0, function() {
+                return [
+                    'dosen' => $this->dosen
+                ];
+            }),
         ];
     }
 }
