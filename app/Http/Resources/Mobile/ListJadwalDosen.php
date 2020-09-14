@@ -4,6 +4,7 @@ namespace App\Http\Resources\Mobile;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Ruang as RuangResource;
+use App\Http\Resources\BeritaAcara as BeritaAcaraResource;
 
 class ListJadwalDosen extends JsonResource
 {
@@ -27,7 +28,7 @@ class ListJadwalDosen extends JsonResource
             'toleransi_keterlambatan' => (integer) $this->toleransi_keterlambatan,
             $this->mergeWhen($this->beritaAcara()->exists() && $this->beritaAcara->count()!=0, function() {
                 return [
-                    'berita_acara' => $this->beritaAcara
+                    'berita_acara' => $this->beritaAcara[0]
                 ];
             })
         ];
