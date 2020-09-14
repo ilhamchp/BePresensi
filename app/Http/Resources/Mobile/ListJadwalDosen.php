@@ -30,6 +30,11 @@ class ListJadwalDosen extends JsonResource
                 return [
                     'berita_acara' => $this->beritaAcara[0]
                 ];
+            }),
+            $this->mergeWhen((!$this->beritaAcara()->exists()) && $this->beritaAcara->count()==0, function() {
+                return [
+                    'berita_acara' => null
+                ];
             })
         ];
     }
