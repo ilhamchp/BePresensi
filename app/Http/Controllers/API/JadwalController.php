@@ -154,7 +154,7 @@ class JadwalController extends BaseController
         $jadwal->jenis_perkuliahan = $request->jenis_perkuliahan;
         $jadwal->sesi_presensi_dibuka = $request->sesi_presensi_dibuka;
         $jadwal->toleransi_keterlambatan = $request->toleransi_keterlambatan;
-        if($request->jam_presensi_dibuka) $jadwal->jam_presensi_dibuka = $request->jam_presensi_dibuka;
+        if($request->toleransi_keterlambatan) $jadwal->toleransi_keterlambatan = $request->toleransi_keterlambatan;
         $jadwal->kelas()->associate($kelas);
         $jadwal->hari()->associate($hari);
         $jadwal->sesiMulai()->associate($sesiMulai);
