@@ -23,7 +23,7 @@ class AuthController extends BaseController
         $token = auth()->login($user);
 
         return $this->sendResponse([
-            'auth' => [new AuthResource($token)]
+            'auth' => new AuthResource($token)
         ], 'success');
     }
 
@@ -84,7 +84,7 @@ class AuthController extends BaseController
         }
 
         return $this->sendResponse([
-            'auth' => [new AuthResource($token)]
+            'auth' => new AuthResource($token)
         ], 'success');
     }
 
@@ -108,7 +108,7 @@ class AuthController extends BaseController
     public function refresh()
     {
         return $this->sendResponse([
-            'auth' => [new AuthResource(auth()->refresh())]
+            'auth' => new AuthResource(auth()->refresh())
         ], 'success');
     }
 }
