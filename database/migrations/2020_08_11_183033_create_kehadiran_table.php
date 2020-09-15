@@ -26,6 +26,10 @@ class CreateKehadiranTable extends Migration
         });
 
         Schema::table('kehadiran', function (Blueprint $table) {
+            $table->foreign('nim')->references('nim')->on('mahasiswa')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('kd_jadwal')->references('kd_jadwal')->on('jadwal')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('kd_sesi')->references('kd_sesi')->on('sesi')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('kd_status_presensi')->references('kd_status_presensi')->on('status_presensi')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('kd_surat_izin')->references('kd_surat_izin')->on('surat_izin')->onUpdate('cascade')->onDelete('cascade');
         });
     }
