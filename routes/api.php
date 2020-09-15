@@ -20,6 +20,7 @@ Route::group(['prefix' => 'mobile'], function () {
     Route::get('/jadwal/dosen/{dosen}', 'API\JadwalController@jadwalDosen');
     Route::post('/jadwal/sesi-presensi/buka/{jadwal}','API\JadwalController@bukaSesiPresensi');
     Route::post('/jadwal/sesi-presensi/tutup/{jadwal}','API\JadwalController@tutupSesiPresensi');
+    Route::post('/berita-acara/buat/','API\BeritaAcaraController@buatBeritaAcara');
     Route::get('/rekapitulasi-kehadiran/detail/{rekapitulasi}', 'API\RekapitulasiController@detailRekapKehadiran');
     Route::get('/riwayat-kehadiran/{mahasiswa}', 'API\KehadiranController@riwayatKehadiran');
     Route::get('/riwayat-kehadiran/detail/{kehadiran}', 'API\KehadiranController@detailRiwayatKehadiran');
