@@ -190,6 +190,7 @@ class JadwalController extends BaseController
         // Update status sesi presensi
         $jadwal->sesi_presensi_dibuka = true;
         $jadwal->jam_presensi_dibuka = $jam_sekarang->format('H:i:s');
+        $jadwal->jam_presensi_ditutup = null;
         $jadwal->update();
         return $this->sendResponse([
             'jadwal' => $jadwal
@@ -207,9 +208,13 @@ class JadwalController extends BaseController
         if($jadwal==null) return $this->sendError('Data jadwal tidak ditemukan!');
         if($jadwal->sesi_presensi_dibuka == false) return $this->sendError('Sesi presensi telah ditutup!');
 
+        // Mengambil waktu sekarang
+        $date = Carbon::now()->timezone('Asia/Jakarta');
+        $jam_sekarang = $date->format('H:i:s');
+
         // Tutup sesi presensi
         $jadwal->sesi_presensi_dibuka = false;
-        $jadwal->jam_presensi_dibuka = null;
+        $jadwal->jam_presensi_ditutup = $jam_sekarang;
         $jadwal->update();
 
         return $this->sendResponse([
@@ -236,6 +241,7 @@ class JadwalController extends BaseController
             ],
             'in' => 'Attribut :attribute harus berupa Teori / Praktek.',
             'date_format' => 'Atribut :attribute harus dalam format :format.',
+            'after_or_equal' => 'Attribut :attribute tidak boleh lebih kecil dari :date',
         ];
         $validator = Validator::make($request->all(), [
             'kd_kelas' => 'required|exists:App\Kelas,kd_kelas',
@@ -251,7 +257,8 @@ class JadwalController extends BaseController
             ],
             'sesi_presensi_dibuka' => 'boolean',
             'toleransi_keterlambatan' => 'numeric|gte:10',
-            'jam_presensi_dibuka' => 'date_format:H:i:s'
+            'jam_presensi_dibuka' => 'date_format:H:i:s',
+            'jam_presensi_ditutup' => 'date_format:H:i:s|after_or_equal:jam_presensi_dibuka'
         ],$messages);
    
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
@@ -285,6 +292,8 @@ class JadwalController extends BaseController
         $jadwal->kd_jadwal = $kd_jadwal;
         $jadwal->jenis_perkuliahan = $request->jenis_perkuliahan;
         if($request->sesi_presensi_dibuka!=null) $jadwal->sesi_presensi_dibuka = $request->sesi_presensi_dibuka;
+        if($request->jam_presensi_dibuka!=null) $jadwal->jam_presensi_dibuka = $request->jam_presensi_dibuka;
+        if($request->jam_presensi_ditutup!=null) $jadwal->jam_presensi_ditutup = $request->jam_presensi_ditutup;
         if($request->toleransi_keterlambatan!=null){
             $jadwal->toleransi_keterlambatan = $request->toleransi_keterlambatan;
         }else{
@@ -338,6 +347,7 @@ class JadwalController extends BaseController
             'in' => 'Attribut :attribute harus berupa Teori / Praktek.',
             'boolean' => 'Atribut \':attribute\' hanya boleh bernilai true / false',
             'date_format' => 'Atribut :attribute harus dalam format :format.',
+            'after_or_equal' => 'Attribut :attribute tidak boleh lebih kecil dari :date',
         ];
         $validator = Validator::make($request->all(), [
             'kd_jadwal' => 'required|exists:App\Jadwal,kd_jadwal',
@@ -354,7 +364,8 @@ class JadwalController extends BaseController
             ],
             'sesi_presensi_dibuka' => 'boolean',
             'toleransi_keterlambatan' => 'numeric|gte:10',
-            'jam_presensi_dibuka' => 'date_format:H:i:s'
+            'jam_presensi_dibuka' => 'date_format:H:i:s',
+            'jam_presensi_ditutup' => 'date_format:H:i:s|after_or_equal:jam_presensi_dibuka'
         ],$messages);
    
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
@@ -384,6 +395,7 @@ class JadwalController extends BaseController
         if($request->sesi_presensi_dibuka!=null) $jadwal->sesi_presensi_dibuka = $request->sesi_presensi_dibuka;
         if($request->toleransi_keterlambatan!=null) $jadwal->toleransi_keterlambatan = $request->toleransi_keterlambatan;
         if($request->jam_presensi_dibuka) $jadwal->jam_presensi_dibuka = $request->jam_presensi_dibuka;
+        if($request->jam_presensi_ditutup) $jadwal->jam_presensi_ditutup = $request->jam_presensi_ditutup;
         $jadwal->kelas()->associate($kelas);
         $jadwal->hari()->associate($hari);
         $jadwal->sesiMulai()->associate($sesiMulai);
