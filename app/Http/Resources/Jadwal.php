@@ -39,6 +39,7 @@ class Jadwal extends JsonResource
             'sesi_presensi_dibuka' => (boolean) $this->sesi_presensi_dibuka,
             'toleransi_keterlambatan' => (integer) $this->toleransi_keterlambatan,
             'jam_presensi_dibuka' => (string) $this->jam_presensi_dibuka,
+            'jam_presensi_ditutup' => (string) $this->jam_presensi_ditutup,
             $this->mergeWhen($this->kelas()->exists() && $this->kelas->count()!=0, function() {
                 return [
                     'kelas' => $this->kelas
