@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'mobile'], function () {
     Route::get('/jadwal/mahasiswa/{mahasiswa}', 'API\JadwalController@jadwalMahasiswa');
     Route::get('/jadwal/dosen/{dosen}', 'API\JadwalController@jadwalDosen');
+    Route::post('/jadwal/sesi-presensi/buka/{jadwal}','API\JadwalController@bukaSesiPresensi');
+    Route::post('/jadwal/sesi-presensi/tutup/{jadwal}','API\JadwalController@tutupSesiPresensi');
     Route::get('/rekapitulasi-kehadiran/detail/{rekapitulasi}', 'API\RekapitulasiController@detailRekapKehadiran');
     Route::get('/riwayat-kehadiran/{mahasiswa}', 'API\KehadiranController@riwayatKehadiran');
     Route::get('/riwayat-kehadiran/detail/{kehadiran}', 'API\KehadiranController@detailRiwayatKehadiran');
