@@ -22,7 +22,7 @@ class CreateKehadiranTable extends Migration
             $table->string('kd_surat_izin')->nullable();
             $table->date('tgl_presensi');
             $table->time('jam_presensi')->nullable();
-            $table->time('jam_presensi_dibuka');
+            $table->time('jam_presensi_dibuka')->nullable();
         });
 
         Schema::table('kehadiran', function (Blueprint $table) {
