@@ -27,10 +27,9 @@ class ListJadwalMahasiswa extends JsonResource
             'toleransi_keterlambatan' => (integer) $this->toleransi_keterlambatan,
             $this->mergeWhen($this->kehadiran()->exists() && $this->kehadiran->count()!=0, function() {
                 return [
-                    'kehadiran' => [ 
-                        'hadir' => $this->kehadiran->where('kd_status_presensi','H')->count() .
-                            ' dari ' . $this->kehadiran->count() . ' sesi'
-                    ]
+                    'kehadiran' => 'hadir ' . $this->kehadiran->where('kd_status_presensi','H')->count() .
+                    ' dari ' . $this->kehadiran->count() . ' sesi',
+                    'sudah_presensi' => $this->kehadiran->first()->jam_presensi != $this->kehadiran->first()->jam_presensi_dibuka
                 ];
             })
         ];
