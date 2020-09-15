@@ -57,7 +57,8 @@ class Jadwal extends Model
         'jenis_perkuliahan',
         'sesi_presensi_dibuka',
         'toleransi_keterlambatan',
-        'jam_presensi_dibuka'
+        'jam_presensi_dibuka',
+        'jam_presensi_ditutup'
     ];
 
     /**
