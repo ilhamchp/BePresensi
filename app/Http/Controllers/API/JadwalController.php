@@ -129,15 +129,16 @@ class JadwalController extends BaseController
 
         // Melakukan inisialisasi absensi kelas
         $mhs_kelas = Mahasiswa::where('kd_kelas', $jadwal->kd_kelas)->get();
-        $is_initialized = true;
-        $jumlah_sesi = $jadwal->kd_sesi_berakhir - $jadwal->kd_sesi_mulai + 1;
+        $jumlah_sesi = $jadwal->kd_sesi_berakhir - $jadwal->kd_sesi_mulai;
+        $jumlah_sesi = $jumlah_sesi + 1;
+        $data_sesi_hilang = array();
+        $presensi_kelas = array();
         foreach($mhs_kelas as $mhs){
             $kehadiran = Kehadiran::where('nim',$mhs->nim)
             ->where('kd_jadwal', $jadwal->kd_jadwal)
             ->where('tgl_presensi', $tanggal_sekarang)
             ->get();
-            if($kehadiran->count()==0){
-                $is_initialized = false;
+            if($kehadiran->count()==0){ // Jika data kehadiran masih kosong
                 for($sesi = $jadwal->kd_sesi_mulai;
                     $sesi <= $jadwal->kd_sesi_berakhir;
                     $sesi++){
@@ -150,9 +151,41 @@ class JadwalController extends BaseController
                     $data_presensi['jam_presensi_dibuka'] = $jam_sekarang->format('H:i:s');
                     $presensi_kelas[] = $data_presensi;
                 }
+            }else if($kehadiran->count() < $jumlah_sesi){ // Jika data kehadiran kurang
+                $sesi_hilang = array();
+                $missing = 0;
+                $found = false;
+                for($sesi = $jadwal->kd_sesi_mulai;
+                    $sesi <= $jadwal->kd_sesi_berakhir;
+                    $sesi++){                    
+                    foreach($kehadiran as $data_hadir){
+                        if(intval($data_hadir->kd_sesi) == $sesi){
+                            $found = true;
+                            $missing = 0;
+                            break;
+                        }else{
+                            $found = false;
+                            $missing = $sesi;
+                        }
+                    }
+                    if((!$found) && ($missing!=0)){
+                        $sesi_hilang[] = $missing;
+                    }
+                }
+                foreach($sesi_hilang as $data_sesi){
+                    $data_presensi['nim'] = $mhs->nim;
+                    $data_presensi['kd_jadwal'] = $jadwal->kd_jadwal;
+                    $data_presensi['kd_sesi'] = $data_sesi;
+                    $data_presensi['kd_status_presensi'] = 'A';
+                    $data_presensi['tgl_presensi'] = $tanggal_sekarang;
+                    $data_presensi['jam_presensi'] = $jam_sekarang->format('H:i:s');
+                    $data_presensi['jam_presensi_dibuka'] = $jam_sekarang->format('H:i:s');
+                    $data_sesi_hilang[] = $data_presensi;
+                }
             }
         }
-        if(!$is_initialized) Kehadiran::insert($presensi_kelas);
+        if(count($data_sesi_hilang)!=0) Kehadiran::insert($data_sesi_hilang);
+        if(count($presensi_kelas)!=0) Kehadiran::insert($presensi_kelas);
 
         // Update status sesi presensi
         $jadwal->sesi_presensi_dibuka = true;
