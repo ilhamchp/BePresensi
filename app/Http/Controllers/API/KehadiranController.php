@@ -238,4 +238,113 @@ class KehadiranController extends BaseController
         ],'success');
         return $this->sendError('Data tidak ditemukan!');
     }
+
+    /**
+     * Menampilkan detail kehadiran sebuah sesi perkuliahan.
+     * Digunakan untuk aplikasi mobile.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function catatPresensi(Request $request)
+    {
+        // Validasi kelengkapan data
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+            'exists' => 'Atribut :attribute tidak terdapat di database.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'nim' => 'required|exists:App\Mahasiswa,nim',
+            'kd_jadwal' => 'required|exists:App\Jadwal,kd_jadwal',
+        ],$messages);
+   
+        if($validator->fails()) return $this->sendError('', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+
+
+        // Mengambil data jadwal
+        $jadwal = Jadwal::find($request->kd_jadwal);
+        if($jadwal->sesi_presensi_dibuka==false) return $this->sendError('Sesi presensi belum dibuka!');
+
+        // Mengambil data waktu sekarang
+        $date = Carbon::now()->timezone('Asia/Jakarta');
+        $tanggal_sekarang = $date->format('Y-m-d');
+        $jam_sekarang = Carbon::createFromFormat('H:i:s', $date->format('H:i:s'), 'Asia/Jakarta');
+
+        // Mengambil data kehadiran sekarang
+        $kehadiran = Kehadiran::where('nim',$request->nim)
+        ->where('kd_jadwal', $request->kd_jadwal)
+        ->where('tgl_presensi', $tanggal_sekarang)
+        ->get();
+
+        if($kehadiran->count() == 0) return $this->sendError('Silahkan ulangi proses buka sesi presensi!'); 
+
+        // Mengambil data sesi mulai, berakhir, dan toleransi
+        // keterlambatan jadwal
+        $sesi_mulai = $jadwal->kd_sesi_mulai;
+        $sesi_berakhir = $jadwal->kd_sesi_berakhir;
+        $toleransi_keterlambatan = $jadwal->toleransi_keterlambatan;
+        $jam_presensi_dibuka = Carbon::createFromFormat('H:i:s', $jadwal->jam_presensi_dibuka, 'Asia/Jakarta');
+        $jam_batas_toleransi = Carbon::createFromFormat('H:i:s', $jadwal->jam_presensi_dibuka, 'Asia/Jakarta');
+        $jam_batas_toleransi->addMinutes(intval($toleransi_keterlambatan));
+
+        // Validasi data
+        $jumlah_sesi = ($sesi_berakhir - $sesi_mulai) + 1;
+        if($kehadiran->count() == 0) return $this->sendError('Silahkan ulangi proses buka sesi presensi!'); 
+
+        // Menentukan sesi yang dihadiri mhs 
+        $sesi_dihadiri = array();
+        for($kd_sesi = $sesi_mulai;
+            $kd_sesi <= $sesi_berakhir;
+            $kd_sesi++){
+
+            $sesi = Sesi::find($kd_sesi);
+            $jam_mulai = Carbon::createFromFormat('H:i:s', $sesi->jam_mulai, 'Asia/Jakarta');
+            $jam_berakhir = Carbon::createFromFormat('H:i:s',$sesi->jam_berakhir, 'Asia/Jakarta');
+
+            if($jam_sekarang->lessThanOrEqualTo($jam_berakhir)){ // Cek apakah telat
+                if($kd_sesi == $sesi_mulai){ // Cek apakah jam pertama
+                    if(($jam_sekarang->greaterThanOrEqualTo($jam_presensi_dibuka))
+                    && ($jam_sekarang->lessThanOrEqualTo($jam_batas_toleransi))){ // Cek apakah telat jam pertama
+                        for($kd_sesi_dihadiri = $kd_sesi;
+                            $kd_sesi_dihadiri <= $sesi_berakhir;
+                            $kd_sesi_dihadiri++){
+                            $sesi_dihadiri[] = $kd_sesi_dihadiri;
+                        }
+                        break;
+                    }else{ // Jika telat
+                        // Dianggap di jam perkuliahan berikutnya
+                    }
+                }else{ // Jika bukan jam pertama
+                    for($kd_sesi_dihadiri = $kd_sesi;
+                        $kd_sesi_dihadiri <= $sesi_berakhir;
+                        $kd_sesi_dihadiri++){
+                        $sesi_dihadiri[] = $kd_sesi_dihadiri;
+                    }
+                    break;
+                }
+            }else{ // Jika telat
+                // Dianggap di jam kehadiran berikutnya
+            }
+        }
+
+        if(count($sesi_dihadiri) !=0){
+            foreach($kehadiran as $data_kehadiran){
+                foreach($sesi_dihadiri as $sesi_hadir){
+                    if($data_kehadiran->kd_sesi == $sesi_hadir){
+                        $data_kehadiran->kd_status_presensi = 'H';
+                        $data_kehadiran->tgl_presensi = $tanggal_sekarang;
+                        $data_kehadiran->jam_presensi = $jam_sekarang->format('H:i:s');
+                        $data_kehadiran->update();
+                    }
+                }
+            }
+        }else{
+            return $this->sendError('Gagal catat presensi!');
+        }
+
+        return $this->sendResponse([
+            new KehadiranCollection($kehadiran)
+        ], 'Berhasil catat presensi!');
+    }
 }
