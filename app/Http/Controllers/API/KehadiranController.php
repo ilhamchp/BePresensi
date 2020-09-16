@@ -240,7 +240,7 @@ class KehadiranController extends BaseController
     }
 
     /**
-     * Menampilkan detail kehadiran sebuah sesi perkuliahan.
+     * Mencatat presensi mahasiswa dalam perkuliahan.
      * Digunakan untuk aplikasi mobile.
      * 
      * @param  \Illuminate\Http\Request  $request
