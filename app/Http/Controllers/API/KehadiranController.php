@@ -336,6 +336,10 @@ class KehadiranController extends BaseController
                         $data_kehadiran->tgl_presensi = $tanggal_sekarang;
                         $data_kehadiran->jam_presensi = $jam_sekarang->format('H:i:s');
                         $data_kehadiran->update();
+                    }else{
+                        $data_kehadiran->tgl_presensi = $tanggal_sekarang;
+                        $data_kehadiran->jam_presensi = $jam_sekarang->format('H:i:s');
+                        $data_kehadiran->update();
                     }
                 }
             }
