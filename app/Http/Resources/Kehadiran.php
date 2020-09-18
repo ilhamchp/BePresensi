@@ -26,22 +26,39 @@ class Kehadiran extends JsonResource
     {
         return [
             'kd_kehadiran' => $this->kd_kehadiran,
-            'nim'=> [
-                'mahasiswa' => $this->mahasiswa
-            ],
-            'kd_jadwal'=> [
-                'jadwal' => $this->jadwal
-            ],
-            'kd_sesi'=> [
-                'sesi' => $this->sesi
-            ],
-            'kd_status_presensi'=> new StatusPresensiCollection(StatusPresensi::find($this->statusPresensi)),
-            'kd_surat_izin'=> [
-                'surat_izin' => $this->suratIzin
-            ],
+            'nim'=> $this->nim,
+            'kd_jadwal'=> $this->kd_jadwal,
+            'kd_sesi'=> $this->kd_sesi,
+            'kd_status_presensi'=> $this->kd_status_presensi,
+            'kd_surat_izin'=> $this->kd_surat_izin,
             'tgl_presensi'=> $this->tgl_presensi,
             'jam_presensi'=> $this->jam_presensi,
-            'jam_presensi_dibuka' => $this->jam_presensi_dibuka
+            'jam_presensi_dibuka' => $this->jam_presensi_dibuka,
+            $this->mergeWhen($this->mahasiswa()->exists() && $this->mahasiswa->count()!=0, function() {
+                return [
+                    'mahasiswa' => $this->mahasiswa
+                ];
+            }),
+            $this->mergeWhen($this->jadwal()->exists() && $this->jadwal->count()!=0, function() {
+                return [
+                    'jadwal' => $this->jadwal
+                ];
+            }),
+            $this->mergeWhen($this->sesi()->exists() && $this->sesi->count()!=0, function() {
+                return [
+                    'sesi' => $this->sesi
+                ];
+            }),
+            $this->mergeWhen($this->statusPresensi()->exists() && $this->statusPresensi->count()!=0, function() {
+                return [
+                    'status_presensi' => $this->statusPresensi
+                ];
+            }),
+            $this->mergeWhen($this->suratIzin()->exists() && $this->suratIzin->count()!=0, function() {
+                return [
+                    'surat_izin' => $this->suratIzin
+                ];
+            }),
         ];
     }
 }
