@@ -347,8 +347,8 @@ class KehadiranController extends BaseController
             return $this->sendError('Gagal catat presensi!');
         }
 
-        return $this->sendResponse([
+        return $this->sendResponse(
             new KehadiranCollection($kehadiran)
-        ], 'Berhasil catat presensi!');
+        , 'Berhasil catat presensi!');
     }
 }
