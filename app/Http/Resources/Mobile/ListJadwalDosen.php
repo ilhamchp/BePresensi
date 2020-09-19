@@ -37,6 +37,18 @@ class ListJadwalDosen extends JsonResource
                 return [
                     'berita_acara' => null
                 ];
+            }),
+            $this->mergeWhen($this->kehadiran()->exists() && $this->kehadiran->count()!=0, function() {
+                return [
+                    'kehadiran' => $this->kehadiran->where('kd_status_presensi','H')->unique('nim')->count()
+                    . " dari ". $this->kehadiran->unique('nim')->count()
+                    . " mahasiswa hadir."
+                    ];
+            }),
+            $this->mergeWhen((!$this->kehadiran()->exists()) && $this->kehadiran->count()==0, function() {
+                return [
+                    'kehadiran' => null
+                ];
             })
         ];
     }
