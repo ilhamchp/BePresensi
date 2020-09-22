@@ -81,7 +81,13 @@ class JadwalController extends BaseController
             'beritaAcara' => function($query) use ($tanggal){
                 $query->where('tgl_pertemuan',$tanggal);
             }
-        ])->get();
+        ])
+        ->with([
+            'kehadiran' => function($query) use ($tanggal){
+                $query->where('tgl_presensi', $tanggal);
+            }
+        ])
+        ->get();
         if(!$jadwal) return $this->sendError('Tidak ada matakuliah hari ini!');
         return new ListJadwalDosenCollection($jadwal);
     }

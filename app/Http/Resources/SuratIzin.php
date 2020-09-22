@@ -29,7 +29,7 @@ class SuratIzin extends JsonResource
             'tgl_selesai' => (string) $this->tgl_selesai,
             'jam_mulai' => (string) $this->jam_mulai,
             'jam_selesai' => (string) $this->jam_selesai,
-            'status_surat' => $this->status_surat,
+            'kd_status_surat' => $this->kd_status_surat,
             'catatan_surat' => $this->catatan_surat,
             'catatan_wali_dosen' => $this->catatan_wali_dosen,
             'foto_surat' => $this->foto_surat,

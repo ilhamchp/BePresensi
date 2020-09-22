@@ -86,7 +86,7 @@ class SuratIzinController extends BaseController
         $suratIzin->statusSurat()->associate($status_surat);
         $suratIzin->save();
         return $this->sendResponse([
-            'surat_izin' => [new SuratIzinResource($suratIzin)]
+            'surat_izin' => new SuratIzinResource($suratIzin)
         ], 'Berhasil menyimpan data!');
     }
 
@@ -99,7 +99,7 @@ class SuratIzinController extends BaseController
     public function show(SuratIzin $suratIzin)
     {
         if($suratIzin) return $this->sendResponse([
-            'surat_izin' => [new SuratIzinResource($suratIzin)]
+            'surat_izin' => new SuratIzinResource($suratIzin)
         ], 'success');
         return $this->sendError('Data surat izin tidak ditemukan!');
     }
@@ -156,7 +156,7 @@ class SuratIzinController extends BaseController
         $suratIzin->statusSurat()->associate($status_surat);
         $suratIzin->update();
         return $this->sendResponse([
-            'surat_izin' => [new SuratIzinResource($suratIzin)]
+            'surat_izin' => new SuratIzinResource($suratIzin)
         ], 'Berhasil memperbaharui data!');
     }
 
