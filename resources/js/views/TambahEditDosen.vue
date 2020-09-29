@@ -17,27 +17,18 @@
             required
           ></v-text-field>
           <v-text-field
-            ref="nim"
-            v-model="nim"
+            ref="NIP"
+            v-model="nip"
             :rules="[
-              () => !!nim || 'This field is required',
-              () => !!nim && nim.length <= 9 || 'NIM must be less than 9 characters',
+              () => !!nip || 'This field is required',
+              () => !!nip && nip.length <= 18 || 'NIP must be less than 18 characters',
               nimCheck
             ]"
-            label="NIM"
-            counter="9"
+            label="NIP"
+            counter="18"
             required
           ></v-text-field>
           <br>
-          <v-select
-            ref="id-kelas"
-            v-model="idkelas"
-            :rules="[() => !!idkelas || 'This field is required']"
-            :items="items"
-            label="ID Kelas"
-            placeholder="Select..."
-            required
-          ></v-select>
           <v-select
             ref="id-user"
             v-model="iduser"
@@ -50,7 +41,7 @@
         </v-card-text>
         <v-divider class="mt-12"></v-divider>
         <v-card-actions>
-          <v-btn text to=/mahasiswa>
+          <v-btn text to=/dosen>
             Cancel
           </v-btn>
           <v-spacer></v-spacer>
