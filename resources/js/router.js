@@ -12,6 +12,12 @@ import Presensi from './views/Presensi.vue'
 import StaffTataUsaha from './views/StaffTataUsaha.vue'
 import SuratIzin from './views/SuratIzin.vue'
 import User from './views/User.vue'
+import TambahEditMahasiswa from './views/TambahEditMahasiswa.vue'
+import TambahEditBeacon from './views/TambahEditBeacon.vue'
+import TambahEditDosen from './views/TambahEditDosen.vue'
+import TambahEditKelas from './views/TambahEditKelas.vue'
+import TambahEditMatakuliah from './views/TambahEditMatakuliah.vue'
+import TambahUser from './views/TambahUser.vue'
 
 Vue.use(VueRouter)
 
@@ -28,7 +34,13 @@ const router = new VueRouter({
         { path: '/presensi', name: 'presensi', component: Presensi},
         { path: '/staff-tata-usaha', name: 'staff-tata-usaha', component: StaffTataUsaha},
         { path: '/surat-izin', name: 'surat-izin', component: SuratIzin},
-        { path: '/user', name: 'user', component: User}
+        { path: '/user', name: 'user', component: User},
+        { path: '/tambah-edit-mahasiswa', name: 'tambah-edit-mahasiswa', component: TambahEditMahasiswa},
+        { path: '/tambah-edit-beacon', name: 'tambah-edit-beacon', component: TambahEditBeacon},
+        { path: '/tambah-edit-dosen', name: 'tambah-edit-dosen', component: TambahEditDosen},
+        { path: '/tambah-edit-kelas', name: 'tambah-edit-kelas', component: TambahEditKelas},
+        { path: '/tambah-edit-matakuliah', name: 'tambah-edit-matakuliah', component: TambahEditMatakuliah},
+        { path: '/tambah-user', name: 'tambah-user', component: TambahUser},
     ]
 })
 
