@@ -8,6 +8,7 @@ use App\Http\Resources\JadwalCollection;
 use App\Http\Resources\SesiCollection;
 use App\Http\Resources\StatusPresensiCollection;
 use App\Http\Resources\SuratIzinCollection;
+use App\Http\Resources\Jadwal as JadwalResource;
 use App\Mahasiswa;
 use App\Jadwal;
 use App\Sesi;
@@ -41,7 +42,7 @@ class Kehadiran extends JsonResource
             }),
             $this->mergeWhen($this->jadwal()->exists() && $this->jadwal->count()!=0, function() {
                 return [
-                    'jadwal' => $this->jadwal
+                    'jadwal' => new JadwalResource($this->jadwal)
                 ];
             }),
             $this->mergeWhen($this->sesi()->exists() && $this->sesi->count()!=0, function() {

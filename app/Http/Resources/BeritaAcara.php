@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\Jadwal as JadwalResource;
 
 class BeritaAcara extends JsonResource
 {
@@ -26,7 +27,7 @@ class BeritaAcara extends JsonResource
             'jam_presensi_ditutup' => $this->jam_presensi_ditutup,
             $this->mergeWhen($this->jadwal()->exists() && $this->jadwal->count()!=0, function() {
                 return [
-                    'jadwal' => $this->jadwal
+                    'jadwal' => new JadwalResource($this->jadwal)
                 ];
             })
         ];
