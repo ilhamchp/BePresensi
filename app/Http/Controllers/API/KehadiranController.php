@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\KehadiranCollection;
 use App\Http\Resources\Kehadiran as KehadiranResource;
 use App\Http\Resources\Mobile\ListRiwayatKehadiranCollection;
+use App\Http\Resources\Mobile\PersentaseKehadiranCollection;
 use App\Http\Resources\Mobile\DetailRiwayatKehadiran;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Illuminate\Database\Eloquent\Collection;
@@ -350,5 +351,54 @@ class KehadiranController extends BaseController
         return $this->sendResponse(
             new KehadiranCollection($kehadiran)
         , 'Berhasil catat presensi!');
+    }
+
+    /**
+     * Menampilkan persentase kehadiran setiap sesi perkuliahan.
+     * Digunakan untuk aplikasi mobile.
+     * 
+     * @param  \App\Jadwal $jadwal
+     * @return \Illuminate\Http\Response
+     */
+    public function persentaseKehadiran(Jadwal $jadwal)
+    {
+        if($jadwal->sesi_presensi_dibuka==false) return $this->sendError('Sesi presensi belum dibuka!');
+
+        $sesi_mulai = $jadwal->kd_sesi_mulai;
+        $sesi_berakhir = $jadwal->kd_sesi_berakhir;
+
+        // Mengambil data waktu sekarang
+        $date = Carbon::now()->timezone('Asia/Jakarta');
+        $tanggal_sekarang = $date->format('Y-m-d');
+        
+        $collection = new Collection();
+        for($sesi = $sesi_mulai; $sesi<=$sesi_berakhir; $sesi++){
+            // Mengambil data kehadiran sekarang
+            $kehadiran = Kehadiran::where('kd_jadwal', $jadwal->kd_jadwal)
+            ->where('tgl_presensi', $tanggal_sekarang)
+            ->where('kd_sesi', $sesi)
+            ->get();
+            if($kehadiran->count() == 0) return $this->sendError('Silahkan ulangi proses buka sesi presensi!');
+            
+            // Menghitung jumlah total mhs dan mhs hadir
+            $jum_mahasiswa = $kehadiran->count();
+            $jum_hadir = $kehadiran->where('kd_status_presensi','H')->count();
+
+            // Menghitung persentase kehadiran
+            $perbandingan_kehadiran = $jum_hadir/$jum_mahasiswa;
+            $persentase_kehadiran = number_format( $perbandingan_kehadiran * 100, 0 ) . '%'; // change 0 to # of decimals
+
+            // Memasukan data ke objek
+            $collection->push(
+                (object)[
+                    'sesi' => $sesi,
+                    'persentase' => $persentase_kehadiran
+                ]
+            );
+        }
+
+        return $this->sendResponse(
+            new PersentaseKehadiranCollection($collection)
+        , 'Berhasil mengambil data!');
     }
 }
