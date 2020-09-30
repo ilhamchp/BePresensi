@@ -30,7 +30,15 @@ Route::group(['prefix' => 'mobile'], function () {
     Route::get('/presensi/daftar-hadir/','API\KehadiranController@daftarHadir');
     Route::get('/presensi/detail-kehadiran/{kehadiran}', 'API\KehadiranController@detailKehadiran');
     Route::post('/presensi/ubah-status/', 'API\KehadiranController@ubahStatusKehadiran');
-
+    Route::post('/surat-izin/ajukan-izin/', 'API\SuratIzinController@ajukanSuratIzin');
+    Route::post('/surat-izin/ajukan-dispen/', 'API\SuratIzinController@ajukanSuratDispen');
+    Route::post('/surat-izin/ajukan-sakit/', 'API\SuratIzinController@ajukanSuratSakit');
+    Route::post('/surat-izin/setujui-surat/', 'API\SuratIzinController@setujuiSurat');
+    Route::post('/surat-izin/tolak-surat/', 'API\SuratIzinController@tolakSurat');
+    Route::get('/surat-izin/daftar-surat/', 'API\SuratIzinController@daftarSuratIzin');
+    Route::get('/surat-izin/detail-surat/{suratIzin}', 'API\SuratIzinController@show');
+    Route::get('/surat-izin/surat-diproses/', 'API\SuratIzinController@daftarSuratDiproses');
+    Route::get('/surat-izin/surat-belum-diproses/', 'API\SuratIzinController@daftarSuratBelumDiproses');
     Route::get('/rekapitulasi-kehadiran/detail/{rekapitulasi}', 'API\RekapitulasiController@detailRekapKehadiran');
     Route::get('/riwayat-kehadiran/{mahasiswa}', 'API\KehadiranController@riwayatKehadiran');
 });
