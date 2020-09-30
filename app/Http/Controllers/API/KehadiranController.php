@@ -443,4 +443,51 @@ class KehadiranController extends BaseController
             new KehadiranCollection($kehadiran)
         , 'Berhasil menampilkan daftar hadir!');
     }
+
+    /**
+     * Mengubah status kehadiran mahasiswa.
+     * Digunakan untuk aplikasi mobile.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function ubahStatusKehadiran(Request $request)
+    {
+        // Validasi kelengkapan data
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+            'exists' => 'Atribut :attribute tidak terdapat di database.',
+            'boolean' => 'Atribut :attribute harus bernilai true atau false.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'kd_kehadiran' => 'required|exists:App\Kehadiran,kd_kehadiran',
+            'is_hadir' => 'required|boolean',
+        ],$messages);
+   
+        if($validator->fails()) return $this->sendError('', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+        
+        // Mengambil data waktu sekarang
+        $date = Carbon::now()->timezone('Asia/Jakarta');
+        $tanggal_sekarang = $date->format('Y-m-d');
+        $jam_sekarang = Carbon::createFromFormat('H:i:s', $date->format('H:i:s'), 'Asia/Jakarta');
+        
+        // Mengambil data kehadiran 
+        $kehadiran = Kehadiran::find($request->kd_kehadiran);
+        if($kehadiran->count() == 0) return $this->sendError('Data kehadiran tidak ditemukan!');
+        
+        // Menghubah status kehadiran
+        if($request->is_hadir){
+            $kehadiran->kd_status_presensi = 'H';
+        }else{
+            $kehadiran->kd_status_presensi = 'A';
+        }
+        $kehadiran->tgl_presensi = $tanggal_sekarang;
+        $kehadiran->jam_presensi = $jam_sekarang->format('H:i:s');
+        $kehadiran->update();
+        
+        return $this->sendResponse([
+            'kehadiran' => new KehadiranResource($kehadiran)
+        ],'Berhasil mengubah status kehadiran!');
+    }
 }

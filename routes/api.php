@@ -25,6 +25,8 @@ Route::group(['prefix' => 'mobile'], function () {
     Route::get('/presensi/presentase-kehadiran/{jadwal}','API\KehadiranController@persentaseKehadiran');
     Route::get('/presensi/daftar-hadir/','API\KehadiranController@daftarHadir');
     Route::get('/presensi/detail-kehadiran/{kehadiran}', 'API\KehadiranController@detailKehadiran');
+    Route::post('/presensi/ubah-status/', 'API\KehadiranController@ubahStatusKehadiran');
+
     Route::get('/rekapitulasi-kehadiran/detail/{rekapitulasi}', 'API\RekapitulasiController@detailRekapKehadiran');
     Route::get('/riwayat-kehadiran/{mahasiswa}', 'API\KehadiranController@riwayatKehadiran');
 });
