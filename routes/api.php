@@ -69,6 +69,7 @@ Route::apiResource('/rekapitulasi','API\RekapitulasiController');
 
 Route::get('/rekapitulasi-reload','API\RekapitulasiController@reloadDataRekapitulasi');
 Route::get('/rekapitulasi-refresh','API\RekapitulasiController@refreshDataRekapitulasi');
+Route::get('/dropdown-user','API\UserController@dropdownUser');
 Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 

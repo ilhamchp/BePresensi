@@ -4,11 +4,15 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Mahasiswa;
+use App\Dosen;
+use App\StaffTataUsaha;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserCollection;
 use App\Http\Resources\User as UserResource;
 use App\Http\Controllers\API\BaseController as BaseController;
 use Validator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Arr;
 
 class UserController extends BaseController
@@ -117,5 +121,29 @@ class UserController extends BaseController
     {
         $user->delete();
         return $this->sendResponse(null, 'Berhasil menghapus data!');
+    }
+
+    /**
+     * Menampilkan data untuk dropdown user.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function dropdownUser()
+    {
+        $users = User::all();
+        $dropdownUser = new Collection();
+        foreach($users as $user){
+            $staffTU = StaffTataUsaha::where('id_user', $user->id)->first();
+            if($staffTU==null){
+                $dosen = Dosen::where('id_user', $user->id)->first();
+                if($dosen==null){
+                    $mahasiswa = Mahasiswa::where('id_user', $user->id)->first();
+                    if($mahasiswa==null){
+                        $dropdownUser->push($user);
+                    }
+                }
+            }
+        }
+        return new UserCollection($dropdownUser);
     }
 }
