@@ -24,6 +24,7 @@ Route::group(['prefix' => 'mobile'], function () {
     Route::post('/jadwal/sesi-presensi/buka/{jadwal}','API\JadwalController@bukaSesiPresensi');
     Route::post('/jadwal/sesi-presensi/tutup/{jadwal}','API\JadwalController@tutupSesiPresensi');
     Route::post('/berita-acara/buat/','API\BeritaAcaraController@buatBeritaAcara');
+    Route::get('/berita-acara/detail/{beritaAcara}','API\BeritaAcaraController@show');
     Route::post('/presensi/catat/','API\KehadiranController@catatPresensi');
     Route::get('/presensi/presentase-kehadiran/{jadwal}','API\KehadiranController@persentaseKehadiran');
     Route::get('/presensi/daftar-hadir/','API\KehadiranController@daftarHadir');
