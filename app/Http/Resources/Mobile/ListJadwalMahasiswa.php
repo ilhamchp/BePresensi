@@ -4,6 +4,7 @@ namespace App\Http\Resources\Mobile;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\Ruang as RuangResource;
+use App\Http\Resources\Mobile\RiwayatKehadiran;
 
 class ListJadwalMahasiswa extends JsonResource
 {
@@ -27,9 +28,10 @@ class ListJadwalMahasiswa extends JsonResource
             'toleransi_keterlambatan' => (integer) $this->toleransi_keterlambatan,
             $this->mergeWhen($this->kehadiran()->exists() && $this->kehadiran->count()!=0, function() {
                 return [
-                    'kehadiran' => 'hadir ' . $this->kehadiran->where('kd_status_presensi','H')->count() .
+                    'kehadiran' => RiwayatKehadiran::collection($this->kehadiran),
+                    'sudah_presensi' => $this->kehadiran->first()->jam_presensi != $this->kehadiran->first()->jam_presensi_dibuka,
+                    'status_hadir' => 'Hadir ' . $this->kehadiran->where('kd_status_presensi','H')->count() .
                     ' dari ' . $this->kehadiran->count() . ' sesi',
-                    'sudah_presensi' => $this->kehadiran->first()->jam_presensi != $this->kehadiran->first()->jam_presensi_dibuka
                 ];
             })
         ];
