@@ -109,6 +109,38 @@ class JadwalController extends BaseController
     }
 
     /**
+     * Mengubah toleransi keterlambatan sebuah jadwal perkuliahan.
+     * Digunakan untuk aplikasi mobile.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function ubahToleransiKeterlambatan(Request $request)
+    {
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+            'numeric' => 'Atribut :attribute hanya boleh berupa angka.',
+            'exists' => 'Atribut :attribute tidak terdapat di database.',
+            'gte' => [
+                'numeric' => 'Atribut :attribute harus memiliki nilai sama dengan atau lebih besar dari :value.',
+            ],
+        ];
+        $validator = Validator::make($request->all(), [
+            'kd_jadwal' => 'required|exists:App\Jadwal,kd_jadwal',
+            'toleransi_keterlambatan' => 'required|numeric|gte:10'
+            ],$messages);
+   
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
+
+        $jadwal = Jadwal::find($request->kd_jadwal);
+        $jadwal->toleransi_keterlambatan = $request->toleransi_keterlambatan;
+        $jadwal->update();
+        return $this->sendResponse([
+            'jadwal' => new JadwalResource($jadwal)
+        ], 'Berhasil mengubah toleransi keterlambatan!');
+    }
+
+    /**
      * Membuka sesi presensi sebuah jadwal matakuliah.
      * Digunakan untuk aplikasi mobile.
      * @param  \App\Jadwal  $jadwal
