@@ -232,10 +232,10 @@ class KehadiranController extends BaseController
      * @param  \App\Kehadiran  $kehadiran
      * @return \Illuminate\Http\Response
      */
-    public function detailRiwayatKehadiran(Kehadiran $kehadiran)
+    public function detailKehadiran(Kehadiran $kehadiran)
     {
         if($kehadiran) return $this->sendResponse([
-            'kehadiran' => new DetailRiwayatKehadiran($kehadiran)
+            'kehadiran' => new KehadiranResource($kehadiran)
         ],'success');
         return $this->sendError('Data tidak ditemukan!');
     }
