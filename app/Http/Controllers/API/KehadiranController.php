@@ -203,6 +203,7 @@ class KehadiranController extends BaseController
         $startOfWeek = $date->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
         $awalMinggu = Carbon::parse($startOfWeek);
         $collection = new Collection();
+        $jadwalColl = new Collection();
         for($i=1;$i<=$kd_hari;$i++){
             $jadwal = Jadwal::where('kd_kelas','=',$mahasiswa->kd_kelas)
             ->where('kd_hari','=',$i)
@@ -212,11 +213,16 @@ class KehadiranController extends BaseController
                 }
             ])
             ->get();
-            if($jadwal->count()!=0){
+            foreach($jadwal as $data_jadwal){
+                if($data_jadwal->kehadiran->count()!=0){
+                    $jadwalColl ->push($data_jadwal);
+                }
+            }
+            if($jadwalColl->count()!=0){
                 $collection->push(
                     (object)[
                         'tanggal' => $awalMinggu->format('Y-m-d'),
-                        'jadwal' => $jadwal
+                        'jadwal' => $jadwalColl
                     ]
                 );
             }

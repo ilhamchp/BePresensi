@@ -3,8 +3,8 @@
 namespace App\Http\Resources\Mobile;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\Mobile\RiwayatKehadiran;
-
+use App\Http\Resources\Kehadiran as KehadiranResource;
+use App\Http\Resources\KehadiranCollection;
 class RiwayatJadwal extends JsonResource
 {
     /**
@@ -24,9 +24,7 @@ class RiwayatJadwal extends JsonResource
             'dosen' => $this->dosen,
             'jenis_perkuliahan' => $this->jenis_perkuliahan,
             $this->mergeWhen($this->kehadiran()->exists() && $this->kehadiran->count()!=0, function() {
-                return [
-                    'kehadiran' => RiwayatKehadiran::collection($this->kehadiran)
-                ];
+                return new KehadiranCollection($this->kehadiran);
             })
         ];
     }
