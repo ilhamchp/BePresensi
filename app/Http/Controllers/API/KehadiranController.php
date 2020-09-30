@@ -391,7 +391,7 @@ class KehadiranController extends BaseController
             // Memasukan data ke objek
             $collection->push(
                 (object)[
-                    'sesi' => $sesi,
+                    'kd_sesi' => $sesi,
                     'persentase' => $persentase_kehadiran
                 ]
             );
@@ -400,5 +400,47 @@ class KehadiranController extends BaseController
         return $this->sendResponse(
             new PersentaseKehadiranCollection($collection)
         , 'Berhasil mengambil data!');
+    }
+
+    /**
+     * Menampilkan daftar hadir pada sebuah sesi perkuliahan.
+     * Digunakan untuk aplikasi mobile.
+     * 
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function daftarHadir(Request $request)
+    {
+        // Validasi kelengkapan data
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+            'exists' => 'Atribut :attribute tidak terdapat di database.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'kd_sesi' => 'required|exists:App\Sesi,kd_sesi',
+            'kd_jadwal' => 'required|exists:App\Jadwal,kd_jadwal',
+        ],$messages);
+   
+        if($validator->fails()) return $this->sendError('', Arr::first(Arr::flatten($validator->messages()->get('*'))));       
+
+        // Mengambil data jadwal
+        $jadwal = Jadwal::find($request->kd_jadwal);
+        if($jadwal->sesi_presensi_dibuka==false) return $this->sendError('Sesi presensi belum dibuka!');
+
+        // Mengambil data waktu sekarang
+        $date = Carbon::now()->timezone('Asia/Jakarta');
+        $tanggal_sekarang = $date->format('Y-m-d');
+
+        // Mengambil data kehadiran sekarang
+        $kehadiran = Kehadiran::where('kd_jadwal', $jadwal->kd_jadwal)
+        ->where('tgl_presensi', $tanggal_sekarang)
+        ->where('kd_sesi', $request->kd_sesi)
+        ->get();
+        if($kehadiran->count() == 0) return $this->sendError('Silahkan ulangi proses buka sesi presensi!');
+            
+        return $this->sendResponse(
+            new KehadiranCollection($kehadiran)
+        , 'Berhasil menampilkan daftar hadir!');
     }
 }

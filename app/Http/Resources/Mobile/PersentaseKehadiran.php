@@ -15,7 +15,7 @@ class PersentaseKehadiran extends JsonResource
     public function toArray($request)
     {
         return [
-            'sesi' => $this->sesi,
+            'kd_sesi' => $this->kd_sesi,
             'persentase' => $this->persentase
         ];
     }
