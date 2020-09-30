@@ -93,6 +93,22 @@ class JadwalController extends BaseController
     }
 
     /**
+     * Menampilkan semua jadwal yang diampu dosen.
+     * Digunakan untuk aplikasi mobile.
+     * @param  \App\Dosen  $dosen
+     * @return \Illuminate\Http\Response
+     */
+    public function jadwalDiampuDosen(Dosen $dosen)
+    {
+        if(!$dosen) return $this->sendError('Data tidak ditemukan!');
+
+        $jadwal = Jadwal::where('kd_dosen_pengajar','=',$dosen->kd_dosen)
+        ->get();
+        if(!$jadwal) return $this->sendError('Tidak ada matakuliah yang diampu!');
+        return new ListJadwalDosenCollection($jadwal);
+    }
+
+    /**
      * Membuka sesi presensi sebuah jadwal matakuliah.
      * Digunakan untuk aplikasi mobile.
      * @param  \App\Jadwal  $jadwal
