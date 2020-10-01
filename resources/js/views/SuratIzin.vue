@@ -62,7 +62,7 @@ export default {
                 },
                 {
                     text: "Keterangan Presensi",
-                    value: "kd_jenis_izin",
+                    value: "jenis_izin.keterangan_presensi",
                     sortable: true,
                     groupable: false
                 }
@@ -95,7 +95,7 @@ export default {
                 .get("http://127.0.0.1:8000/api/surat-izin")
                 .then(response => {
                     // mengirim data hasil fetch ke varibale array surat izin
-                    this.surat = response.data.data.surat;
+                    this.surat = response.data.data.surat_izin;
                 })
                 .catch(e => {
                     console.log(e);

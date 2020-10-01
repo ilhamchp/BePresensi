@@ -10,31 +10,31 @@
         <v-card-text>
           <v-text-field
             ref="nama-lengkap"
-            v-model="nama"
-            :rules="[() => !!nama || 'This field is required']"
+            v-model="nama_dosen"
+            :rules="[() => !!nama_dosen || 'This field is required']"
             :error-messages="errorMessages"
             label="Nama Lengkap"
             required
           ></v-text-field>
           <v-text-field
-            ref="NIP"
-            v-model="nip"
+            ref="kd_dosen"
+            v-model="kd_dosen"
             :rules="[
-              () => !!nip || 'This field is required',
-              () => !!nip && nip.length <= 18 || 'NIP must be less than 18 characters',
-              nimCheck
+              () => !!kd_dosen || 'This field is required',
             ]"
-            label="NIP"
-            counter="18"
+            :error-messages="errorMessages"
+            label="Kode Dosen"
             required
           ></v-text-field>
           <br>
           <v-select
             ref="id-user"
-            v-model="iduser"
-            :rules="[() => !!iduser || 'This field is required']"
-            :items="items"
+            v-model="id_user"
+            :rules="[() => !!id_user || 'This field is required']"
+            :items="form.id_user"
             label="ID User"
+            item-text="id"
+            item-value="id"
             placeholder="Select..."
             required
           ></v-select>
@@ -67,7 +67,7 @@
           <v-btn
             color="primary"
             text
-            @click="submit"
+            @click="addDataDosen"
           >
             Submit
           </v-btn>
@@ -77,29 +77,67 @@
   </v-row>
 </template>
 
-<script>
-  export default {
-    data: () => ({
-      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
-      disabled: false,
-      readonly: false,
-      chips: false,
-      multiple: false,
-      appendIcon: false,
-      appendSlot: false,
-      appendItemSlot: false,
-      prependIcon: false,
-      prependSlot: false,
-      prependItemSlot: false,
-      selectSlot: false,
-      model: 'Foo',
-    }),
 
-    watch: {
-      multiple (val) {
-        if (val) this.model = [this.model]
-        else this.model = this.model[0] || 'Foo'
-      },
+
+<script>
+export default {
+    data() {
+        return {
+            form: {
+              nama_dosen: '',
+              kd_dosen: '',
+              id_user: ''
+            },
+        };
     },
-  }
+    created() {
+        this.loadDataUser();
+    },
+    methods: {
+        async loadDataUser() {
+            // menampilkan loading
+            this.isLoadingData = true;
+
+            // fetch data dari api menggunakan axios
+            axios
+                .get("http://127.0.0.1:8000/api/dropdown-user")
+                .then(response => {
+                    // mengirim data hasil fetch ke varibale array surat izin
+                    this.form.id_user = response.data.data.user;
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+                .finally(() => {
+                    // mengakhiri loading
+                    this.isLoadingData = false;
+                });
+        },
+        async addDataDosen() {
+            // menampilkan loading
+            this.isLoadingData = true;
+
+            // fetch data dari api menggunakan axios
+            axios
+                .post("http://127.0.0.1:8000/api/dosen", this.form)
+                .then(response => {
+                    // mengirim data hasil fetch ke varibale array matakuliah
+                    this.load()
+                })
+                .catch(e => {
+                    console.log(e);
+                })
+                .finally(() => {
+                    // mengakhiri loading
+                    this.isLoadingData = false;
+                });
+        }
+        // watch: {
+        //   multiple (val) {
+        //     if (val) this.model = [this.model]
+        //     else this.model = this.model[0]
+        //   },
+        // },
+    }
+};
 </script>

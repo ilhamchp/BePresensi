@@ -3156,7 +3156,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         value: "kd_surat_izin"
       }, {
         text: "Keterangan Presensi",
-        value: "kd_jenis_izin",
+        value: "jenis_izin.keterangan_presensi",
         sortable: true,
         groupable: false
       } // {
@@ -3192,7 +3192,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 axios.get("http://127.0.0.1:8000/api/surat-izin").then(function (response) {
                   // mengirim data hasil fetch ke varibale array surat izin
-                  _this.surat = response.data.data.surat;
+                  _this.surat = response.data.data.surat_izin;
                 })["catch"](function (e) {
                   console.log(e);
                 })["finally"](function () {
@@ -3370,6 +3370,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
 //
 //
 //
@@ -3452,25 +3462,81 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      items: ['Foo', 'Bar', 'Fizz', 'Buzz'],
-      disabled: false,
-      readonly: false,
-      chips: false,
-      multiple: false,
-      appendIcon: false,
-      appendSlot: false,
-      appendItemSlot: false,
-      prependIcon: false,
-      prependSlot: false,
-      prependItemSlot: false,
-      selectSlot: false,
-      model: 'Foo'
+      form: {
+        nama_dosen: '',
+        kd_dosen: '',
+        id_user: ''
+      }
     };
   },
-  watch: {
-    multiple: function multiple(val) {
-      if (val) this.model = [this.model];else this.model = this.model[0] || 'Foo';
-    }
+  created: function created() {
+    this.loadDataUser();
+  },
+  methods: {
+    loadDataUser: function loadDataUser() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                // menampilkan loading
+                _this.isLoadingData = true; // fetch data dari api menggunakan axios
+
+                axios.get("http://127.0.0.1:8000/api/dropdown-user").then(function (response) {
+                  // mengirim data hasil fetch ke varibale array surat izin
+                  _this.form.id_user = response.data.data.user;
+                })["catch"](function (e) {
+                  console.log(e);
+                })["finally"](function () {
+                  // mengakhiri loading
+                  _this.isLoadingData = false;
+                });
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    addDataDosen: function addDataDosen() {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                // menampilkan loading
+                _this2.isLoadingData = true; // fetch data dari api menggunakan axios
+
+                axios.post("http://127.0.0.1:8000/api/dosen", _this2.form).then(function (response) {
+                  // mengirim data hasil fetch ke varibale array matakuliah
+                  _this2.load();
+                })["catch"](function (e) {
+                  console.log(e);
+                })["finally"](function () {
+                  // mengakhiri loading
+                  _this2.isLoadingData = false;
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    } // watch: {
+    //   multiple (val) {
+    //     if (val) this.model = [this.model]
+    //     else this.model = this.model[0]
+    //   },
+    // },
+
   }
 });
 
@@ -42571,7 +42637,7 @@ var render = function() {
                     attrs: {
                       rules: [
                         function() {
-                          return !!_vm.nama || "This field is required"
+                          return !!_vm.nama_dosen || "This field is required"
                         }
                       ],
                       "error-messages": _vm.errorMessages,
@@ -42579,39 +42645,32 @@ var render = function() {
                       required: ""
                     },
                     model: {
-                      value: _vm.nama,
+                      value: _vm.nama_dosen,
                       callback: function($$v) {
-                        _vm.nama = $$v
+                        _vm.nama_dosen = $$v
                       },
-                      expression: "nama"
+                      expression: "nama_dosen"
                     }
                   }),
                   _vm._v(" "),
                   _c("v-text-field", {
-                    ref: "NIP",
+                    ref: "kd_dosen",
                     attrs: {
                       rules: [
                         function() {
-                          return !!_vm.nip || "This field is required"
-                        },
-                        function() {
-                          return (
-                            (!!_vm.nip && _vm.nip.length <= 18) ||
-                            "NIP must be less than 18 characters"
-                          )
-                        },
-                        _vm.nimCheck
+                          return !!_vm.kd_dosen || "This field is required"
+                        }
                       ],
-                      label: "NIP",
-                      counter: "18",
+                      "error-messages": _vm.errorMessages,
+                      label: "Kode Dosen",
                       required: ""
                     },
                     model: {
-                      value: _vm.nip,
+                      value: _vm.kd_dosen,
                       callback: function($$v) {
-                        _vm.nip = $$v
+                        _vm.kd_dosen = $$v
                       },
-                      expression: "nip"
+                      expression: "kd_dosen"
                     }
                   }),
                   _vm._v(" "),
@@ -42622,20 +42681,22 @@ var render = function() {
                     attrs: {
                       rules: [
                         function() {
-                          return !!_vm.iduser || "This field is required"
+                          return !!_vm.id_user || "This field is required"
                         }
                       ],
-                      items: _vm.items,
+                      items: _vm.form.id_user,
                       label: "ID User",
+                      "item-text": "id",
+                      "item-value": "id",
                       placeholder: "Select...",
                       required: ""
                     },
                     model: {
-                      value: _vm.iduser,
+                      value: _vm.id_user,
                       callback: function($$v) {
-                        _vm.iduser = $$v
+                        _vm.id_user = $$v
                       },
-                      expression: "iduser"
+                      expression: "id_user"
                     }
                   })
                 ],
@@ -42711,7 +42772,7 @@ var render = function() {
                     "v-btn",
                     {
                       attrs: { color: "primary", text: "" },
-                      on: { click: _vm.submit }
+                      on: { click: _vm.addDataDosen }
                     },
                     [_vm._v("\n          Submit\n        ")]
                   )
