@@ -3459,12 +3459,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       form: {
-        nama_dosen: '',
         kd_dosen: '',
+        nama_dosen: '',
+        foto_dosen: '',
         id_user: ''
       }
     };
@@ -42654,7 +42663,7 @@ var render = function() {
                   }),
                   _vm._v(" "),
                   _c("v-text-field", {
-                    ref: "kd_dosen",
+                    ref: "kd-dosen",
                     attrs: {
                       rules: [
                         function() {
@@ -42697,6 +42706,27 @@ var render = function() {
                         _vm.id_user = $$v
                       },
                       expression: "id_user"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("v-text-field", {
+                    ref: "foto-dosen",
+                    attrs: {
+                      rules: [
+                        function() {
+                          return !!_vm.foto_dosen || "This field is required"
+                        }
+                      ],
+                      "error-messages": _vm.errorMessages,
+                      label: "Foto Dosen",
+                      required: ""
+                    },
+                    model: {
+                      value: _vm.foto_dosen,
+                      callback: function($$v) {
+                        _vm.foto_dosen = $$v
+                      },
+                      expression: "foto_dosen"
                     }
                   })
                 ],

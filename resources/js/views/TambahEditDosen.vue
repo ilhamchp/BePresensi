@@ -17,7 +17,7 @@
             required
           ></v-text-field>
           <v-text-field
-            ref="kd_dosen"
+            ref="kd-dosen"
             v-model="kd_dosen"
             :rules="[
               () => !!kd_dosen || 'This field is required',
@@ -38,6 +38,14 @@
             placeholder="Select..."
             required
           ></v-select>
+          <v-text-field
+            ref="foto-dosen"
+            v-model="foto_dosen"
+            :rules="[() => !!foto_dosen || 'This field is required']"
+            :error-messages="errorMessages"
+            label="Foto Dosen"
+            required
+          ></v-text-field>
         </v-card-text>
         <v-divider class="mt-12"></v-divider>
         <v-card-actions>
@@ -84,8 +92,9 @@ export default {
     data() {
         return {
             form: {
-              nama_dosen: '',
               kd_dosen: '',
+              nama_dosen: '',
+              foto_dosen: '',
               id_user: ''
             },
         };
