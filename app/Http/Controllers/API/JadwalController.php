@@ -121,13 +121,16 @@ class JadwalController extends BaseController
             'required' => 'Atribut :attribute tidak boleh kosong.',
             'numeric' => 'Atribut :attribute hanya boleh berupa angka.',
             'exists' => 'Atribut :attribute tidak terdapat di database.',
+            'lte' => [
+                'numeric' => 'Atribut :attribute harus memiliki nilai kurang dari atau sama dengan dari :value.'
+            ],
             'gte' => [
                 'numeric' => 'Atribut :attribute harus memiliki nilai sama dengan atau lebih besar dari :value.',
             ],
         ];
         $validator = Validator::make($request->all(), [
             'kd_jadwal' => 'required|exists:App\Jadwal,kd_jadwal',
-            'toleransi_keterlambatan' => 'required|numeric|gte:10'
+            'toleransi_keterlambatan' => 'required|numeric|gte:10|lte:49'
             ],$messages);
    
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
@@ -290,6 +293,9 @@ class JadwalController extends BaseController
             'unique' => 'Atribut :attribute harus bersifat unik.',
             'numeric' => 'Atribut :attribute hanya boleh berupa angka.',
             'exists' => 'Atribut :attribute tidak terdapat di database.',
+            'lte' => [
+                'numeric' => 'Atribut :attribute harus memiliki nilai kurang dari atau sama dengan dari :value.'
+            ],
             'gte' => [
                 'numeric' => 'Atribut :attribute harus memiliki nilai sama dengan atau lebih besar dari :value.',
             ],
@@ -310,7 +316,7 @@ class JadwalController extends BaseController
                 Rule::in(['Teori', 'Praktek']),
             ],
             'sesi_presensi_dibuka' => 'boolean',
-            'toleransi_keterlambatan' => 'numeric|gte:10',
+            'toleransi_keterlambatan' => 'numeric|gte:10|lte:49',
             'jam_presensi_dibuka' => 'date_format:H:i:s',
             'jam_presensi_ditutup' => 'date_format:H:i:s|after_or_equal:jam_presensi_dibuka'
         ],$messages);
@@ -395,6 +401,9 @@ class JadwalController extends BaseController
             'unique' => 'Atribut :attribute harus bersifat unik.',
             'numeric' => 'Atribut :attribute hanya boleh berupa angka.',
             'exists' => 'Atribut :attribute tidak terdapat di database.',
+            'lte' => [
+                'numeric' => 'Atribut :attribute harus memiliki nilai kurang dari atau sama dengan dari :value.'
+            ],
             'gte' => [
                 'numeric' => 'Atribut :attribute harus memiliki nilai sama dengan atau lebih besar dari :value.',
             ],
@@ -417,7 +426,7 @@ class JadwalController extends BaseController
                 Rule::in(['Teori', 'Praktek']),
             ],
             'sesi_presensi_dibuka' => 'boolean',
-            'toleransi_keterlambatan' => 'numeric|gte:10',
+            'toleransi_keterlambatan' => 'numeric|gte:10|lte:49',
             'jam_presensi_dibuka' => 'date_format:H:i:s',
             'jam_presensi_ditutup' => 'date_format:H:i:s|after_or_equal:jam_presensi_dibuka'
         ],$messages);
