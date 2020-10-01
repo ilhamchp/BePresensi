@@ -3439,42 +3439,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      id_user: [],
       form: {
         kd_dosen: '',
         nama_dosen: '',
-        foto_dosen: '',
-        id_user: ''
+        foto_dosen: ''
       }
     };
   },
@@ -3495,7 +3467,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 axios.get("http://127.0.0.1:8000/api/dropdown-user").then(function (response) {
                   // mengirim data hasil fetch ke varibale array surat izin
-                  _this.form.id_user = response.data.data.user;
+                  _this.id_user = response.data.data.user;
                 })["catch"](function (e) {
                   console.log(e);
                 })["finally"](function () {
@@ -3520,9 +3492,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 // menampilkan loading
-                _this2.isLoadingData = true; // fetch data dari api menggunakan axios
+                _this2.isLoadingData = true; // console.log(this.form)
+                // fetch data dari api menggunakan axios
 
-                axios.post("http://127.0.0.1:8000/api/dosen", _this2.form).then(function (response) {
+                axios.post("http://127.0.0.1:8000/api/dosen", _this2.form, _this2.id_user).then(function (response) {
                   // mengirim data hasil fetch ke varibale array matakuliah
                   _this2.load();
                 })["catch"](function (e) {
@@ -42642,44 +42615,26 @@ var render = function() {
                 "v-card-text",
                 [
                   _c("v-text-field", {
-                    ref: "nama-lengkap",
-                    attrs: {
-                      rules: [
-                        function() {
-                          return !!_vm.nama_dosen || "This field is required"
-                        }
-                      ],
-                      "error-messages": _vm.errorMessages,
-                      label: "Nama Lengkap",
-                      required: ""
-                    },
+                    ref: "nama-dosen",
+                    attrs: { label: "Nama Lengkap", required: "" },
                     model: {
-                      value: _vm.nama_dosen,
+                      value: _vm.form.nama_dosen,
                       callback: function($$v) {
-                        _vm.nama_dosen = $$v
+                        _vm.$set(_vm.form, "nama_dosen", $$v)
                       },
-                      expression: "nama_dosen"
+                      expression: "form.nama_dosen"
                     }
                   }),
                   _vm._v(" "),
                   _c("v-text-field", {
                     ref: "kd-dosen",
-                    attrs: {
-                      rules: [
-                        function() {
-                          return !!_vm.kd_dosen || "This field is required"
-                        }
-                      ],
-                      "error-messages": _vm.errorMessages,
-                      label: "Kode Dosen",
-                      required: ""
-                    },
+                    attrs: { label: "Kode Dosen", required: "" },
                     model: {
-                      value: _vm.kd_dosen,
+                      value: _vm.form.kd_dosen,
                       callback: function($$v) {
-                        _vm.kd_dosen = $$v
+                        _vm.$set(_vm.form, "kd_dosen", $$v)
                       },
-                      expression: "kd_dosen"
+                      expression: "form.kd_dosen"
                     }
                   }),
                   _vm._v(" "),
@@ -42688,45 +42643,31 @@ var render = function() {
                   _c("v-select", {
                     ref: "id-user",
                     attrs: {
-                      rules: [
-                        function() {
-                          return !!_vm.id_user || "This field is required"
-                        }
-                      ],
-                      items: _vm.form.id_user,
+                      items: _vm.id_user,
                       label: "ID User",
-                      "item-text": "id",
+                      "item-text": "email",
                       "item-value": "id",
                       placeholder: "Select...",
                       required: ""
                     },
                     model: {
-                      value: _vm.id_user,
+                      value: _vm.form.id_user,
                       callback: function($$v) {
-                        _vm.id_user = $$v
+                        _vm.$set(_vm.form, "id_user", $$v)
                       },
-                      expression: "id_user"
+                      expression: "form.id_user"
                     }
                   }),
                   _vm._v(" "),
                   _c("v-text-field", {
                     ref: "foto-dosen",
-                    attrs: {
-                      rules: [
-                        function() {
-                          return !!_vm.foto_dosen || "This field is required"
-                        }
-                      ],
-                      "error-messages": _vm.errorMessages,
-                      label: "Foto Dosen",
-                      required: ""
-                    },
+                    attrs: { label: "Foto Dosen", required: "" },
                     model: {
-                      value: _vm.foto_dosen,
+                      value: _vm.form.foto_dosen,
                       callback: function($$v) {
-                        _vm.foto_dosen = $$v
+                        _vm.$set(_vm.form, "foto_dosen", $$v)
                       },
-                      expression: "foto_dosen"
+                      expression: "form.foto_dosen"
                     }
                   })
                 ],
@@ -42744,59 +42685,7 @@ var render = function() {
                   _vm._v(" "),
                   _c("v-spacer"),
                   _vm._v(" "),
-                  _c(
-                    "v-slide-x-reverse-transition",
-                    [
-                      _vm.formHasErrors
-                        ? _c(
-                            "v-tooltip",
-                            {
-                              attrs: { left: "" },
-                              scopedSlots: _vm._u(
-                                [
-                                  {
-                                    key: "activator",
-                                    fn: function(ref) {
-                                      var on = ref.on
-                                      var attrs = ref.attrs
-                                      return [
-                                        _c(
-                                          "v-btn",
-                                          _vm._g(
-                                            _vm._b(
-                                              {
-                                                staticClass: "my-0",
-                                                attrs: { icon: "" },
-                                                on: { click: _vm.resetForm }
-                                              },
-                                              "v-btn",
-                                              attrs,
-                                              false
-                                            ),
-                                            on
-                                          ),
-                                          [
-                                            _c("v-icon", [
-                                              _vm._v("mdi-refresh")
-                                            ])
-                                          ],
-                                          1
-                                        )
-                                      ]
-                                    }
-                                  }
-                                ],
-                                null,
-                                false,
-                                522373079
-                              )
-                            },
-                            [_vm._v(" "), _c("span", [_vm._v("Refresh form")])]
-                          )
-                        : _vm._e()
-                    ],
-                    1
-                  ),
+                  _c("v-slide-x-reverse-transition"),
                   _vm._v(" "),
                   _c(
                     "v-btn",

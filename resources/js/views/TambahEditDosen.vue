@@ -9,40 +9,31 @@
       <v-card ref="form">
         <v-card-text>
           <v-text-field
-            ref="nama-lengkap"
-            v-model="nama_dosen"
-            :rules="[() => !!nama_dosen || 'This field is required']"
-            :error-messages="errorMessages"
+            ref="nama-dosen"
+            v-model="form.nama_dosen"
             label="Nama Lengkap"
             required
           ></v-text-field>
           <v-text-field
             ref="kd-dosen"
-            v-model="kd_dosen"
-            :rules="[
-              () => !!kd_dosen || 'This field is required',
-            ]"
-            :error-messages="errorMessages"
+            v-model="form.kd_dosen"
             label="Kode Dosen"
             required
           ></v-text-field>
           <br>
           <v-select
             ref="id-user"
-            v-model="id_user"
-            :rules="[() => !!id_user || 'This field is required']"
-            :items="form.id_user"
+            v-model="form.id_user"
+            :items="id_user"
             label="ID User"
-            item-text="id"
+            item-text="email"
             item-value="id"
             placeholder="Select..."
             required
           ></v-select>
           <v-text-field
             ref="foto-dosen"
-            v-model="foto_dosen"
-            :rules="[() => !!foto_dosen || 'This field is required']"
-            :error-messages="errorMessages"
+            v-model="form.foto_dosen"
             label="Foto Dosen"
             required
           ></v-text-field>
@@ -54,23 +45,6 @@
           </v-btn>
           <v-spacer></v-spacer>
           <v-slide-x-reverse-transition>
-            <v-tooltip
-              v-if="formHasErrors"
-              left
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  icon
-                  class="my-0"
-                  v-bind="attrs"
-                  @click="resetForm"
-                  v-on="on"
-                >
-                  <v-icon>mdi-refresh</v-icon>
-                </v-btn>
-              </template>
-              <span>Refresh form</span>
-            </v-tooltip>
           </v-slide-x-reverse-transition>
           <v-btn
             color="primary"
@@ -85,17 +59,15 @@
   </v-row>
 </template>
 
-
-
 <script>
 export default {
     data() {
         return {
+          id_user: [],
             form: {
               kd_dosen: '',
               nama_dosen: '',
               foto_dosen: '',
-              id_user: ''
             },
         };
     },
@@ -112,7 +84,7 @@ export default {
                 .get("http://127.0.0.1:8000/api/dropdown-user")
                 .then(response => {
                     // mengirim data hasil fetch ke varibale array surat izin
-                    this.form.id_user = response.data.data.user;
+                    this.id_user = response.data.data.user;
                 })
                 .catch(e => {
                     console.log(e);
@@ -125,10 +97,11 @@ export default {
         async addDataDosen() {
             // menampilkan loading
             this.isLoadingData = true;
+            // console.log(this.form)
 
             // fetch data dari api menggunakan axios
             axios
-                .post("http://127.0.0.1:8000/api/dosen", this.form)
+                .post("http://127.0.0.1:8000/api/dosen", this.form, this.id_user)
                 .then(response => {
                     // mengirim data hasil fetch ke varibale array matakuliah
                     this.load()
