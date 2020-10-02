@@ -15,7 +15,7 @@ class PersentaseKehadiranCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'presentase_kehadiran' => $this->collection
+            'persentase_kehadiran' => $this->collection
         ];
     }
 
