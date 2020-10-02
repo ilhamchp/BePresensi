@@ -5,7 +5,7 @@
         <br />
 
         <!-- Button Data Baru -->
-        <v-btn color to=/tambah-edit-beacon>
+        <v-btn color to=/tambah-beacon>
             <div class="text-overline">Tambah Data Baru</div>
         </v-btn>
         <br />
@@ -39,6 +39,12 @@
                     :search="search"
                     show-group-by
                     :items-per-page="5"
+                >
+                    <template v-slot:[`item.actions`]="{ item }">
+                        <v-icon small class="mr-2">mdi-pencil</v-icon>
+                        <v-icon small @click="deleteBeacon(item.kd_beacon)">mdi-delete</v-icon>
+                    </template>
+
                 ></v-data-table>
             </v-skeleton-loader>
         </v-card>
@@ -47,64 +53,84 @@
 
 <script>
 export default {
-    data() {
-        return {
-            isLoadingData: false,
-            search: "",
-            beacon: [],
-            headers: [
-                {
-                    text: "Kode Beacon",
-                    align: "start",
-                    sortable: true,
-                    groupable: false,
-                    value: "kd_beacon"
-                },
-                {
-                    text: "Mac Address",
-                    value: "mac_address",
-                    sortable: true,
-                    groupable: false
-                },
-                {
-                    text: "Major",
-                    value: "major",
-                    sortable: true,
-                    groupable: false
-                },
-                {
-                    text: "Minor",
-                    value: "minor",
-                    sortable: true,
-                    groupable: false
-                }
-            ]
-        };
-    },
-    created() {
-        this.loadDataBeacon();
-        document.title = "Beacon | BePresensi";
-    },
-    methods: {
-        async loadDataBeacon() {
-            // menampilkan loading
-            this.isLoadingData = true;
+  data() {
+    return {
+      isLoadingData: false,
+      search: "",
+      beacon: [],
+      headers: [
+        {
+          text: "Kode Beacon",
+          align: "start",
+          sortable: true,
+          groupable: false,
+          value: "kd_beacon",
+        },
+        {
+          text: "Mac Address",
+          value: "mac_address",
+          sortable: true,
+          groupable: false,
+        },
+        {
+          text: "Major",
+          value: "major",
+          sortable: true,
+          groupable: false,
+        },
+        {
+          text: "Minor",
+          value: "minor",
+          sortable: true,
+          groupable: false,
+        },
+        {
+          text: "Actions",
+          value: "actions",
+          sortable: false,
+          groupable: false,
+        },
+      ],
+    };
+  },
+  created() {
+    this.loadDataBeacon();
+    document.title = "Beacon | BePresensi";
+  },
+  methods: {
+    async loadDataBeacon() {
+      // menampilkan loading
+      this.isLoadingData = true;
 
-            // fetch data dari api menggunakan axios
-            axios
-                .get("http://127.0.0.1:8000/api/beacon")
-                .then(response => {
-                    // mengirim data hasil fetch ke varibale array beacon
-                    this.beacon = response.data.data.beacon;
-                })
-                .catch(e => {
-                    console.log(e);
-                })
-                .finally(() => {
-                    // mengakhiri loading
-                    this.isLoadingData = false;
-                });
-        }
-    }
+      // fetch data dari api menggunakan axios
+      axios
+        .get("http://127.0.0.1:8000/api/beacon")
+        .then((response) => {
+          // mengirim data hasil fetch ke varibale array beacon
+          this.beacon = response.data.data.beacon;
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => {
+          // mengakhiri loading
+          this.isLoadingData = false;
+        });
+    },
+    deleteBeacon(id) {
+      axios
+        .delete("http://127.0.0.1:8000/api/beacon/" + id)
+        .then(() => {
+          this.refreshList();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+
+    refreshList() {
+      this.loadDataBeacon();
+    },
+  },
 };
 </script>

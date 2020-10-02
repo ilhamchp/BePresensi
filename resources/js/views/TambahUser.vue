@@ -12,7 +12,6 @@
             ref="email-user"
             v-model="form.email"
             :rules="[() => !!form.email || 'This field is required']"
-            :error-messages="errorMessages"
             label="Email User"
             required
           ></v-text-field>
@@ -20,7 +19,6 @@
             ref="password-user"
             v-model="form.password"
             :rules="[() => !!form.password || 'This field is required']"
-            :error-messages="errorMessages"
             label="Password User"
             required
           ></v-text-field>
@@ -31,25 +29,6 @@
             Cancel
           </v-btn>
           <v-spacer></v-spacer>
-          <v-slide-x-reverse-transition>
-            <v-tooltip
-              v-if="formHasErrors"
-              left
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  icon
-                  class="my-0"
-                  v-bind="attrs"
-                  @click="resetForm"
-                  v-on="on"
-                >
-                  <v-icon>mdi-refresh</v-icon>
-                </v-btn>
-              </template>
-              <span>Refresh form</span>
-            </v-tooltip>
-          </v-slide-x-reverse-transition>
           <v-btn
             color="primary"
             text

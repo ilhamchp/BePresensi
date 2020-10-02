@@ -5,7 +5,7 @@
         <br />
 
         <!-- Button Data Baru -->
-        <v-btn color to=/tambah-edit-kelas>
+        <v-btn color to=/tambah-kelas>
             <div class="text-overline">Tambah Data Baru</div>
         </v-btn>
         <br />
@@ -38,7 +38,13 @@
                     :items="kelas"
                     :search="search"
                     show-group-by
-                    :items-per-page="5"
+                    :items-per-page="5">
+
+                    <template v-slot:[`item.actions`]="{ item }">
+                        <v-icon small class="mr-2">mdi-pencil</v-icon>
+                        <v-icon small @click="deleteKelas(item.kd_kelas)">mdi-delete</v-icon>
+                    </template>
+
                 ></v-data-table>
             </v-skeleton-loader>
         </v-card>
@@ -47,70 +53,91 @@
 
 <script>
 export default {
-    data() {
-        return {
-            isLoadingData: false,
-            search: "",
-            kelas: [],
-            headers: [
-                {
-                    text: "Kode Kelas",
-                    align: "start",
-                    sortable: true,
-                    groupable: false,
-                    value: "kd_kelas"
-                },
-                {
-                    text: "Tingkat Kelas",
-                    value: "tingkat_kelas",
-                    sortable: true,
-                    groupable: true
-                },
-                {
-                    text: "Program Studi",
-                    value: "prodi",
-                    sortable: true,
-                    groupable: true
-                },
-                {
-                    text: "Angkatan",
-                    value: "angkatan",
-                    sortable: true,
-                    groupable: true
-                },
-                {
-                    text: "Nama Wali Dosen",
-                    value: "wali_dosen.nama_dosen",
-                    sortable: true,
-                    groupable: false
-                }
-            ]
-        };
-    },
-    created() {
-        this.loadDataKelas();
-        document.title = "Kelas | BePresensi";
-    },
-    methods: {
-        async loadDataKelas() {
-            // menampilkan loading
-            this.isLoadingData = true;
+  data() {
+    return {
+      isLoadingData: false,
+      search: "",
+      kelas: [],
+      headers: [
+        {
+          text: "Kode Kelas",
+          align: "start",
+          sortable: true,
+          groupable: false,
+          value: "kd_kelas",
+        },
+        {
+          text: "Tingkat Kelas",
+          value: "tingkat_kelas",
+          sortable: true,
+          groupable: true,
+        },
+        {
+          text: "Program Studi",
+          value: "prodi",
+          sortable: true,
+          groupable: true,
+        },
+        {
+          text: "Angkatan",
+          value: "angkatan",
+          sortable: true,
+          groupable: true,
+        },
+        {
+          text: "Nama Wali Dosen",
+          value: "wali_dosen.nama_dosen",
+          sortable: true,
+          groupable: false,
+        },
+        {
+          text: "Actions",
+          value: "actions",
+          sortable: false,
+          groupable: false,
+        },
+      ],
+    };
+  },
+  created() {
+    this.loadDataKelas();
+    document.title = "Kelas | BePresensi";
+  },
+  methods: {
+    async loadDataKelas() {
+      // menampilkan loading
+      this.isLoadingData = true;
 
-            // fetch data dari api menggunakan axios
-            axios
-                .get("http://127.0.0.1:8000/api/kelas")
-                .then(response => {
-                    // mengirim data hasil fetch ke varibale array kelas
-                    this.kelas = response.data.data.kelas;
-                })
-                .catch(e => {
-                    console.log(e);
-                })
-                .finally(() => {
-                    // mengakhiri loading
-                    this.isLoadingData = false;
-                });
-        }
-    }
+      // fetch data dari api menggunakan axios
+      axios
+        .get("http://127.0.0.1:8000/api/kelas")
+        .then((response) => {
+          // mengirim data hasil fetch ke varibale array kelas
+          this.kelas = response.data.data.kelas;
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => {
+          // mengakhiri loading
+          this.isLoadingData = false;
+        });
+    },
+
+    deleteKelas(id) {
+      axios
+        .delete("http://127.0.0.1:8000/api/kelas/" + id)
+        .then(() => {
+          this.refreshList();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+
+    refreshList() {
+      this.loadDataKelas();
+    },
+  },
 };
 </script>
