@@ -5,7 +5,7 @@
         <br />
 
         <!-- Button Data Baru -->
-        <v-btn color>
+        <v-btn color to=/tambah-surat-izin>
             <div class="text-overline">Tambah Data Baru</div>
         </v-btn>
         <br />

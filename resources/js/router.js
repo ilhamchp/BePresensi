@@ -12,12 +12,15 @@ import Presensi from './views/Presensi.vue'
 import StaffTataUsaha from './views/StaffTataUsaha.vue'
 import SuratIzin from './views/SuratIzin.vue'
 import User from './views/User.vue'
-import TambahEditMahasiswa from './views/TambahEditMahasiswa.vue'
-import TambahEditBeacon from './views/TambahEditBeacon.vue'
-import TambahEditDosen from './views/TambahEditDosen.vue'
-import TambahEditKelas from './views/TambahEditKelas.vue'
-import TambahEditMatakuliah from './views/TambahEditMatakuliah.vue'
+import TambahMahasiswa from './views/TambahMahasiswa.vue'
+import TambahBeacon from './views/TambahBeacon.vue'
+import TambahDosen from './views/TambahDosen.vue'
+import TambahKelas from './views/TambahKelas.vue'
+import TambahMatakuliah from './views/TambahMatakuliah.vue'
 import TambahUser from './views/TambahUser.vue'
+import TambahStaffTU from './views/TambahStaffTU.vue'
+import TambahSuratIzin from './views/TambahSuratIzin.vue'
+import EditMatakuliah from './views/EditMatakuliah.vue'
 
 Vue.use(VueRouter)
 
@@ -35,12 +38,15 @@ const router = new VueRouter({
         { path: '/staff-tata-usaha', name: 'staff-tata-usaha', component: StaffTataUsaha},
         { path: '/surat-izin', name: 'surat-izin', component: SuratIzin},
         { path: '/user', name: 'user', component: User},
-        { path: '/tambah-edit-mahasiswa', name: 'tambah-edit-mahasiswa', component: TambahEditMahasiswa},
-        { path: '/tambah-edit-beacon', name: 'tambah-edit-beacon', component: TambahEditBeacon},
-        { path: '/tambah-edit-dosen', name: 'tambah-edit-dosen', component: TambahEditDosen},
-        { path: '/tambah-edit-kelas', name: 'tambah-edit-kelas', component: TambahEditKelas},
-        { path: '/tambah-edit-matakuliah', name: 'tambah-edit-matakuliah', component: TambahEditMatakuliah},
+        { path: '/tambah-mahasiswa', name: 'tambah-mahasiswa', component: TambahMahasiswa},
+        { path: '/tambah-beacon', name: 'tambah-beacon', component: TambahBeacon},
+        { path: '/tambah-dosen', name: 'tambah-dosen', component: TambahDosen},
+        { path: '/tambah-kelas', name: 'tambah-kelas', component: TambahKelas},
+        { path: '/tambah-matakuliah', name: 'tambah-matakuliah', component: TambahMatakuliah},
         { path: '/tambah-user', name: 'tambah-user', component: TambahUser},
+        { path: '/tambah-stafftu', name: 'tambah-stafftu', component: TambahStaffTU},
+        { path: '/tambah-surat-izin', name: 'tambah-surat-izin', component: TambahSuratIzin},
+        { path: '/edit-matakuliah/:kd_matakuliah', name: 'edit-matakuliah', component: EditMatakuliah}
     ]
 })
 

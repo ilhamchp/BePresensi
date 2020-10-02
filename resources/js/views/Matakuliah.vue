@@ -5,7 +5,7 @@
         <br />
 
         <!-- Button Data Baru -->
-        <v-btn color to=/tambah-edit-matakuliah>
+        <v-btn color to=/tambah-matakuliah>
             <div class="text-overline">Tambah Data Baru</div>
         </v-btn>
         <br />
@@ -38,8 +38,14 @@
                     :items="matakuliah"
                     :search="search"
                     show-group-by
-                    :items-per-page="5"
-                ></v-data-table>
+                    :items-per-page="5">
+
+                    <template v-slot:[`item.actions`]="{ item }">
+                        <v-icon small class="mr-2" @click="editMatakuliah(item.kd_matakuliah)">mdi-pencil</v-icon>
+                        <v-icon small @click="deleteMatakuliah(item.kd_matakuliah)">mdi-delete</v-icon>
+                    </template>
+
+                </v-data-table>
             </v-skeleton-loader>
         </v-card>
     </div>
@@ -47,52 +53,83 @@
 
 <script>
 export default {
-    data() {
-        return {
-            isLoadingData: false,
-            search: "",
-            matakuliah: [],
-            headers: [
-                {
-                    text: "Kode Matakuliah",
-                    align: "start",
-                    sortable: true,
-                    groupable: false,
-                    value: "kd_matakuliah"
-                },
-                {
-                    text: "Nama Matakuliah",
-                    value: "nama_matakuliah",
-                    sortable: true,
-                    groupable: false
-                }
-            ]
-        };
-    },
-    created() {
-        this.loadDataMatkul();
-        document.title = "Matakuliah | BePresensi";
-    },
-    methods: {
-        async loadDataMatkul() {
-            // menampilkan loading
-            this.isLoadingData = true;
+  data() {
+    return {
+      isLoadingData: false,
+      search: "",
+      matakuliah: [],
+      headers: [
+        {
+          text: "Kode Matakuliah",
+          align: "start",
+          sortable: true,
+          groupable: false,
+          value: "kd_matakuliah",
+        },
+        {
+          text: "Nama Matakuliah",
+          value: "nama_matakuliah",
+          sortable: true,
+          groupable: false,
+        },
+        {
+          text: "Actions",
+          value: "actions",
+          sortable: false,
+          groupable: false,
+        },
+      ],
+    };
+  },
+  created() {
+    this.loadDataMatkul();
+    document.title = "Matakuliah | BePresensi";
+  },
+  methods: {
+    async loadDataMatkul() {
+      // menampilkan loading
+      this.isLoadingData = true;
 
-            // fetch data dari api menggunakan axios
-            axios
-                .get("http://127.0.0.1:8000/api/matakuliah")
-                .then(response => {
-                    // mengirim data hasil fetch ke varibale array matakuliah
-                    this.matakuliah = response.data.data.matakuliah;
-                })
-                .catch(e => {
-                    console.log(e);
-                })
-                .finally(() => {
-                    // mengakhiri loading
-                    this.isLoadingData = false;
-                });
-        }
-    }
+      // fetch data dari api menggunakan axios
+      axios
+        .get("http://127.0.0.1:8000/api/matakuliah")
+        .then((response) => {
+          // mengirim data hasil fetch ke varibale array matakuliah
+          this.matakuliah = response.data.data.matakuliah;
+        })
+        .catch((e) => {
+          console.log(e);
+        })
+        .finally(() => {
+          // mengakhiri loading
+          this.isLoadingData = false;
+        });
+    },
+
+    editMatakuliah(id) {
+      this.$router.push({
+        name: "edit-matakuliah",
+        params: { kd_matakuliah: id },
+      });
+    },
+
+    deleteMatakuliah(id) {
+      axios
+        .delete(
+          "http://127.0.0.1:8000/api/matakuliah/" + id
+        )
+        .then(() => {
+          this.refreshList();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+
+    refreshList() {
+      this.loadDataMatkul();
+    },
+
+  },
 };
 </script>
