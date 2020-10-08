@@ -14,100 +14,101 @@ class BeaconSeeder extends Seeder
     {
         Beacon::create([
             'kd_beacon' => 'CB001',
-            'mac_address' => '58:33:f2:14:e5:1e',
-            'major' => '0x2794',
-            'minor' => '0x6666'
+            'mac_address' => 'c36ae031-2b7b-4081-b6d3-f620ce61206e',
+            'major' => '94',
+            'minor' => '66'
         ]);
         
         Beacon::create([
             'kd_beacon' => 'CB002',
-            'mac_address' => '39:82:01:79:53:c3',
-            'major' => '0x4425',
-            'minor' => '0x0879'
+            'mac_address' => 'f43d4927-b295-4d12-bb46-d97d4614c64b',
+            'major' => '25',
+            'minor' => '79'
         ]);
         
         Beacon::create([
             'kd_beacon' => 'CB003',
-            'mac_address' => '47:96:94:bb:87:c3',
-            'major' => '0x5085',
-            'minor' => '0x5308'
+            'mac_address' => '42b222d8-0460-4962-a248-eb32de403ed7',
+            'major' => '85',
+            'minor' => '88'
         ]);
         
         Beacon::create([
             'kd_beacon' => 'CB004',
-            'mac_address' => 'de:8e:8d:80:9c:55',
-            'major' => '0x8576',
-            'minor' => '0x5410'
+            'mac_address' => '57cf9f84-4aed-4ef5-a8b4-fabfc1608241',
+            'major' => '76',
+            'minor' => '10'
         ]);
         
         Beacon::create([
             'kd_beacon' => 'CB005',
-            'mac_address' => '47:ea:d9:ab:a9:d1',
-            'major' => '0x5946',
-            'minor' => '0x3201'
+            'mac_address' => 'de034c15-7448-41c4-a94b-0f11bd80b668',
+            'major' => '46',
+            'minor' => '21'
         ]);
         
         Beacon::create([
             'kd_beacon' => 'CB006',
-            'mac_address' => 'd8:b2:95:23:ac:b6',
-            'major' => '0x2927',
-            'minor' => '0x9139'
+            'mac_address' => '01e470b4-cfea-4f31-acf8-18b97a2db4c5',
+            'major' => '27',
+            'minor' => '39'
         ]);
         
         Beacon::create([
             'kd_beacon' => 'CB007',
-            'mac_address' => 'a9:12:0d:d1:fe:24',
-            'major' => '0x6133',
-            'minor' => '0x6142'
+            'mac_address' => '6c29d005-4d9b-4217-942e-92cd08672078',
+            'major' => '33',
+            'minor' => '42'
         ]);
         
         Beacon::create([
             'kd_beacon' => 'CB008',
-            'mac_address' => '26:0c:90:eb:1e:fb',
-            'major' => '0x7332',
-            'minor' => '0x6378'
+            'mac_address' => 'afe15887-c5f3-457c-a277-84f1a3dd5c5d',
+            'major' => '32',
+            'minor' => '78'
         ]);
         
         Beacon::create([
             'kd_beacon' => 'CB009',
-            'mac_address' => '8b:fe:65:d4:1b:a9',
-            'major' => '0x2062',
-            'minor' => '0x7551'
+            'mac_address' => '692570eb-df49-4c9e-935c-71fe38961f7e',
+            'major' => '62',
+            'minor' => '51'
         ]);
         
         Beacon::create([
             'kd_beacon' => 'CB010',
-            'mac_address' => '82:42:f6:ef:36:92',
-            'major' => '0x6083',
-            'minor' => '0x4320'
+            'mac_address' => '863aaf9d-cebe-4c5e-97cf-6b2d99472f04',
+            'major' => '83',
+            'minor' => '20'
         ]);
         
         Beacon::create([
             'kd_beacon' => 'CB011',
-            'mac_address' => '1f:af:8c:d8:c9:bc',
-            'major' => '0x8252',
-            'minor' => '0x8335'
+            'mac_address' => '2905186b-d5f1-4088-a502-355a4f42364f',
+            'major' => '52',
+            'minor' => '35'
         ]);
         
+        // Beacon Koval
         Beacon::create([
             'kd_beacon' => 'CB012',
-            'mac_address' => '61:03:5c:66:a3:34',
-            'major' => '0x6421',
-            'minor' => '0x2663'
+            'mac_address' => 'CB10023F-A318-3394-4199-A8730C7C1AEC',
+            'major' => '222',
+            'minor' => '208'
         ]);
         
         Beacon::create([
             'kd_beacon' => 'CB013',
-            'mac_address' => '16:48:fb:dd:ba:81',
-            'major' => '0x0967',
-            'minor' => '0x0806'
+            'mac_address' => '746dc8c9-1115-4d73-8b01-f48b8fa1e44a',
+            'major' => '67',
+            'minor' => '86'
         ]);
         
         Beacon::create([
             'kd_beacon' => 'CB014',
-            'mac_address' => '95:cc:20:40:5b:f9',
-            'major' => '0x0712',
-            'minor' => '0x0486'
+            'mac_address' => 'f97f8e2c-36d5-426f-8680-7182bf8bdb0e',
+            'major' => '12',
+            'minor' => '86'
         ]);
 
     }
