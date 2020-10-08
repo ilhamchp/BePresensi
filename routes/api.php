@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 // API Untuk Aplikasi Mobile
 
 Route::group(['prefix' => 'mobile'], function () {
+    Route::get('/tutup-presensi','API\JadwalController@tutupSesiJadwalBerakhir');
     Route::get('/jadwal/mahasiswa/{mahasiswa}', 'API\JadwalController@jadwalMahasiswa');
     Route::get('/jadwal/dosen/{dosen}', 'API\JadwalController@jadwalDosen');
     Route::get('/jadwal/diampu-dosen/{dosen}', 'API\JadwalController@jadwalDiampuDosen');
