@@ -46,7 +46,7 @@ class RekapitulasiController extends BaseController
     public function show(Rekapitulasi $rekapitulasi)
     {
         if($rekapitulasi) return $this->sendResponse([
-            'rekapitulasi' => [new RekapitulasiResource($rekapitulasi)]
+            'rekapitulasi' => new RekapitulasiResource($rekapitulasi)
         ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }
@@ -66,13 +66,13 @@ class RekapitulasiController extends BaseController
             $alfa = $rekapitulasi->alfa;
             if($alfa<10){
                 $rekapitulasi->kd_status_rekapitulasi = 'OK';
-            }else if($alfa>10 && $alfa<19){
+            }else if($alfa>=10 && $alfa<19){
                 $rekapitulasi->kd_status_rekapitulasi = 'SP1';
-            }else if($alfa>19 && $alfa<29){
+            }else if($alfa>=19 && $alfa<29){
                 $rekapitulasi->kd_status_rekapitulasi = 'SP2';
-            }else if($alfa>29 && $alfa<38){
+            }else if($alfa>=29 && $alfa<38){
                 $rekapitulasi->kd_status_rekapitulasi = 'SP3';
-            }else if($alfa>38){
+            }else if($alfa>=38){
                 $rekapitulasi->kd_status_rekapitulasi = 'DO';
             }
             $rekapitulasi->update();

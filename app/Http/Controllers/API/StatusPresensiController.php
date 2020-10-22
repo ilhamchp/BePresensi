@@ -65,7 +65,7 @@ class StatusPresensiController extends BaseController
     public function show(StatusPresensi $statusPresensi)
     {
         if($statusPresensi) return $this->sendResponse([
-            'status_presensi' => [new StatusPresensiResource($statusPresensi)]
+            'status_presensi' => new StatusPresensiResource($statusPresensi)
         ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }

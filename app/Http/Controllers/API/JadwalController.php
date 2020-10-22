@@ -255,7 +255,7 @@ class JadwalController extends BaseController
     }
 
     /**
-     * Membuka sesi presensi sebuah jadwal matakuliah.
+     * Menutup sesi presensi sebuah jadwal matakuliah.
      * Digunakan untuk aplikasi mobile.
      * @param  \App\Jadwal  $jadwal
      * @return \Illuminate\Http\Response
@@ -277,6 +277,48 @@ class JadwalController extends BaseController
         return $this->sendResponse([
             'jadwal' => $jadwal
         ], 'Berhasil menutup sesi presensi!');
+    }
+
+    /**
+     * Menutup sesi presensi jadwal matakuliah yang jadwal perkuliahannya berakhir.
+     * Digunakan untuk aplikasi mobile.
+     * @return \Illuminate\Http\Response
+     */
+    public function tutupSesiJadwalBerakhir()
+    {        
+        // Mengambil waktu sekarang
+        $date = Carbon::now()->timezone('Asia/Jakarta');
+        $kd_hari = $date->dayOfWeek;
+        $waktu_sekarang = $date->format('H:i:s');
+        $jam_sekarang = Carbon::createFromFormat('H:i:s', $waktu_sekarang, 'Asia/Jakarta');
+        // Mengambil jadwal yang sesinya dibuka
+        $jadwalAktif = Jadwal::where('sesi_presensi_dibuka',true)->get();
+        foreach($jadwalAktif as $jadwal){
+            // Cek apakah jadwal yg aktif adalah jadwal hari ini
+            if($jadwal->kd_hari == $kd_hari){
+                // Ambil data waktu berakhir
+                $sesi = Sesi::find($jadwal->kd_sesi_berakhir);
+                $jam_berakhir = Carbon::createFromFormat('H:i:s', $sesi->jam_berakhir, 'Asia/Jakarta');
+                
+                // Cek apakah jadwal telah melewati waktu berakhir
+                if($jam_sekarang->greaterThanOrEqualTo($jam_berakhir)){
+                    // Tutup sesi presensi
+                    $jadwal->sesi_presensi_dibuka = false;
+                    $jadwal->jam_presensi_ditutup = $waktu_sekarang;
+                    $jadwal->update();
+                }
+            }else{
+                // Jika jadwal aktif bukan jadwal hari ini
+                // Tutup sesi presensi
+                $jadwal->sesi_presensi_dibuka = false;
+                $jadwal->jam_presensi_ditutup = $waktu_sekarang;
+                $jadwal->update();
+            }
+        }
+
+        return $this->sendResponse([
+            'jadwal' => $jadwalAktif
+        ], 'Berhasil menutup sesi perkuliahan berakhir!');
     }
 
     /**

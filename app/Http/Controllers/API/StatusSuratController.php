@@ -60,7 +60,7 @@ class StatusSuratController extends BaseController
     public function show(StatusSurat $statusSurat)
     {
         if($statusSurat) return $this->sendResponse([
-            'status_surat' => [new StatusSuratResource($statusSurat)]
+            'status_surat' => new StatusSuratResource($statusSurat)
         ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }

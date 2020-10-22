@@ -70,7 +70,7 @@ class RuangController extends BaseController
     public function show(Ruang $ruang)
     {
         if($ruang) return $this->sendResponse([
-            'ruang' => [new RuangResource($ruang)]
+            'ruang' => new RuangResource($ruang)
         ], 'success');
         return $this->sendError($ruang);
     }

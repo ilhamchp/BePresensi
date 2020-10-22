@@ -74,7 +74,7 @@ class KelasController extends BaseController
     public function show(Kelas $kelas)
     {
         if($kelas) return $this->sendResponse([
-            'kelas' => [new KelasResource($kelas)]
+            'kelas' => new KelasResource($kelas)
         ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }

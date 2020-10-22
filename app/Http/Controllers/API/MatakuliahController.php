@@ -63,7 +63,7 @@ class MatakuliahController extends BaseController
     public function show(Matakuliah $matakuliah)
     {
         if($matakuliah) return $this->sendResponse([
-            'matakuliah' => [new MatakuliahResource($matakuliah)]
+            'matakuliah' => new MatakuliahResource($matakuliah)
         ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }

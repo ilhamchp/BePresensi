@@ -73,7 +73,7 @@ class DosenController extends BaseController
     public function show(Dosen $dosen)
     {
         if($dosen) return $this->sendResponse([
-            'dosen' => [new DosenResource($dosen)]
+            'dosen' => new DosenResource($dosen)
         ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }
