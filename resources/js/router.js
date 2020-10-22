@@ -21,6 +21,9 @@ import TambahUser from './views/TambahUser.vue'
 import TambahStaffTU from './views/TambahStaffTU.vue'
 import TambahSuratIzin from './views/TambahSuratIzin.vue'
 import EditMatakuliah from './views/EditMatakuliah.vue'
+import EditMahasiswa from './views/EditMahasiswa.vue'
+import EditDosen from './views/EditDosen.vue'
+
 
 Vue.use(VueRouter)
 
@@ -46,7 +49,9 @@ const router = new VueRouter({
         { path: '/tambah-user', name: 'tambah-user', component: TambahUser},
         { path: '/tambah-stafftu', name: 'tambah-stafftu', component: TambahStaffTU},
         { path: '/tambah-surat-izin', name: 'tambah-surat-izin', component: TambahSuratIzin},
-        { path: '/edit-matakuliah/:kd_matakuliah', name: 'edit-matakuliah', component: EditMatakuliah}
+        { path: '/edit-matakuliah/:kd_matakuliah/edit', name: 'edit-matakuliah', component: EditMatakuliah},
+        { path: '/edit-mahasiswa/:nim/edit', name: 'edit-mahasiswa', component: EditMahasiswa},
+        { path: '/edit-dosen/:kd_dosen/edit', name: 'edit-dosen', component: EditDosen}
     ]
 })
 

@@ -45,6 +45,17 @@
                         <v-icon small @click="deleteMatakuliah(item.kd_matakuliah)">mdi-delete</v-icon>
                     </template>
 
+                    <!-- <template v-slot:[`item.actions`]="{item}">
+                      <v-btn 
+                      :to = "{
+                        name: 'edit-matakuliah',
+                        params: {
+                          kd_matakuliah: item.kd_matakuliah
+                          }
+                        }"
+                        color="orange">Edit</v-btn>
+                    </template> -->
+
                 </v-data-table>
             </v-skeleton-loader>
         </v-card>

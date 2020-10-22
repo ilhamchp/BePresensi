@@ -1,88 +1,49 @@
 <template>
-  <v-row justify="center">
-    <v-col
-      cols="12"
-      sm="10"
-      md="8"
-      lg="6"
-    >
-      <v-card ref="form">
-        <v-card-text>
-          <v-text-field
-            ref="nama-matkul"
-            v-model="currentForm.nama_matakuliah"
-            label="Nama Mata Kuliah"
-            required
-          ></v-text-field>
-        </v-card-text>
-        <v-divider class="mt-12"></v-divider>
-        <v-card-actions>
-          <v-btn text to=/matakuliah>
-            Cancel
-          </v-btn>
-          <v-spacer></v-spacer>
-
-          <v-btn
-            color="primary"
-            text
-            @click="updateData(item.kd_matakuliah)"
-          >
-            Submit
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+  <MatakuliahForm
+    :matakuliah="matakuliah"
+    :onSubmit="updateData"
+  ></MatakuliahForm>
 </template>
 
 <script>
+import MatakuliahForm from "./MatakuliahForm";
+
 export default {
+  components: {
+    MatakuliahForm,
+  },
+
   data() {
     return {
       message: "",
-      currentForm: {
+      matakuliah: {
         nama_matakuliah: "",
+        kd_matakuliah: "",
       },
     };
   },
+
+  mounted() {
+    const { kd_matakuliah } = this.$route.params;
+    console.log(kd_matakuliah);
+    this.load(kd_matakuliah);
+  },
+
   methods: {
-    getMatakuliah(id) {
-        DataService.get(id)
-            .then((response) => {
-                this.currentForm = response.data.data.matakuliah;
-                console.log(response.data.data.matakuliah);
-            })
-            .catch((e) => {
-                console.log(e);
-            });
+    load(id) {
+      axios
+        .get("http://127.0.0.1:8000/api/matakuliah/" + id)
+        .then((matakuliah) => {
+          this.matakuliah = matakuliah;
+        });
     },
-    // async loadDataMatkul() {
-    //     // menampilkan loading
-    //     this.isLoadingData = true;
 
-    //     // fetch data dari api menggunakan axios
-    //     axios
-    //         .get("http://127.0.0.1:8000/api/matakuliah" + kd_matakuliah)
-    //         .then(response => {
-    //             // mengirim data hasil fetch ke varibale array matakuliah
-    //             this.matakuliah = response.data.data.matakuliah;
-    //         })
-    //         .catch(e => {
-    //             console.log(e);
-    //         })
-    //         .finally(() => {
-    //             // mengakhiri loading
-    //             this.isLoadingData = false;
-    //         });
-    // },
-
-    async updateData(id) {
-      // console.log(this.currentForm);
-      // DataService.update(this.currentForm.kd_matakuliah, this.currentForm)
+    async updateData() {
       axios
         .put(
-          "http://127.0.0.1:8000/api/matakuliah/" + id,
-          this.currentForm
+          "http://127.0.0.1:8000/api/matakuliah/" +
+            this.matakuliah.kd_matakuliah,
+          this.matakuliah
         )
         .then((response) => {
           console.log(response.data);
@@ -91,20 +52,6 @@ export default {
         .catch((e) => {
           console.log(e);
         });
-    },
-
-    async getSingleData(id) {
-        axios.get('http://127.0.0.1:8000/api/matakuliah/' + id)
-        .then(response => {
-          this.currentForm.nama_matakuliah = response.data.data.matakuliah;
-        })
-        .catch((e) => {
-          console.log(e);
-        })
-    },
-    mounted() {
-    //     this.message = "";
-        this.getMatakuliah(this.$route.params.id)
     },
   },
 };

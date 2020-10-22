@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "date-fns": "^2.16.1",
+        "ez-fetch": "^1.2.0",
         "moment": "^2.29.0",
         "vue-router": "^3.4.3",
         "vuelidate": "^0.7.5",

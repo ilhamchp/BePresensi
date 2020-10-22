@@ -41,7 +41,7 @@
                     :items-per-page="5">
 
                     <template v-slot:[`item.actions`]="{ item }">
-                        <v-icon small class="mr-2">mdi-pencil</v-icon>
+                        <v-icon small class="mr-2" @click="editDosen(item.kd_dosen)">mdi-pencil</v-icon>
                         <v-icon small @click="deleteDosen(item.kd_dosen)">mdi-delete</v-icon>
                     </template>
 
@@ -110,6 +110,13 @@ export default {
           // mengakhiri loading
           this.isLoadingData = false;
         });
+    },
+
+    editDosen(id) {
+      this.$router.push({
+        name: "edit-dosen",
+        params: { kd_dosen: id },
+      });
     },
 
     deleteDosen(id) {
