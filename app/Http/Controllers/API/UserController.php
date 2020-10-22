@@ -68,7 +68,7 @@ class UserController extends BaseController
     public function show(User $user)
     {
         if($user) return $this->sendResponse([
-            'user' => [new UserResource($user)]
+            'user' => new UserResource($user)
         ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }

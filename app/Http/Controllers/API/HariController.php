@@ -61,7 +61,7 @@ class HariController extends BaseController
     public function show(Hari $hari)
     {
         if($hari) return $this->sendResponse([
-            'hari' => [new HariResource($hari)]
+            'hari' => new HariResource($hari)
         ], 'Berhasil memperbaharui data!');
         else return $this->sendError('Data tidak ditemukan!');
     }

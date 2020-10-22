@@ -65,7 +65,7 @@ class StatusRekapitulasiController extends BaseController
     public function show(StatusRekapitulasi $statusRekapitulasi)
     {
         if($statusRekapitulasi) return $this->sendResponse([
-            'status_rekapitulasi' => [new StatusRekapitulasiResource($statusRekapitulasi)]
+            'status_rekapitulasi' => new StatusRekapitulasiResource($statusRekapitulasi)
         ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }

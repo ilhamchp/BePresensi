@@ -81,7 +81,7 @@ class MahasiswaController extends BaseController
     public function show(Mahasiswa $mahasiswa)
     {
         if($mahasiswa) return $this->sendResponse([
-            'mahasiswa' => [new MahasiswaResource($mahasiswa)]
+            'mahasiswa' => new MahasiswaResource($mahasiswa)
         ], 'Berhasil memperbaharui data!');
         return $this->sendError('Data tidak ditemukan!');
     }

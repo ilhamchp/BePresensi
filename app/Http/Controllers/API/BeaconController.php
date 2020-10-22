@@ -66,7 +66,7 @@ class BeaconController extends BaseController
     public function show(Beacon $beacon)
     {
         if($beacon) return $this->sendResponse([
-            'beacon' => [new BeaconResource($beacon)]
+            'beacon' => new BeaconResource($beacon)
         ], 'Berhasil memperbaharui data !');
         return $this->sendError('Data tidak ditemukan!');
     }

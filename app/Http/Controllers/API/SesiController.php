@@ -67,7 +67,7 @@ class SesiController extends BaseController
     public function show(Sesi $sesi)
     {
         if($sesi) return $this->sendResponse([
-            'sesi' => [new SesiResource($sesi)]
+            'sesi' => new SesiResource($sesi)
         ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }

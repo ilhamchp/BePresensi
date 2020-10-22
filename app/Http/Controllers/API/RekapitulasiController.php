@@ -46,7 +46,7 @@ class RekapitulasiController extends BaseController
     public function show(Rekapitulasi $rekapitulasi)
     {
         if($rekapitulasi) return $this->sendResponse([
-            'rekapitulasi' => [new RekapitulasiResource($rekapitulasi)]
+            'rekapitulasi' => new RekapitulasiResource($rekapitulasi)
         ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }
