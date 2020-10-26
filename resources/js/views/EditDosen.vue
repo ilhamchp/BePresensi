@@ -40,8 +40,8 @@ export default {
       axios
         .get("http://127.0.0.1:8000/api/dosen/" + id)
         .then((dosen) => {
-          console.log(dosen)
-          this.dosen = dosen;
+          console.log(dosen.data.data.dosen)
+          this.dosen = dosen.data.data.dosen;
           //this.dosen = response.data.data.dosen
         });
     },

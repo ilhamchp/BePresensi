@@ -43,7 +43,8 @@ export default {
       axios
         .get("http://127.0.0.1:8000/api/mahasiswa/" + id)
         .then((mahasiswa) => {
-          this.mahasiswa = mahasiswa;
+          console.log(mahasiswa.data.data.mahasiswa);
+          this.mahasiswa = mahasiswa.data.data.mahasiswa;
         });
     },
 

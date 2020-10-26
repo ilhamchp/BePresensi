@@ -41,7 +41,7 @@
                     :items-per-page="5">
 
                     <template v-slot:[`item.actions`]="{ item }">
-                        <v-icon small class="mr-2">mdi-pencil</v-icon>
+                        <v-icon small class="mr-2" @click="editStaffTU(item.kd_staff)">mdi-pencil</v-icon>
                         <v-icon small @click="deleteStaffTU(item.kd_staff)">mdi-delete</v-icon>
                     </template>
 
@@ -110,6 +110,13 @@ export default {
           // mengakhiri loading
           this.isLoadingData = false;
         });
+    },
+
+    editStaffTU(id) {
+      this.$router.push({
+        name: "edit-staff-tu",
+        params: { kd_staff: id },
+      });
     },
 
     deleteStaffTU(id) {

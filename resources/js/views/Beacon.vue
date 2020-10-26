@@ -41,7 +41,7 @@
                     :items-per-page="5"
                 >
                     <template v-slot:[`item.actions`]="{ item }">
-                        <v-icon small class="mr-2">mdi-pencil</v-icon>
+                        <v-icon small class="mr-2" @click="editBeacon(item.kd_beacon)">mdi-pencil</v-icon>
                         <v-icon small @click="deleteBeacon(item.kd_beacon)">mdi-delete</v-icon>
                     </template>
 
@@ -117,6 +117,14 @@ export default {
           this.isLoadingData = false;
         });
     },
+
+    editBeacon(id) {
+      this.$router.push({
+        name: "edit-beacon",
+        params: { kd_beacon: id },
+      });
+    },
+
     deleteBeacon(id) {
       axios
         .delete("http://127.0.0.1:8000/api/beacon/" + id)

@@ -73,7 +73,7 @@ class StaffTataUsahaController extends BaseController
     public function show(StaffTataUsaha $staffTataUsaha)
     {
         if($staffTataUsaha) return $this->sendResponse([
-            'staff' => new StaffTataUsahaResource($staff)
+            'staff' => new StaffTataUsahaResource($staffTataUsaha)
         ], 'success');
         return $this->sendError('Data tidak ditemukan!');
     }

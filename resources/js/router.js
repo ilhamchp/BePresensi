@@ -23,6 +23,8 @@ import TambahSuratIzin from './views/TambahSuratIzin.vue'
 import EditMatakuliah from './views/EditMatakuliah.vue'
 import EditMahasiswa from './views/EditMahasiswa.vue'
 import EditDosen from './views/EditDosen.vue'
+import EditStaffTU from './views/EditStaffTU.vue'
+import EditBeacon from './views/EditBeacon.vue'
 
 
 Vue.use(VueRouter)
@@ -51,7 +53,9 @@ const router = new VueRouter({
         { path: '/tambah-surat-izin', name: 'tambah-surat-izin', component: TambahSuratIzin},
         { path: '/edit-matakuliah/:kd_matakuliah/edit', name: 'edit-matakuliah', component: EditMatakuliah},
         { path: '/edit-mahasiswa/:nim/edit', name: 'edit-mahasiswa', component: EditMahasiswa},
-        { path: '/edit-dosen/:kd_dosen/edit', name: 'edit-dosen', component: EditDosen}
+        { path: '/edit-dosen/:kd_dosen/edit', name: 'edit-dosen', component: EditDosen},
+        { path: '/edit-staff-tu/:kd_staff/edit', name: 'edit-staff-tu', component: EditStaffTU},
+        { path: '/edit-beacon/:kd_beacon/edit', name: 'edit-beacon', component: EditBeacon},
     ]
 })
 
