@@ -196,8 +196,8 @@ class SuratIzinController extends BaseController
             'nim'=> 'required|exists:App\Mahasiswa,nim',
             'tgl_mulai' => 'required|date_format:Y-n-j',
             'tgl_selesai' => 'required|date_format:Y-n-j|after_or_equal:tgl_mulai',
-            'jam_mulai' => 'required|date_format:H:i:s',
-            'jam_selesai' => 'required|date_format:H:i:s',
+            'jam_mulai' => 'date_format:H:i:s',
+            'jam_selesai' => 'date_format:H:i:s',
             'catatan_surat' => 'required'
         ],$messages);   
         
@@ -222,8 +222,8 @@ class SuratIzinController extends BaseController
         $suratIzin->kd_surat_izin = $kd_surat_izin;
         $suratIzin->tgl_mulai = $request->tgl_mulai;
         $suratIzin->tgl_selesai = $request->tgl_selesai;
-        $suratIzin->jam_mulai = $request->jam_mulai;
-        $suratIzin->jam_selesai = $request->jam_selesai;
+        if($request->jam_mulai) $suratIzin->jam_mulai = $request->jam_mulai;
+        if($request->jam_selesai) $suratIzin->jam_selesai = $request->jam_selesai;
         $suratIzin->catatan_surat = $request->catatan_surat;
         $suratIzin->foto_surat = $kd_surat_izin . ".jpg";
         $suratIzin->jenisIzin()->associate($jenis_izin);
@@ -256,8 +256,8 @@ class SuratIzinController extends BaseController
             'nim'=> 'required|exists:App\Mahasiswa,nim',
             'tgl_mulai' => 'required|date_format:Y-n-j',
             'tgl_selesai' => 'required|date_format:Y-n-j|after_or_equal:tgl_mulai',
-            'jam_mulai' => 'required|date_format:H:i:s',
-            'jam_selesai' => 'required|date_format:H:i:s',
+            'jam_mulai' => 'date_format:H:i:s',
+            'jam_selesai' => 'date_format:H:i:s',
             'catatan_surat' => 'required'
         ],$messages);   
         
@@ -282,8 +282,8 @@ class SuratIzinController extends BaseController
         $suratIzin->kd_surat_izin = $kd_surat_izin;
         $suratIzin->tgl_mulai = $request->tgl_mulai;
         $suratIzin->tgl_selesai = $request->tgl_selesai;
-        $suratIzin->jam_mulai = $request->jam_mulai;
-        $suratIzin->jam_selesai = $request->jam_selesai;
+        if($request->jam_mulai) $suratIzin->jam_mulai = $request->jam_mulai;
+        if($request->jam_selesai) $suratIzin->jam_selesai = $request->jam_selesai;
         $suratIzin->foto_surat = $kd_surat_izin . ".jpg";
         $suratIzin->catatan_surat = $request->catatan_surat;
         $suratIzin->jenisIzin()->associate($jenis_izin);
