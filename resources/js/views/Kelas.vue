@@ -41,7 +41,7 @@
                     :items-per-page="5">
 
                     <template v-slot:[`item.actions`]="{ item }">
-                        <v-icon small class="mr-2">mdi-pencil</v-icon>
+                        <v-icon small class="mr-2" @click="editKelas(item.kd_kelas)">mdi-pencil</v-icon>
                         <v-icon small @click="deleteKelas(item.kd_kelas)">mdi-delete</v-icon>
                     </template>
 
@@ -70,19 +70,19 @@ export default {
           text: "Tingkat Kelas",
           value: "tingkat_kelas",
           sortable: true,
-          groupable: true,
+          groupable: false,
         },
         {
           text: "Program Studi",
           value: "prodi",
           sortable: true,
-          groupable: true,
+          groupable: false,
         },
         {
           text: "Angkatan",
           value: "angkatan",
           sortable: true,
-          groupable: true,
+          groupable: false,
         },
         {
           text: "Nama Wali Dosen",
@@ -122,6 +122,13 @@ export default {
           // mengakhiri loading
           this.isLoadingData = false;
         });
+    },
+
+    editKelas(id) {
+      this.$router.push({
+        name: "edit-kelas",
+        params: { kd_kelas: id },
+      });
     },
 
     deleteKelas(id) {

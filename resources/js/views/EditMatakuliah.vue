@@ -34,7 +34,7 @@ export default {
       axios
         .get("http://127.0.0.1:8000/api/matakuliah/" + id)
         .then((matakuliah) => {
-          this.matakuliah = matakuliah;
+          this.matakuliah = matakuliah.data.data.matakuliah;
         });
     },
 
