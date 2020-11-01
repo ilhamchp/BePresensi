@@ -493,7 +493,6 @@ class SuratIzinController extends BaseController
         ];
         $validator = Validator::make($request->all(), [
             'kd_surat_izin'=> 'required|exists:App\SuratIzin,kd_surat_izin',
-            'catatan_wali_dosen' => 'required'
         ],$messages);   
         
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
@@ -501,7 +500,7 @@ class SuratIzinController extends BaseController
 
         $suratIzin = SuratIzin::find($request->kd_surat_izin);
         $suratIzin->kd_status_surat = 2;
-        $suratIzin->catatan_wali_dosen = $request->catatan_wali_dosen;
+        if($request->catatan_wali_dosen) $suratIzin->catatan_wali_dosen = $request->catatan_wali_dosen;
         $suratIzin->update();
         return $this->sendResponse([
             'surat_izin' => new SuratIzinResource($suratIzin)
@@ -523,7 +522,6 @@ class SuratIzinController extends BaseController
         ];
         $validator = Validator::make($request->all(), [
             'kd_surat_izin'=> 'required|exists:App\SuratIzin,kd_surat_izin',
-            'catatan_wali_dosen' => 'required'
         ],$messages);   
         
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
@@ -531,7 +529,7 @@ class SuratIzinController extends BaseController
 
         $suratIzin = SuratIzin::find($request->kd_surat_izin);
         $suratIzin->kd_status_surat = 3;
-        $suratIzin->catatan_wali_dosen = $request->catatan_wali_dosen;
+        if($request->catatan_wali_dosen) $suratIzin->catatan_wali_dosen = $request->catatan_wali_dosen;
         $suratIzin->update();
         return $this->sendResponse([
             'surat_izin' => new SuratIzinResource($suratIzin)
