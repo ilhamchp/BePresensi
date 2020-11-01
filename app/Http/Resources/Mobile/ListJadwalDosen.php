@@ -18,6 +18,7 @@ class ListJadwalDosen extends JsonResource
     {
         return [
             'kd_jadwal' => $this->kd_jadwal,
+            'kd_kelas' => $this->kd_kelas,
             'sesi_mulai' => $this->sesiMulai,
             'sesi_berakhir' => $this->sesiBerakhir,
             'ruang' => new RuangResource($this->ruang),
@@ -36,6 +37,11 @@ class ListJadwalDosen extends JsonResource
             $this->mergeWhen((!$this->beritaAcara()->exists()) && $this->beritaAcara->count()==0, function() {
                 return [
                     'berita_acara' => null
+                ];
+            }),
+            $this->mergeWhen($this->hari()->exists() && $this->hari->count()!=0, function() {
+                return [
+                    'hari' => $this->hari
                 ];
             }),
             $this->mergeWhen($this->kehadiran()->exists() && $this->kehadiran->count()!=0, function() {
