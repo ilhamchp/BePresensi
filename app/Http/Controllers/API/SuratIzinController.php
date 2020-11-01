@@ -198,7 +198,6 @@ class SuratIzinController extends BaseController
             'tgl_selesai' => 'required|date_format:Y-n-j|after_or_equal:tgl_mulai',
             'jam_mulai' => 'date_format:H:i:s',
             'jam_selesai' => 'date_format:H:i:s',
-            'catatan_surat' => 'required'
         ],$messages);   
         
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
@@ -224,7 +223,7 @@ class SuratIzinController extends BaseController
         $suratIzin->tgl_selesai = $request->tgl_selesai;
         if($request->jam_mulai) $suratIzin->jam_mulai = $request->jam_mulai;
         if($request->jam_selesai) $suratIzin->jam_selesai = $request->jam_selesai;
-        $suratIzin->catatan_surat = $request->catatan_surat;
+        if($request->catatan_surat) $suratIzin->catatan_surat = $request->catatan_surat;
         $suratIzin->foto_surat = $kd_surat_izin . ".jpg";
         $suratIzin->jenisIzin()->associate($jenis_izin);
         $suratIzin->mahasiswa()->associate($mahasiswa);
@@ -258,7 +257,6 @@ class SuratIzinController extends BaseController
             'tgl_selesai' => 'required|date_format:Y-n-j|after_or_equal:tgl_mulai',
             'jam_mulai' => 'date_format:H:i:s',
             'jam_selesai' => 'date_format:H:i:s',
-            'catatan_surat' => 'required'
         ],$messages);   
         
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
@@ -285,7 +283,7 @@ class SuratIzinController extends BaseController
         if($request->jam_mulai) $suratIzin->jam_mulai = $request->jam_mulai;
         if($request->jam_selesai) $suratIzin->jam_selesai = $request->jam_selesai;
         $suratIzin->foto_surat = $kd_surat_izin . ".jpg";
-        $suratIzin->catatan_surat = $request->catatan_surat;
+        if($request->catatan_surat) $suratIzin->catatan_surat = $request->catatan_surat;
         $suratIzin->jenisIzin()->associate($jenis_izin);
         $suratIzin->mahasiswa()->associate($mahasiswa);
         $suratIzin->statusSurat()->associate($status_surat);
@@ -316,7 +314,6 @@ class SuratIzinController extends BaseController
             'nim'=> 'required|exists:App\Mahasiswa,nim',
             'tgl_mulai' => 'required|date_format:Y-n-j',
             'tgl_selesai' => 'required|date_format:Y-n-j|after_or_equal:tgl_mulai',
-            'catatan_surat' => 'required'
         ],$messages);   
         
         if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
@@ -341,7 +338,7 @@ class SuratIzinController extends BaseController
         $suratIzin->tgl_mulai = $request->tgl_mulai;
         $suratIzin->tgl_selesai = $request->tgl_selesai;
         $suratIzin->foto_surat = $kd_surat_izin . ".jpg";
-        $suratIzin->catatan_surat = $request->catatan_surat;
+        if($request->catatan_surat) $suratIzin->catatan_surat = $request->catatan_surat;
         $suratIzin->jenisIzin()->associate($jenis_izin);
         $suratIzin->mahasiswa()->associate($mahasiswa);
         $suratIzin->statusSurat()->associate($status_surat);
@@ -358,7 +355,7 @@ class SuratIzinController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function daftarSuratIzin(Request $request)
+    public function daftarSuratIzinDiajukan(Request $request)
     {
         $messages = [
             'required' => 'Atribut :attribute tidak boleh kosong.',
@@ -373,7 +370,33 @@ class SuratIzinController extends BaseController
         $mahasiswa = Mahasiswa::find($request->nim);
         if(!$mahasiswa) return $this->sendError('Data mahasiswa tidak ditemukan!');
 
-        $suratIzin = SuratIzin::where('nim', $request->nim)->get();
+        $suratIzin = SuratIzin::where('nim', $request->nim)->where('kd_status_surat',1)->get();
+        return new SuratIzinCollection($suratIzin);
+    }
+
+    /**
+     * Melihat daftar surat yang sudah diajukan mahasiswa.
+     * Digunakan untuk aplikasi mobile.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function daftarSuratIzinDiproses(Request $request)
+    {
+        $messages = [
+            'required' => 'Atribut :attribute tidak boleh kosong.',
+            'exists' => 'Atribut :attribute tidak terdapat di database.',
+        ];
+        $validator = Validator::make($request->all(), [
+            'nim'=> 'required|exists:App\Mahasiswa,nim',
+        ],$messages);   
+        
+        if($validator->fails()) return $this->sendError('Validasi data gagal.', Arr::first(Arr::flatten($validator->messages()->get('*'))));
+
+        $mahasiswa = Mahasiswa::find($request->nim);
+        if(!$mahasiswa) return $this->sendError('Data mahasiswa tidak ditemukan!');
+
+        $suratIzin = SuratIzin::where('nim', $request->nim)->where('kd_status_surat','!=',1)->get();
         return new SuratIzinCollection($suratIzin);
     }
 
@@ -512,6 +535,6 @@ class SuratIzinController extends BaseController
         $suratIzin->update();
         return $this->sendResponse([
             'surat_izin' => new SuratIzinResource($suratIzin)
-        ], 'Berhasil menyetujui surat!');
+        ], 'Berhasil menolak surat!');
     }
 }
