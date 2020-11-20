@@ -31,14 +31,6 @@
           ></v-select>
           <br>
 
-          <!-- <v-text-field
-            ref="nim"
-            v-model="form.nim"
-            :rules="[() => !!form.nim || 'This field is required']"
-            label="NIM"
-            required
-          ></v-text-field> -->
-
           <v-select
             ref="nim"
             v-model="surat_izin.nim"

@@ -175,6 +175,7 @@
         { icon: 'mdi-clock-start', text: 'Sesi', link:'/sesi'},
         { icon: 'mdi-notebook-check', text: 'Presensi', link:'/presensi'},
         { icon: 'mdi-notebook-check', text: 'Rekapitulasi', link:'/rekapitulasi'},
+        { icon: 'mdi-teach', text: 'Ruang', link:'/ruang'},
         { icon: 'mdi-account-details', text: 'Staff Tata Usaha', link:'/staff-tata-usaha'},
         { icon: 'mdi-email-multiple', text: 'Surat Izin', link:'/surat-izin'},
         { icon: 'mdi-account-cog', text: 'User', link:'/user'},

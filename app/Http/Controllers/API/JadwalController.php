@@ -455,7 +455,7 @@ class JadwalController extends BaseController
             'after_or_equal' => 'Attribut :attribute tidak boleh lebih kecil dari :date',
         ];
         $validator = Validator::make($request->all(), [
-            'kd_jadwal' => 'required|exists:App\Jadwal,kd_jadwal',
+            // 'kd_jadwal' => 'required|exists:App\Jadwal,kd_jadwal',
             'kd_kelas' => 'required|exists:App\Kelas,kd_kelas',
             'kd_hari' => 'required|numeric|exists:App\Hari,kd_hari',
             'kd_sesi_mulai' => 'required|numeric|exists:App\Sesi,kd_sesi',

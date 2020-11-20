@@ -45,7 +45,7 @@
             :items="kd_sesi"
             label="Sesi Mulai"
             item-text="kd_sesi"
-            item-value="sesi_mulai.kd_sesi"
+            item-value="kd_sesi"
             placeholder="Select..."
             required
           ></v-select>
@@ -56,7 +56,7 @@
             :items="kd_sesi"
             label="Sesi Berakhir"
             item-text="kd_sesi"
-            item-value="sesi_berakhir.kd_sesi"
+            item-value="kd_sesi"
             placeholder="Select..."
             required
           ></v-select>

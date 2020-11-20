@@ -3,7 +3,7 @@
     :jadwal="jadwal"
     :kd_kelas="kd_kelas"
     :kd_hari="kd_hari"
-    :kd_sesi="kd_sesi_berakhir"
+    :kd_sesi="kd_sesi_mulai"
     :kd_ruang="kd_ruang"
     :kd_matakuliah="kd_matakuliah"
     :kd_dosen="kd_dosen_pengajar"
@@ -189,29 +189,29 @@ export default {
       console.log(this.jadwal);
 
       // fetch data dari api menggunakan axios
-      axios
-        .put(
-          "http://127.0.0.1:8000/api/jadwal/" + this.jadwal.kd_jadwal,
-          this.jadwal,
-          this.kd_kelas,
-          this.kd_hari,
-          this.kd_sesi_mulai,
-          this.kd_sesi_berakhir,
-          this.kd_ruang,
-          this.kd_matakuliah,
-          this.kd_dosen_pengajar
-        )
-        .then((response) => {
-          console.log(response.data);
-          this.message = "The data was updated successfully!";
-        })
-        .catch((e) => {
-          console.log(e);
-        })
-        .finally(() => {
-          // mengakhiri loading
-          this.isLoadingData = false;
-        });
+      // axios
+      //   .put(
+      //     "http://127.0.0.1:8000/api/jadwal/" + this.jadwal.kd_jadwal,
+      //     this.jadwal,
+      //     this.kd_kelas,
+      //     this.kd_hari,
+      //     this.kd_sesi_mulai,
+      //     this.kd_sesi_berakhir,
+      //     this.kd_ruang,
+      //     this.kd_matakuliah,
+      //     this.kd_dosen_pengajar
+      //   )
+      //   .then((response) => {
+      //     console.log(response.data);
+      //     this.message = "The data was updated successfully!";
+      //   })
+      //   .catch((e) => {
+      //     console.log(e);
+      //   })
+      //   .finally(() => {
+      //     // mengakhiri loading
+      //     this.isLoadingData = false;
+      //   });
     },
   },
 };

@@ -10,6 +10,7 @@ import Mahasiswa from './views/Mahasiswa.vue'
 import Matakuliah from './views/Matakuliah.vue'
 import Presensi from './views/Presensi.vue'
 import Rekapitulasi from './views/Rekapitulasi.vue'
+import Ruang from './views/Ruang.vue'
 import Sesi from './views/Sesi.vue'
 import StaffTataUsaha from './views/StaffTataUsaha.vue'
 import SuratIzin from './views/SuratIzin.vue'
@@ -24,6 +25,7 @@ import TambahUser from './views/TambahUser.vue'
 import TambahSesi from './views/TambahSesi.vue'
 import TambahStaffTU from './views/TambahStaffTU.vue'
 import TambahSuratIzin from './views/TambahSuratIzin.vue'
+import TambahRuang from './views/TambahRuang.vue'
 import EditMatakuliah from './views/EditMatakuliah.vue'
 import EditMahasiswa from './views/EditMahasiswa.vue'
 import EditDosen from './views/EditDosen.vue'
@@ -33,6 +35,7 @@ import EditKelas from './views/EditKelas.vue'
 import EditSesi from './views/EditSesi.vue'
 import EditSuratIzin from './views/EditSuratIzin.vue'
 import EditJadwal from './views/EditJadwal.vue'
+import EditRuang from './views/EditRuang.vue'
 
 Vue.use(VueRouter)
 
@@ -48,6 +51,7 @@ const router = new VueRouter({
         { path: '/matakuliah', name: 'matakuliah', component: Matakuliah},
         { path: '/presensi', name: 'presensi', component: Presensi},
         { path: '/rekapitulasi', name: 'rekapitulasi', component: Rekapitulasi},
+        { path: '/ruang', name: 'ruang', component: Ruang},
         { path: '/sesi', name: 'sesi', component: Sesi},
         { path: '/staff-tata-usaha', name: 'staff-tata-usaha', component: StaffTataUsaha},
         { path: '/surat-izin', name: 'surat-izin', component: SuratIzin},
@@ -62,6 +66,7 @@ const router = new VueRouter({
         { path: '/tambah-sesi', name: 'tambah-sesi', component: TambahSesi},
         { path: '/tambah-stafftu', name: 'tambah-stafftu', component: TambahStaffTU},
         { path: '/tambah-surat-izin', name: 'tambah-surat-izin', component: TambahSuratIzin},
+        { path: '/tambah-ruang', name: 'tambah-ruang', component: TambahRuang},
         { path: '/edit-matakuliah/:kd_matakuliah/edit', name: 'edit-matakuliah', component: EditMatakuliah},
         { path: '/edit-mahasiswa/:nim/edit', name: 'edit-mahasiswa', component: EditMahasiswa},
         { path: '/edit-dosen/:kd_dosen/edit', name: 'edit-dosen', component: EditDosen},
@@ -71,6 +76,7 @@ const router = new VueRouter({
         { path: '/edit-sesi/:kd_sesi/edit', name: 'edit-sesi', component: EditSesi},
         { path: '/edit-surat-izin/:kd_surat_izin/edit', name: 'edit-surat-izin', component: EditSuratIzin},
         { path: '/edit-jadwal/:kd_jadwal/edit', name: 'edit-jadwal', component: EditJadwal},
+        { path: '/edit-ruang/:kd_ruang/edit', name: 'edit-ruang', component: EditRuang},
     ]
 })
 
